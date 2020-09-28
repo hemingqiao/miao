@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    /* 猫头鹰图片样式 */
+    #owl {
+      width: 300px;
+    }
+
+    /* 为表格第二列添加红色背景 */
+    .red-background {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+<h1>Title</h1>
+<h2>Title</h2>
+<h3>Title</h3>
+
+<p>
+  we are such stuff as dreams are made on. we are such stuff as dreams are made on. we are such stuff as dreams are
+  made on.
+</p>
+<p>
+  whatever you do, just do not stay put. whatever you do, just do not stay put. whatever you do, just do not stay
+  put.
+</p>
+
+<a href="https://www.jd.com" target="_blank">在新窗口打开京东</a>
+<a href="mailto:3233713279@qq.com">点击向我发送邮件</a>
+<a href="#bottom">跳转到本页底部</a>
+<a href="http://pic.netbian.com/uploads/allimg/200923/225226-16008727469e09.jpg" target="_blank">点击我下载图片</a><br>
+
+<img id="HongKong" src="http://pic.netbian.com/uploads/allimg/200923/225226-16008727469e09.jpg" alt="HongKong">
+
+<hr>
+<hr>
+
+<marquee>飘~~~</marquee>
+
+这<i>几种强调</i><strong>有什么区别呢？</strong><u>这个呢？</u><em>这个呢？</em>
+
+<!-- 这是一段注释 -->
+
+下面是一段JavaScript代码：
+<pre>
+  <code>
+    function foo() {
+      console.log("hello world");
+    }
+  </code>
+</pre>
+
+<hr>
+
+<ul>
+  <li>小学
+    <ol>
+      <li>一年级
+        <ol>
+          <li>上学期</li>
+          <li>下学期</li>
+        </ol>
+      </li>
+      <li>二年级</li>
+      <li>三年级</li>
+    </ol>
+  </li>
+  <li>中学</li>
+  <li>大学</li>
+</ul>
+
+<hr>
+
+<dl>
+  <dt>班级</dt>
+  <dd>
+    三年二班
+  </dd>
+  <dt>老师</dt>
+  <dd>张老师</dd>
+  <dd>李老师</dd>
+  <dd>王老师</dd>
+  <dt>学生</dt>
+  <dd>小明</dd>
+  <dd>豆豆</dd>
+</dl>
+
+<hr>
+
+<!-- Google search -->
+<h2>Google</h2>
+<form action="https://www.google.com/search">
+  <!-- name属性的值是input表单控件的名字。会以名字/值对的形式随表单一起提交 -->
+  <input type="text" name="q" placeholder="请输入想要搜索的内容">
+  <input type="submit" formtarget="_blank" value="在新窗口打开搜索结果">
+</form>
+
+<hr>
+
+<span>个人信息调查表</span>
+<form action="">
+  <dl>
+    <dt>性别</dt>
+    <dd>
+      <input type="radio">男
+      <input type="radio">女
+    </dd>
+
+    <dt>年龄</dt>
+    <dd>
+      <select name="age" id="">
+        <option>请选择</option>
+        <optgroup label="少年">
+          <option value="">1-6</option>
+          <option value="">6-12</option>
+        </optgroup>
+        <optgroup label="青年">
+          <option value="">13-15</option>
+          <option value="">16-18</option>
+        </optgroup>
+        <optgroup label="壮年">
+          <option value="">18-22</option>
+          <option value="">23-30</option>
+        </optgroup>
+      </select>
+    </dd>
+
+    <dt>生日</dt>
+    <dd>
+      <input type="date">
+    </dd>
+
+    <dt>生辰</dt>
+    <dd>
+      <input type="time">
+    </dd>
+
+    <dt>照片</dt>
+    <dd>
+      <label for="description">点我上传照片，我比文件上传按钮好看</label>
+      <input hidden type="file" id="description">
+    </dd>
+
+    <dt>肤色</dt>
+    <input type="color" name="">
+
+    <dt>自我介绍</dt>
+    <textarea cols="30" rows="10">textarea</textarea>
+  </dl>
+
+  <fieldset disabled>
+    <legend>这里面的全都禁用了</legend>
+    <input type="text">
+    <input type="text">
+    <input type="text">
+    <input type="text">
+  </fieldset>
+  <input type="submit" value="提交">
+  <input type="reset" value="重置">
+</form>
+
+<hr>
+
+<table border="1">
+  <caption>货品列表</caption>
+  <tr>
+    <th>编号</th>
+    <th class="red-background">品名</th>
+    <th>进价</th>
+    <th>出价</th>
+  </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">苹果</td>
+    <td rowspan="2">5</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">橘子</td>
+    <!--<td>5</td>-->
+    <td>8</td>
+  </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">香蕉</td>
+    <td>5</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">山竹</td>
+    <td>5</td>
+    <td>8</td>
+  </tr>
+</table>
+
+<hr>
+
+<img id="owl" src="https://drscdn.500px.org/photo/174778125/m%3D1170_k%3D1/2841ccf2a3720e8e794a6a6930f6ff2c"
+     alt="" usemap="#owl-map">
+<!--
+给热点区域设定具体的坐标值。这个值的数值和意义取决于这个值所描述的形状属性。对于矩形或长方形, 这个coords 值为两个X,Y对：左上、右下。
+对于圆形, 这个值是 x,y,r ，这里的 x,y 是一对确定圆的中心的坐标而 r 则表示的是半径值。
+对于多边和多边形，这个值是用x,y对表示的多边形的每一个点：x1,y1,x2,y2,x3,y3,等等。
+-->
+<map name="owl-map">
+  <area shape="rect" coords="50 100 200 200" href="https://www.apple.com" alt="" target="_blank">
+  <area shape="circle" coords="130 250 80" href="https://www.mi.com" alt="" target="_blank">
+  <area shape="poly" coords="50 75 15 300 175 380 220 270 180 80" href="https://earth.google.com/web" alt="" target="_blank">
+</map>
+
+<hr>
+<a href="http://www.mi.com" target="vue-frame">点击我会在下面的frame里打开小米商城</a><br>
+<iframe src="https://vuejs.org/" frameborder="1" width="500" height="300" name="vue-frame"></iframe>
+
+<hr>
+
+<span>怎样&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这两个字之间空这么大呢</span>
+<br>
+怎样在页面中显示下面的内容呢？<br>
+&lt;span>&lt;/span>
+
+<a name="bottom"></a>
+<span>bottom</span>
+<a href="#">click me to return top</a>
+</body>
+</html>
