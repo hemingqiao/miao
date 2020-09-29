@@ -171,6 +171,12 @@
 
 <table border="1">
   <caption>货品列表</caption>
+  <colgroup>
+    <col>
+    <col>
+    <col bgcolor="orange">
+    <col>
+  </colgroup>
   <thead>
     <tr>
       <th>编号</th>
@@ -218,7 +224,7 @@
 对于圆形, 这个值是 x,y,r ，这里的 x,y 是一对确定圆的中心的坐标而 r 则表示的是半径值。
 对于多边和多边形，这个值是用x,y对表示的多边形的每一个点：x1,y1,x2,y2,x3,y3,等等。
 -->
-<map name="owl-map1">
+<map name="owl-map">
   <area shape="rect" coords="50 100 200 200" href="https://www.apple.com" alt="" target="_blank">
   <area shape="circle" coords="130 250 80" href="https://www.mi.com" alt="" target="_blank">
   <area shape="poly" coords="50 75 15 300 175 380 220 270 180 80" href="https://earth.google.com/web" alt=""
@@ -226,6 +232,7 @@
 </map>
 
 <hr>
+
 <a href="http://www.mi.com" target="vue-frame">点击我会在下面的frame里打开小米商城</a><br>
 <iframe src="https://vuejs.org/" frameborder="1" width="500" height="300" name="vue-frame"></iframe>
 
@@ -237,7 +244,6 @@
 &lt;span>&lt;/span>
 
 <a name="bottom"></a>
-<span>bottom</span>
-<a href="#">click me to return top</a>
+<a href="#">点击回到顶部</a>
 </body>
 </html>
