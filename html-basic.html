@@ -32,9 +32,10 @@
 <a href="https://www.jd.com" target="_blank">在新窗口打开京东</a>
 <a href="mailto:aaa@qq.com">点击向我发送邮件</a>
 <a href="#bottom">跳转到本页底部</a>
-<a href="http://pic.netbian.com/uploads/allimg/200923/225226-16008727469e09.jpg" target="_blank" download>点击我下载图片</a><br>
+<a href="http://pic.netbian.com/uploads/allimg/200923/225226-16008727469e09.jpg" target="_blank"
+   download>点击我下载图片</a><br>
 
-<img id="HongKong" src="http://pic.netbian.com/uploads/allimg/200923/225226-16008727469e09.jpg" alt="HongKong">
+<img title="HongKong" src="http://pic.netbian.com/uploads/allimg/200923/225226-16008727469e09.jpg" alt="HongKong">
 
 <hr>
 <hr>
@@ -42,9 +43,9 @@
 <!-- deprecated -->
 <marquee>飘~~~</marquee>
 
-这<i>几种强调</i><strong>有什么区别呢？</strong><u>这个呢？</u><em>这个呢？</em>
+这<i>几种强调</i><strong>有什么</strong> <b>区别呢？</b><u>这个呢？</u><em>这个呢？</em> <br>
 
-<!-- 这是一段注释 -->
+&lt;!-- 这是一段注释 --> <br>
 
 下面是一段JavaScript代码：
 <pre>
@@ -82,10 +83,12 @@
   <dd>
     三年二班
   </dd>
+
   <dt>老师</dt>
   <dd>张老师</dd>
   <dd>李老师</dd>
   <dd>王老师</dd>
+
   <dt>学生</dt>
   <dd>小明</dd>
   <dd>豆豆</dd>
@@ -97,8 +100,9 @@
 <h2>Google</h2>
 <form action="https://www.google.com/search">
   <!-- name属性的值是input表单控件的名字。会以名字/值对的形式随表单一起提交 -->
-  <input type="text" name="q" placeholder="请输入想要搜索的内容">
-  <input type="submit" formtarget="_blank" value="在新窗口打开搜索结果">
+  <input type="text" name="q" required placeholder="请输入想要搜索的内容">
+  <!--<input type="submit" formtarget="_blank" value="在新窗口打开搜索结果">-->
+  <button formtarget="_blank">在新窗口打开搜索结果</button>
 </form>
 
 <hr>
@@ -108,14 +112,14 @@
   <dl>
     <dt>性别</dt>
     <dd>
-      <input type="radio">男
-      <input type="radio">女
+      <label><input type="radio" name="sex" value="male">男</label>
+      <label><input type="radio" name="sex" value="female">女</label>
     </dd>
 
     <dt>年龄</dt>
     <dd>
       <select name="age" id="">
-        <option>请选择</option>
+        <option hidden>请选择</option>
         <optgroup label="少年">
           <option value="">1-6</option>
           <option value="">6-12</option>
@@ -133,7 +137,7 @@
 
     <dt>生日</dt>
     <dd>
-      <input type="date">
+      <label><input type="date"></label>
     </dd>
 
     <dt>生辰</dt>
@@ -152,7 +156,7 @@
 
     <dt>自我介绍</dt>
     <dd>
-      <textarea cols="30" rows="10">textarea</textarea>
+      <textarea cols="30" rows="10">&lt;/textarea></textarea>
     </dd>
   </dl>
 
@@ -163,8 +167,12 @@
     <input type="text">
     <input type="text">
   </fieldset>
+  <button>提交</button>
+  <button type="reset">重置</button>
+  <!--
   <input type="submit" value="提交">
   <input type="reset" value="重置">
+  -->
 </form>
 
 <hr>
@@ -178,39 +186,38 @@
     <col>
   </colgroup>
   <thead>
-    <tr>
-      <th>编号</th>
-      <th class="red-background">品名</th>
-      <th>进价</th>
-      <th>出价</th>
-    </tr>
+  <tr>
+    <th>编号</th>
+    <th class="red-background">品名</th>
+    <th>进价</th>
+    <th>出价</th>
+  </tr>
   </thead>
 
   <tbody>
-    <tr>
-      <th>001</th>
-      <td class="red-background">苹果</td>
-      <td rowspan="2">5</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>001</th>
-      <td class="red-background">橘子</td>
-      <!--<td>5</td>-->
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>001</th>
-      <td class="red-background">香蕉</td>
-      <td>5</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>001</th>
-      <td class="red-background">山竹</td>
-      <td>5</td>
-      <td>8</td>
-    </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">苹果</td>
+    <td rowspan="2">5</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">橘子</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">香蕉</td>
+    <td>5</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <th>001</th>
+    <td class="red-background">山竹</td>
+    <td>5</td>
+    <td>8</td>
+  </tr>
   </tbody>
 
 </table>
