@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  /** 快速筛选出1到100以内的质数 **/
+
+  let resultSet = new Set();
+  let primes = [2, 3, 5, 7];
+  // 只要是质数的倍数，就一定不是质数
+  for (let prime of primes) {
+    for (let i = 2; i < Infinity; i++) {
+      let res = i * prime;
+      if (res > 100) {
+        break;
+      }
+      resultSet.add(res);
+    }
+  }
+
+  // 如果比较函数对两个参数a、b返回了正值，则在排序后的序列中a会位于b的后面
+  // 反之，如果比较函数对入参a、b返回了负值，则在排序后的序列中a位于b的前面
+  // 如果比较函数对这两个参数返回了0，a和b的位置取决于内置的比较算法是否是稳定的。如果是稳定的排序算法，a和b的相对位置不会发生变化
+  let sorted = [...resultSet].sort((a, b) => a - b);
+  console.log(sorted);
+
+  let arr = Array.from(Array(101), (v, k) => k);
+
+  /*
+
+  // TypeError: this.includes is not a function
+  // 因为使用了箭头函数作为回调，导致绑定了全局对象window作为箭头函数的this值，所以抛出TypeError
+  let res = arr.filter(value => !this.includes(value), sorted);
+
+  */
+
+  let res = arr.filter(function (value) {
+    return !this.includes(value);
+  }, sorted);
+  console.log(res);
+</script>
+</body>
+</html>
