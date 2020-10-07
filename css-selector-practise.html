@@ -14,10 +14,6 @@
       color: blue;
     }
 
-    p:nth-child(2):visited {
-
-    }
-
     p:nth-child(2):hover {
       color: red;
     }
@@ -52,7 +48,7 @@
       color: orange;
     }
 
-    a[href^="mailto" i] {
+    a[href^="mailto:" i] {
       color: blue;
     }
 
@@ -60,7 +56,7 @@
       color: yellow;
     }
 
-    a[href$="pdf" i] {
+    a[href$=".pdf" i] {
       font-size: 30px;
     }
 
@@ -86,7 +82,7 @@
 
     /* letter than 25 etc */
 
-    div.b > ul > li {
+    /*div.b > ul > li {
       color: green;
     }
 
@@ -104,94 +100,35 @@
 
     div.b > ul > li:nth-child(-n + 25) {
       color: red;
-    }
-
-
-    /*
-    prime
-    see: https://blog.csdn.net/afei__/article/details/80638460
-    see: https://zhidao.baidu.com/question/875610130068938652.html
-    */
-
-    /*!* general *!
-    div.prime > ul > li {
-      color: navy;
-    }
-
-    !* 处理 2 和 3 *!
-    div.prime > ul > li:nth-child(2) {
-      color: red;
-    }
-
-    div.prime > ul > li:nth-child(3) {
-      color: red;
-    }
-
-    !* 6n + 1 *!
-    div.prime > ul > li:nth-child(6n + 1) {
-      color: red;
-    }
-
-    !* 6n - 1 *!
-    div.prime > ul > li:nth-child(6n - 1) {
-      color: red;
-    }
-
-    !* 例外 *!
-    div.prime > ul > li:nth-child(1) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(25) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(35) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(45) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(49) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(55) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(65) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(77) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(85) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(91) {
-      color: navy;
-    }
-
-    div.prime > ul > li:nth-child(95) {
-      color: navy;
     }*/
+
+    /* another solution */
+
+    /* 选中小于等于25的元素 */
+    div.b > ul > li:nth-child(-n + 25) {
+      color: red;
+    }
+
+    /* 选中35-50范围内的元素，两个伪类选择器是且的关系 */
+    div.b > ul > li:nth-child(n + 35):nth-child(-n + 50) {
+      color: orange;
+    }
+
+    div.b > ul > li:nth-child(n + 65) {
+      color: aqua;
+    }
+
 
     /*
     primes
     */
 
     /* general */
-    div.prime > ul > li {
+    /*div.prime > ul > li {
       color: red;
     }
 
-    /* 只要是质数的倍数（2倍及以上）均不是质数 */
+    !* 只要是质数的倍数（2倍及以上）均不是质数 *!
     div.prime > ul > li:nth-child(2n) {
       color: navy;
     }
@@ -205,7 +142,7 @@
       color: navy;
     }
 
-    /* 排除特例 */
+    !* 排除特例 *!
     div.prime > ul > li:first-child {
       color: navy;
     }
@@ -220,6 +157,23 @@
     }
     div.prime > ul > li:nth-child(7) {
       color: red;
+    }*/
+
+
+    /*
+    prime another solution
+    */
+    /*div.prime li:first-child,
+    div.prime > ul > li:nth-child(2n + 4),
+    div.prime > ul > li:nth-child(3n + 9),
+    div.prime > ul > li:nth-child(5n + 25),
+    div.prime > ul > li:nth-child(7n + 49) {
+      color: red;
+    }*/
+
+    /* or */
+    div.prime li:not(:first-child):not(:nth-child(2n + 4)):not(:nth-child(3n + 9)):not(:nth-child(5n + 25)):not(:nth-child(7n + 49)) {
+      color: violet;
     }
   </style>
 </head>
