@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .container {
+      min-width: 600px;
+      background-color: red;
+    }
+
+    .a {
+      width: 600px;
+      margin: auto;
+      /*background-color: yellow;*/
+    }
+
+    section {
+      max-width: 600px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .block {
+      border: 2px solid black;
+      margin-top: 18px;
+    }
+
+    .block p {
+      height: 60px;
+      margin: 20px 10px;
+      overflow-y: auto;
+    }
+
+    .block div {
+      height: 60px;
+      margin: 20px 10px;
+      background-color: violet;
+    }
+
+    .block div:hover {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .triangle {
+      margin-top: 20px;
+      width: 0;
+      height: 0;
+      margin-left: auto;
+      margin-right: auto;
+      border: 50px solid transparent;
+      border-bottom-color: orange;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="a">aaaa</div>
+</div>
+
+<section>
+  <div class="block">
+    <p>
+      This is the left-to-right, top-to-bottom rendering of text in Western languages
+      and the familiar text layout of traditional HTML documents. Note that the flow
+      direction may be changed in non-Western languages. Most elements are in the
+      normal flow, and the only way for an element to leave the normal flow is to be
+      floated, positioned, or made into a flexible box or grid layout element. Remem‐
+      ber, the discussions in this chapter cover only elements in the normal flow.
+    </p>
+    <div>
+
+    </div>
+    <p>
+      This is the left-to-right, top-to-bottom rendering of text in Western languages
+      and the familiar text layout of traditional HTML documents. Note that the flow
+      direction may be changed in non-Western languages. Most elements are in the
+      normal flow, and the only way for an element to leave the normal flow is to be
+      floated, positioned, or made into a flexible box or grid layout element. Remem‐
+      ber, the discussions in this chapter cover only elements in the normal flow.
+    </p>
+  </div>
+  <div class="triangle">
+
+  </div>
+</section>
+</body>
+</html>
