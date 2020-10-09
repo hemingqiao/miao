@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    /* header's style */
+    header {
+      min-width: 600px;
+      background-color: black;
+    }
+
+    header > div {
+      color: white;
+      width: 600px;
+      margin: 0 auto;
+    }
+
+    /* main's style */
+    main {
+      min-width: 600px;
+    }
+
+    main > .container {
+      width: 600px;
+      margin: 0 auto;
+    }
+
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+
+    ul > li {
+      width: 180px;
+      height: 40px;
+      background-color: pink;
+      box-sizing: border-box;
+      border: 3px solid black;
+      margin-bottom: 15px;
+      text-align: center;
+      /* 盒子高度为40px，边框为3px，内容区高度为34px */
+      line-height: 34px;
+    }
+
+    ul > li:hover {
+      background-color: orange;
+    }
+
+    ul > li:nth-child(n + 5) {
+      margin-left: 210px;
+    }
+
+    ul > li:nth-child(n + 9) {
+      margin-left: 420px;
+    }
+
+    ul > li:nth-child(4n + 5) {
+      margin-top: -220px;
+    }
+
+    .inline {
+      font-size: 0;
+    }
+
+    .inline > span {
+      font-size: 16px;
+      display: inline-block;
+      box-sizing: border-box;
+      width: 180px;
+      height: 40px;
+      border: 3px solid black;
+      margin-bottom: 15px;
+      text-align: center;
+      line-height: 34px;
+      background-color: pink;
+    }
+
+    .inline > span:not(:nth-child(3n + 3)) {
+      /* why?? 是因为两个span之间的空格和换行导致的5px宽度，可以设置父元素font-size为0，单独为span设置font-size为16px */
+      /* margin-right: 25px; */
+      /* 这样margin-right就可以设置为30px了 */
+      margin-right: 30px;
+    }
+
+    .inline > span:hover {
+      background-color: orange;
+    }
+
+    .link > div:not(:last-child) {
+      border-bottom: 1px dotted black;
+    }
+
+    /* footer's style */
+    footer {
+      margin-top: 20px;
+      background-color: violet;
+      min-width: 600px;
+    }
+
+    footer > div {
+      width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>hello world</div>
+</header>
+
+<main>
+  <div class="container">
+    <p>
+      This is the left-to-right, top-to-bottom rendering of text in Western languages
+      and the familiar text layout of traditional HTML documents. Note that the flow
+      direction may be changed in non-Western languages. Most elements are in the
+      normal flow, and the only way for an element to leave the normal flow is to be
+      floated, positioned, or made into a flexible box or grid layout element. Remem‐
+      ber, the discussions in this chapter cover only elements in the normal flow.
+    </p>
+    <ul>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+      <li>宽180高40</li>
+    </ul>
+    <div class="inline">
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+      <span>宽180高40</span>
+    </div>
+    <div class="link">
+      <div>link</div>
+      <div>link</div>
+      <div>link</div>
+      <div>link</div>
+      <div>link</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div>©版权所有</div>
+  <div>本页所有布局均使用块元素</div>
+</footer>
+</body>
+</html>
