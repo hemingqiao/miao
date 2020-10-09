@@ -27,8 +27,11 @@
     }
 
     .block p {
-      height: 60px;
       margin: 20px 10px;
+    }
+
+    .block p:last-child {
+      height: 60px;
       overflow-y: auto;
     }
 
@@ -43,14 +46,18 @@
       margin-right: 0;
     }
 
+    /* 两个三角形拼成菱形 */
     .triangle {
-      margin-top: 20px;
       width: 0;
       height: 0;
       margin-left: auto;
       margin-right: auto;
       border: 50px solid transparent;
       border-bottom-color: orange;
+    }
+    .triangle + div {
+      border-bottom-color: transparent;
+      border-top-color: orange;
     }
   </style>
 </head>
@@ -81,9 +88,8 @@
       ber, the discussions in this chapter cover only elements in the normal flow.
     </p>
   </div>
-  <div class="triangle">
-
-  </div>
+  <div class="triangle"></div>
+  <div class="triangle"></div>
 </section>
 </body>
 </html>
