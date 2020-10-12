@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .bgc {
+      background-position: 0 0;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    body {
+      margin: 0;
+      background-image: url(https://meyerweb.com/eric/css/edge/complexspiral/glassy-bg.jpg);
+      background-position: 0 0;
+      background-repeat: no-repeat;
+      background-color: white;
+      background-attachment: fixed;
+    }
+
+    main {
+      /* general font family */
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+      margin: 5em 5em 10em;
+      border: 3px solid rgb(153, 102, 51);
+      background-image: url("https://meyerweb.com/eric/css/edge/complexspiral/glassy-ripple.jpg");
+    }
+
+    h1.title {
+      font: bold 200% sans-serif;
+      letter-spacing: 0.5em;
+      margin: 26px 6px 16px;
+      height: 68px;
+      border: 1px solid gray;
+      background-color: rgb(204, 204, 204);
+      padding: 16px 32px 12px;
+      background-image: url("https://meyerweb.com/eric/css/edge/complexspiral/glassy-gray.jpg");
+
+    }
+
+    .paragraph {
+      margin: 0 26px 16px;
+      line-height: 1.3;
+    }
+
+    .inline-code {
+      font-family: monospace;
+      white-space: pre;
+    }
+
+    .section-title {
+      height: 54px;
+      padding: 0.5em;
+      background-color: rgb(203, 177, 150);
+      color: white;
+      font-size: 1.5em;
+      font-weight: bold;
+      border: 1px solid rgb(153, 102, 51);
+      margin-left: -3px;
+      margin-right: -3px;
+      margin-bottom: 12px;
+      background-image: url("https://meyerweb.com/eric/css/edge/complexspiral/glassy-tan.jpg");
+    }
+
+    pre {
+      margin-left: -18px;
+    }
+
+    h4 {
+      padding-left: 10px;
+    }
+  </style>
+</head>
+<body>
+<main class="bgc">
+  <h1 class="title bgc">
+    complexspiral distorted
+  </h1>
+  <p class="paragraph">
+    The page you are viewing right now exists to show off what can be accomplished with pure
+    <a href="http://www.w3.org/TR/REC-CSS1">CSS1</a>, and that's all. This variant on
+    <a href="http://www.meyerweb.com/eric/css/edge/complexspiral/demo.html">complexspiral</a> doesn't even use any CSS2
+    to accomplish its magic. Remember: as you look this demo over, there is <em>no</em> Javascript here, nor are
+    <em>any</em> PNGs being used, nor do I employ any proprietary extensions to CSS or any other language. It's all done
+    using straight W3C-recommended markup and styling, all validated, plus a total of four (4) images.
+  </p>
+  <p class="paragraph">
+    Unfortunately, not every browser supports all of CSS1, and only those browsers which fully and completely support
+    CSS1 will get this right. Despite some claims to the contrary, IE6/Win's rendering of this page is
+    <strong>not</strong> correct, as it (as well as some other browsers) doesn't
+    correctly support <span class="inline-code">background-attachment: fixed</span> for any element other than
+    the <span class="inline-code">body</span>. That makes it impossible to pull off the intended effect. Other browsers
+    may or may not get the effect right.
+  </p>
+
+  <div class="section-title bgc">
+    Hands-on: Things to Examine
+  </div>
+  <p class="paragraph">
+    Before you start, make sure you're viewing this page in one of the browsers mentioned above. Otherwise the
+    descriptions to follow won't match what you see.
+  </p>
+  <p class="paragraph">
+    The first, easiest thing to do is scroll the page vertically. Make sure you scroll all the way to the very end of
+    the page and back. Notice how the various areas with colored backgrounds also appear to distort the background image
+    as if through mottled glass. Try changing the text size and notice how the compositing effect remains consistent.
+    Then make your browser window really narrow and scroll horizontally. Again, everything should remain seamless and
+    consistent.
+  </p>
+  <p class="paragraph">
+    The demonstrated effect, that of having various elements backed with translucent rippled glass of varying hues, is
+    only possible using fixed-attachment backgrounds in CSS. (Okay, maybe it could be done in Flash; I don't know.) I
+    don't think it's even possible with IE's proprietary filters, but even if this effect is possible with filters, I
+    could easily enough devise one that isn't.
+  </p>
+
+  <div class="section-title bgc">
+    I missed the original complexspiral demo-- how does this work?!?
+  </div>
+  <p class="paragraph">
+    Glad you asked. The effect demonstrated here is achieved by using fixed background images, nothing more. For
+    example, the main-content area (the blue part here) uses the following styles for the default spiral-shell
+    background:
+  </p>
+
+  <pre>
+    div#content {background: white url(glassy-ripple.jpg) 0 0 no-repeat fixed;}</pre>
+
+  <p class="paragraph">
+    The above is equivalent to these styles:</p>
+
+  <pre>
+    div#content {
+       background-color: white;
+       background-image: url(glassy-ripple.jpg);
+       background-position: 0 0;
+       background-repeat: no-repeat;
+       background-attachment: fixed;
+       }</pre>
+
+  <p class="paragraph">
+    The effect of these longer rules is exactly the same; they're just split out into individual background properties
+    for more detailed consideration by you, gentle reader.
+  </p>
+  <p class="paragraph">
+    First, check out the rippled-shell image found
+    here: <a href="https://meyerweb.com/eric/css/edge/complexspiral/glassy-ripple.jpg">url(glassy-ripple.jpg)</a>. Then
+    come back to this page and I'll continue with the explanation. All done? Great.
+  </p>
+  <p class="paragraph">
+    According to CSS, any background image that is "fixed"
+    using <span class="inline-code">background-attachment: fixed;</span> is fixed with respect to
+    the <strong>viewport</strong>-- not the element with which the image is associated. So I set the rippled-shell
+    background image to be aligned with the top left corner of the browser window (the viewport) with the values given
+    for <span class="inline-code">background-position.</span>However, the image will only be visible wherever is
+    intersects with the element to which it's been assigned. Therefore, even though the top left corner of the
+    rippled-shell image is aligned with the top left corner of the viewport, we can only see it wherever it intersects
+    with a <span class="inline-code">div</span> that has an <span class="inline-code">id</span> with a value
+    of <span class="inline-code">content</span> (which, again, happens to be the one containing this text).
+  </p>
+  <p class="paragraph">
+    So I set a fixed background for the <span class="inline-code">BODY,</span> the
+    content <span class="inline-code">DIV,</span> and <span class="inline-code">H1</span>
+    and <span class="inline-code">H2</span> elements scattered through the document. In
+    any given case of an element's display, we see whatever part of the associated background image intersects with the
+    element. The rest of the background image remains hidden.
+  </p>
+  <p class="paragraph">
+    And <em>that's</em> how it works.
+  </p>
+
+  <div class="section-title bgc">
+    I'm not seeing the compositing!
+  </div>
+  <p class="paragraph">
+    Then I'm willing to bet that you're using Internet Explorer for Windows (any version), or possibly Opera (version 6
+    or earlier). Neither of these browsers fully support <span class="inline-code">background-attachment: fixed</span>
+    for elements other than <span class="inline-code">body.</span> In the case of both, images are fixed with respect to
+    the elements that contain them, not the browser window, which is not what CSS1
+    defines <span class="inline-code">background-attachment: fixed</span> to mean, although browsers are allowed to
+    ignore <span class="inline-code">fixed</span> if they stick to CSS1 (CSS2 requires its implementation for
+    conformance).
+    And yes, this page uses a strict DOCTYPE, so IE6 is in
+    "<a href="http://msdn.microsoft.com/library/en-us/dnie60/html/cssenhancements.asp">strict mode</a>." I guess
+    when <a href="http://www.microsoft.com/windows/ie/evaluation/features/default.asp#section5">Microsoft claims 100%
+    CSS1 compliance,</a> they're referring to the CSS1 core (a reduced subset of CSS1) instead of the entirety of
+    the <a href="http://www.w3.org/TR/REC-CSS1">CSS1 specification</a>. It tends to make me wonder how limited or
+    flawed their "full support" is for other key open specifications, like HTML and DOM.
+  </p>
+
+  <div class="section-title bgc">
+    Image credits
+  </div>
+
+  <ul>
+    <li>Nautilus shell: scanned by and copyright Eric A. Meyer</li>
+  </ul>
+
+  <h4>Jump to</h4>
+  <ul>
+    <li><a href="https://meyerweb.com/eric/css/edge/complexspiral/demo.html">complex spiral(original)</a></li>
+    <li><a href="https://meyerweb.com/eric/css/edge/complexspiral/demo2.html">complex spiral(devolved)</a></li>
+    <li><a href="https://meyerweb.com/eric/css/edge/index.html">css/edge home</a></li>
+  </ul>
+</main>
+</body>
+</html>
