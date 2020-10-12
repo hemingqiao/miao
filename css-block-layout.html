@@ -28,6 +28,12 @@
     main > .container {
       width: 600px;
       margin: 0 auto;
+      /*
+      这里不改为border-box比较好，如果是content-box的话，对container加padding值会使得container向外扩展，不会影响container内部布局。
+      但如果是border-box的话，增加padding值会打乱下面inline-box的布局。因为其利用了content-box为600px，如果content-box小于600px，
+      其布局便会错乱。
+      */
+      /*box-sizing: border-box;*/
     }
 
     ul {
