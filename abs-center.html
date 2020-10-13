@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    /* group-1 */
+    div.center-1 {
+      height: 400px;
+      box-shadow: 0 0 10px blueviolet;
+      text-align: center;
+      margin: 30px auto;
+    }
+
+    div.center-1 > em {
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    div.center-1 > span {
+      display: inline-block;
+      vertical-align: middle;
+      text-align: left;
+      margin: auto 20px;
+      box-shadow: 0 0 10px silver;
+    }
+
+
+    /* button's style */
+    .btn-div {
+      margin: 20px auto;
+      text-align: center;
+    }
+
+
+    /* group-2 */
+    .center-2 {
+      height: 400px;
+      box-shadow: 0 0 10px orange;
+      text-align: center;
+      margin: 30px auto;
+      line-height: 400px;
+      font-size: 0;
+    }
+
+    .center-2 > span {
+      line-height: normal;
+      font-size: initial;
+      display: inline-block;
+      vertical-align: middle;
+      margin: auto 20px;
+      box-shadow: 0 0 10px sienna;
+    }
+
+
+    /* group-3 */
+    .center-3 {
+      height: 400px;
+      box-shadow: 0 0 10px red;
+      text-align: center;
+      margin: 30px auto;
+      position: relative;
+    }
+
+    .center-3 > .inner {
+      width: 200px;
+      height: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      box-shadow: 0 0 10px magenta;
+    }
+
+
+    /* group-4 */
+    .center-4 {
+      height: 400px;
+      box-shadow: 0 0 10px rebeccapurple;
+      text-align: center;
+      margin: 30px auto;
+      position: relative;
+    }
+
+    .center-4 > .in {
+      width: 200px;
+      height: 100px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -100px;
+      margin-top: -50px;
+      box-shadow: 0 0 10px coral;
+    }
+  </style>
+</head>
+<body>
+<div class="center-1">
+  <em></em><span>hello world! </span>
+</div>
+
+<div class="center-2">
+  <span>hello world! </span>
+</div>
+
+<div class="btn-div">
+  <button id="btn">点击我增加字数</button>
+  <button id="reset-btn">点击我重置文字</button>
+</div>
+
+<div class="center-3">
+  <div class="inner">hello world</div>
+</div>
+
+<div class="center-4">
+  <div class="in">hello world</div>
+</div>
+
+
+<script>
+  let btn = document.getElementById("btn");
+  let resetBtn = document.getElementById("reset-btn");
+  let span = document.getElementsByTagName("span")[1];
+
+  function addWords() {
+    span.innerHTML += span.innerHTML;
+  }
+
+  function reset() {
+    span.innerHTML = "hello world! ";
+  }
+
+  btn.onclick = addWords;
+  resetBtn.onclick = reset;
+</script>
+</body>
+</html>

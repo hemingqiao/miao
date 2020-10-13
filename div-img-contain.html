@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .origin {
+      margin-bottom: 50px;
+    }
+
+    .origin > img {
+      width: 800px;
+      height: 800px;
+      object-fit: contain;
+      background-color: silver;
+    }
+
+    img.catalina {
+      margin-right: 20px;
+    }
+
+    /* group-2 */
+    div.bg-img {
+      display: flow-root;
+      margin-bottom: 50px;
+    }
+
+    .use-bgi {
+      width: 800px;
+      height: 800px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-color: silver;
+      background-position: center center;
+    }
+
+    div.bg-img > div.island {
+      background-image: url("https://wallpaperaccess.com/full/1422987.jpg");
+      margin-right: 20px;
+      float: left;
+    }
+
+    div.bg-img > div.mountain {
+      background-image: url("https://wallpaperaccess.com/full/904352.jpg");
+      float: left;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+
+    /* group-3 */
+
+  </style>
+</head>
+<body>
+<div class="origin">
+  <img class="catalina" src="https://wallpaperaccess.com/full/1422987.jpg" alt="catalina"><img
+        class="high-sierra" src="https://wallpaperaccess.com/full/904352.jpg" alt="high-sierra">
+</div>
+
+<div class="bg-img">
+  <div class="use-bgi island"></div>
+  <div class="use-bgi mountain"></div>
+  <div class="clear"></div>
+</div>
+</body>
+</html>
