@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    /* 定高的块级元素内垂直居中子元素 */
+
+
+    /* 第一种方法：利用空白幽灵节点 */
+    h1.spirit {
+      height: 400px;
+      font-size: 0;
+      line-height: 400px;
+      box-shadow: 0 0 10px orange;
+      margin-bottom: 30px;
+    }
+
+    .spirit > span {
+      font-size: 32px;
+      line-height: normal;
+      vertical-align: middle;
+      /*
+       这里span设置为了inline-block，是为了折行之后，仍然可以达到垂直居中的效果。
+
+       因为如果不设置inline-block，span为行内元素，折行之后就会形成多个行框盒子，而在每个行框盒子的最前面都有一个空白幽灵节点。
+       这里的垂直居中就是利用的空白幽灵节点。
+       所以每个行框内的行内框都会和自己的空白幽灵节点垂直居中对齐，而不是多行和一个空白幽灵节点对齐。
+       如果设置了inline-block，盒子的外在表现为一个inline元素，内部行为如同一个block元素。这样，内部无论怎样折行，始终位于一个
+       行内元素内部，也意味着只有一个行框盒子，所以也只有一个空白幽灵节点。自然多行都是垂直居中的。
+
+       第二种方案同样对span设置了display: inline-block; 是同样的道理
+       */
+      display: inline-block;
+    }
+
+
+    /* 第二种方法：利用辅助元素 */
+    h1.auxiliary {
+      height: 400px;
+      box-shadow: 0 0 10px orange;
+    }
+
+    .auxiliary > em {
+      height: 100%;
+      /* em是行内元素，设置高度无效，所以要改变display */
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .auxiliary > span {
+      vertical-align: middle;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<h1 class="spirit">
+  <span>we are such stuff as dreams are made on. we are such stuff as dreams are made on.</span>
+</h1>
+<h1 class="auxiliary">
+  <em></em><span>we are such stuff as dreams are made on.</span>
+</h1>
+</body>
+</html>
