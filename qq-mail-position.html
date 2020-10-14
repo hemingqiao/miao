@@ -20,11 +20,18 @@
 
     main {
       position: relative;
+      /* 相对定位元素需要给一个高度，因为其是相对于自身原来的位置定位的。如果top 0,bottom 0, 或者不写位置属性，就相当于在原来的位置 */
+      height: calc(100vh - 68px);
     }
 
     nav {
+      position: absolute;
+      /* 绝对定位元素则是相对于包含块的padding-box进行定位 */
+      top: 0;
+      left: 0;
+      bottom: 0;
       width: 186px;
-      height: 865px;
+      /*height: 865px;*/
       border: 2px solid red;
       background-color: rgb(232,235,239);
     }
@@ -32,11 +39,12 @@
     div.content {
       position: absolute;
       background-color: violet;
-      width: calc(100% - 186px);
-      height: 865px;
+      /*width: calc(100% - 186px);*/
+      height: calc(100vh - 68px);
       top: 0;
       left: 186px;
       overflow-y: auto;
+      border: 2px solid darkkhaki;
     }
   </style>
 </head>
