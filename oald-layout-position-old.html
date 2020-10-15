@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <style>
+    /* 借助于position实现的布局 */
+
     * {
       box-sizing: border-box;
     }
@@ -12,41 +14,26 @@
       margin: 0;
     }
 
-    html, body {
-      height: 100%;
-    }
-
-    main {
-      position: relative;
-      height: 100%;
-      width:100%;
-    }
-
-    main > nav {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
+    nav {
       width: 190px;
+      height: 100vh;
       border: 2px solid navy;
     }
 
-
-    main > .header {
+    main {
       position: absolute;
       top: 0;
       left: 190px;
-      right: 380px;
+      width: calc(100% - 570px);
+    }
+
+    main .header {
       height: 80px;
       border: 2px solid black;
     }
 
-    main > .content {
-      position: absolute;
-      top: 80px;
-      bottom: 0;
-      left: 190px;
-      right: 380px;
+    main .content {
+      height: calc(100vh - 80px);
       border: 2px solid gold;
       overflow-y: auto;
     }
@@ -54,26 +41,25 @@
     div.right-1 {
       position: absolute;
       top: 0;
-      bottom: 0;
       right: 190px;
       width: 190px;
+      height: 100vh;
       border: 2px solid red;
     }
 
     div.right-2 {
       position: absolute;
       top: 0;
-      bottom: 0;
       right: 0;
       width: 190px;
+      height: 100vh;
       border: 2px solid darkorange;
     }
   </style>
 </head>
 <body>
-
+<nav></nav>
 <main>
-  <nav></nav>
   <div class="header"></div>
   <div class="content">
     <p>
@@ -257,9 +243,8 @@
       question Mr Biden's mental acuity.
     </p>
   </div>
-  <div class="right-1"></div>
-  <div class="right-2"></div>
 </main>
-
+<div class="right-1"></div>
+<div class="right-2"></div>
 </body>
 </html>
