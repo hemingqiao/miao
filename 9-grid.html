@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .container {
+      width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 0 20px cornflowerblue;
+      display: flow-root;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+
+    td {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+    }
+
+    .first td {
+      position: relative;
+      border: 3px solid blue;
+    }
+
+    .first td:hover span {
+      position: absolute;
+      border: 3px solid red;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+    }
+
+
+    /* 利用边框合并规则，table cell的优先级高于row和col */
+    .third col {
+      border: 3px solid blue;
+    }
+    .third tr {
+      border: 3px solid blue;
+    }
+    .third td:hover {
+      border: 3px solid red;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="first">
+    <table>
+      <tr>
+        <td>1 <span></span></td>
+        <td>2 <span></span></td>
+        <td>3 <span></span></td>
+      </tr>
+      <tr>
+        <td>4 <span></span></td>
+        <td>5 <span></span></td>
+        <td>6 <span></span></td>
+      </tr>
+      <tr>
+        <td>7 <span></span></td>
+        <td>8 <span></span></td>
+        <td>9 <span></span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!--<div class="second">
+    <table>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+      </tr>
+    </table>
+  </div>-->
+
+  <div class="third">
+    <table>
+      <colgroup>
+        <col>
+        <col>
+        <col>
+      </colgroup>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>
