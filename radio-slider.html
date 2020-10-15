@@ -4,117 +4,170 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <style>
-    main {
-      width: 600px;
-      height: 500px;
-      box-shadow: 0 0 10px coral;
-      margin: auto;
+    html, body {
+      height: 100%;
     }
 
-    /*
-    img {
-      display: none;
-      width: 600px;
-    }
-
-    input:nth-child(1):checked ~ div img:nth-child(1),
-    input:nth-child(2):checked ~ div img:nth-child(2),
-    input:nth-child(3):checked ~ div img:nth-child(3),
-    input:nth-child(4):checked ~ div img:nth-child(4),
-    input:nth-child(5):checked ~ div img:nth-child(5) {
-      display: block;
-    }
-    */
-
+    /* main container */
     .container {
       width: 600px;
-      height: 340px;
-      margin: 30px auto;
+      height: 400px;
+      box-shadow: 0 0 20px coral;
+      margin: auto;
       position: relative;
     }
 
-    .container > img {
-      position: absolute;
-      width: 100%;
-      transition: 1s;
-      opacity: 0;
+    ul.img-container {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      position: relative;
+      height: 340px;
     }
 
-    input:nth-child(1):checked ~ div img:nth-child(1),
-    input:nth-child(2):checked ~ div img:nth-child(2),
-    input:nth-child(3):checked ~ div img:nth-child(3),
-    input:nth-child(4):checked ~ div img:nth-child(4),
-    input:nth-child(5):checked ~ div img:nth-child(5) {
-      opacity: 1;
-    }
-
-    label.left {
-      display: block;
-      background: url("https://storage.360buyimg.com/mtd/home/a1579011639674.png");
-      width: 24px;
-      height: 44px;
+    ul.img-container > li {
       position: absolute;
-      top: calc(50% - 22px);
       left: 0;
-      visibility: hidden;
+      right: 0;
+      opacity: 0;
+      transition: 0.7s;
     }
 
-    label.right {
-      display: block;
-      background: url("https://storage.360buyimg.com/mtd/home/b1579011639678.png");
+    img {
+      width: 100%;
+      /* 去除空白幽灵节点基线对齐导致的底部超出 */
+      vertical-align: top;
+    }
+
+    ul.img-container label {
       width: 24px;
       height: 44px;
+      display: block;
       position: absolute;
       top: calc(50% - 22px);
+    }
+
+    ul.img-container label.left {
+      background: url("https://storage.360buyimg.com/mtd/home/a1579011639674.png");
+      left: 0;
+    }
+
+    ul.img-container label.right {
+      background: url("https://storage.360buyimg.com/mtd/home/b1579011639678.png");
       right: 0;
-      visibility: hidden;
     }
 
-    input:nth-child(1):checked ~ div label:nth-child(10),
-    input:nth-child(2):checked ~ div label:nth-child(6),
-    input:nth-child(3):checked ~ div label:nth-child(7),
-    input:nth-child(4):checked ~ div label:nth-child(8),
-    input:nth-child(5):checked ~ div label:nth-child(9) {
-      visibility: visible;
+    input:nth-child(1):checked ~ ul li:nth-child(1),
+    input:nth-child(2):checked ~ ul li:nth-child(2),
+    input:nth-child(3):checked ~ ul li:nth-child(3),
+    input:nth-child(4):checked ~ ul li:nth-child(4),
+    input:nth-child(5):checked ~ ul li:nth-child(5) {
+      opacity: 1;
+      z-index: 16;
     }
 
-    input:nth-child(1):checked ~ div label:nth-child(12),
-    input:nth-child(2):checked ~ div label:nth-child(13),
-    input:nth-child(3):checked ~ div label:nth-child(14),
-    input:nth-child(4):checked ~ div label:nth-child(15),
-    input:nth-child(5):checked ~ div label:nth-child(11) {
-      visibility: visible;
+    input {
+      display: none;
+    }
+
+    .bottom-dot-wrapper {
+      position: absolute;
+      text-align: center;
+      left: 0;
+      right: 0;
+      bottom: 65px;
+      z-index: 32;
+    }
+
+    .bottom-dot {
+      display: inline-block;
+    }
+
+    .bottom-dot label {
+      width: 14px;
+      height: 14px;
+      border-radius: 7px;
+      display: inline-block;
+      margin: 0 10px;
+      background-color: rgb(148,197,237);
+      /*vertical-align: top;*/
+    }
+
+    .bottom-dot label:hover {
+      background-color: coral;
+    }
+
+    div.title {
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .title > span {
+      display: inline-block;
+      font-size: 32px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-<main>
-  <input type="radio" id="1" name="slider" checked>
-  <input type="radio" id="2" name="slider">
-  <input type="radio" id="3" name="slider">
-  <input type="radio" id="4" name="slider">
-  <input type="radio" id="5" name="slider">
+<div class="container">
+  <input type="radio" name="img" id="img-1" checked>
+  <input type="radio" name="img" id="img-2">
+  <input type="radio" name="img" id="img-3">
+  <input type="radio" name="img" id="img-4">
+  <input type="radio" name="img" id="img-5">
 
-  <div class="container">
-    <img src="https://4kwallpapers.com/images/walls/thumbs/1476.jpg" alt="">
-    <img src="https://4kwallpapers.com/images/walls/thumbs/1499.jpg" alt="">
-    <img src="https://4kwallpapers.com/images/walls/thumbs/1498.jpg" alt="">
-    <img src="https://4kwallpapers.com/images/walls/thumbs/1497.jpg" alt="">
-    <img src="https://4kwallpapers.com/images/walls/thumbs/1493.jpg" alt="">
+  <ul class="img-container">
+    <li>
+      <a href="#" target="_blank">
+        <img src="https://4kwallpapers.com/images/walls/thumbs/1476.jpg" alt="">
+        <label class="left" for="img-5"></label>
+        <label class="right" for="img-2"></label>
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_blank">
+        <img src="https://4kwallpapers.com/images/walls/thumbs/1499.jpg" alt="">
+        <label class="left" for="img-1"></label>
+        <label class="right" for="img-3"></label>
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_blank">
+        <img src="https://4kwallpapers.com/images/walls/thumbs/1498.jpg" alt="">
+        <label class="left" for="img-2"></label>
+        <label class="right" for="img-4"></label>
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_blank">
+        <img src="https://4kwallpapers.com/images/walls/thumbs/1497.jpg" alt="">
+        <label class="left" for="img-3"></label>
+        <label class="right" for="img-5"></label>
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_blank">
+        <img src="https://4kwallpapers.com/images/walls/thumbs/1493.jpg" alt="">
+        <label class="left" for="img-4"></label>
+        <label class="right" for="img-1"></label>
+      </a>
+    </li>
+  </ul>
 
-    <label class="left" for="1"></label>
-    <label class="left" for="2"></label>
-    <label class="left" for="3"></label>
-    <label class="left" for="4"></label>
-    <label class="left" for="5"></label>
-
-    <label class="right" for="1"></label>
-    <label class="right" for="2"></label>
-    <label class="right" for="3"></label>
-    <label class="right" for="4"></label>
-    <label class="right" for="5"></label>
+  <div class="bottom-dot-wrapper">
+    <div class="bottom-dot">
+      <label for="img-1"></label>
+      <label for="img-2"></label>
+      <label for="img-3"></label>
+      <label for="img-4"></label>
+      <label for="img-5"></label>
+    </div>
   </div>
 
-</main>
+  <div class="title">
+    <span>Big Sur Wallpapers</span>
+  </div>
+</div>
 </body>
 </html>
