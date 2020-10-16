@@ -32,7 +32,7 @@ thead th {
 
 /*
 dark table
- invert the colors—with light text on dark backgrounds—with .table-dark.
+invert the colors—with light text on dark backgrounds—with .table-dark.
 */
 .table-dark {
   background-color: rgb(52, 58, 64);
