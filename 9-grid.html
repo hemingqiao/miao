@@ -38,6 +38,39 @@
     }
 
 
+    /* second */
+    .second {
+      text-align: center;
+    }
+
+    .second ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: inline-block;
+      width: 170px;
+      font-size: 0;
+    }
+
+    .second ul li {
+      width: 50px;
+      height: 50px;
+      border: 5px solid blue;
+      display: inline-block;
+      vertical-align: top;
+      font-size: initial;
+      line-height: 50px;
+      margin: -2.5px;
+      /* z-index要想生效，必须是定位元素（即display属性不为static） */
+      position: relative;
+    }
+
+    ul li:hover {
+      border-color: red;
+      /*z-index: 8;*/
+    }
+
+
     /* 利用边框合并规则，table cell的优先级高于row和col */
     .third col {
       border: 3px solid blue;
@@ -47,6 +80,41 @@
     }
     .third td:hover {
       border: 3px solid red;
+    }
+
+
+    /* fourth */
+    .fourth {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .fourth ul {
+      display: inline-block;
+      width: 170px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0;
+      padding-right: 5px;
+      padding-bottom: 5px;
+    }
+
+    .fourth ul li {
+      font-size: initial;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 5px solid blue;
+      line-height: 50px;
+      margin-right: -5px;
+      margin-bottom: -5px;
+      position: relative;
+    }
+
+    .fourth ul li:hover {
+      border-color: red;
+      z-index: 8;
     }
   </style>
 </head>
@@ -72,25 +140,19 @@
     </table>
   </div>
 
-  <!--<div class="second">
-    <table>
-      <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-      </tr>
-      <tr>
-        <td>7</td>
-        <td>8</td>
-        <td>9</td>
-      </tr>
-    </table>
-  </div>-->
+  <div class="second">
+    <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+    </ul>
+  </div>
 
   <div class="third">
     <table>
@@ -116,6 +178,21 @@
       </tr>
     </table>
   </div>
+
+  <div class="fourth">
+    <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+    </ul>
+  </div>
 </div>
+
 </body>
 </html>
