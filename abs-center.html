@@ -115,6 +115,32 @@
       padding: 0 20px;
       text-align: left;
     }
+
+
+    /* group-6 use flex */
+    div.center-6 {
+      display: flex;
+      box-shadow: 0 0 10px tan;
+    }
+
+    div.center-6 div.inner {
+      margin: auto;
+    }
+
+
+    /* group-7 use flex */
+    div.center-7 {
+      display: flex;
+      box-shadow: 0 0 10px gold;
+      flex-flow: row;
+      justify-content: center;
+    }
+
+    div.center-7 div.inner {
+      align-self: center;
+      box-sizing: border-box;
+      background-color: violet;
+    }
   </style>
 </head>
 <body>
@@ -166,6 +192,17 @@
     </div>
   </div>
 </div>
+
+
+<!-- use flex -->
+<div class="center-6 general-size">
+  <div class="inner">hello world</div>
+</div>
+
+<div class="center-7 general-size">
+  <div class="inner">hello world</div>
+</div>
+
 
 
 <script>
