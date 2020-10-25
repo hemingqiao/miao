@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="font-awesome-map.css">
+  <style>
+    div.container {
+      width: 600px;
+      height: 1580px;
+      box-shadow: 0 0 20px cornflowerblue;
+      text-align: center;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    div.demo {
+      display: inline-block;
+      margin: 20px auto;
+      text-align: left;
+    }
+
+    div.demo.quote {
+      width: 280px;
+    }
+
+    h2 {
+      margin: 20px auto 5px;
+    }
+
+    div.demo span {
+      margin: 5px auto;
+    }
+
+
+
+    /*
+    SimpleFontAwesome
+    */
+
+    @font-face {
+      font-family: "SimpleFontAwesome";
+      src: url("./fontawesome-webfont.woff2") format("woff2");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* basic icons */
+    .fa {
+      display: inline-block;
+      font: normal normal normal 14px/1 SimpleFontAwesome;
+      font-size: inherit;
+    }
+
+    i {
+      font-style: normal;
+    }
+
+    /* larger icons */
+    .fa-lg {
+      font-size: 1.3333333em;
+      line-height: 0.75em;
+      vertical-align: -2px;
+    }
+
+    .fa-2x {
+      font-size: 2em;
+    }
+
+    .fa-3x {
+      font-size: 3em;
+    }
+
+    .fa-4x {
+      font-size: 4em;
+    }
+
+    .fa-5x {
+      font-size: 5em;
+    }
+
+    /* fixed width icons */
+    .fa-fw {
+      width: 1.25em;
+      text-align: center;
+    }
+
+    /* list icons */
+    .fa-ul {
+      list-style: none;
+      padding: 0;
+      margin-left: 2.14285714em; /* 30 / 14 */
+    }
+
+    .fa-ul li {
+      position: relative;
+    }
+
+    .fa-li {
+      position: absolute;
+      text-align: center;
+      left: -2.14285714em;
+      width: 2.14285714em;
+      top: .14285714em; /* rem = 14px, top = 2px */
+    }
+
+    /* bordered and pulled icons */
+    .fa-pull-left {
+      float: left;
+      margin-right: 0.3em;
+    }
+
+    .fa-border {
+      padding: .2em .25em .15em;
+      border: solid 0.08em #eeeeee;
+      border-radius: .1em;
+    }
+
+    .fa-pull-right {
+      float: right;
+      margin-left: 0.3em;
+    }
+
+    /* stacked icons */
+    .fa-stack {
+      display: inline-block;
+      position: relative;
+      width: 2em;
+      height: 2em;
+      line-height: 2em;
+      vertical-align: middle;
+    }
+
+    .fa-stack-1x {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      line-height: inherit;
+    }
+
+    .fa-stack-2x {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 2em;
+    }
+
+    .fa-inverse {
+      color: white;
+    }
+
+    .text-danger {
+      color: #d9534f;
+    }
+
+
+    /* stars */
+    div.star {
+      direction: rtl;
+      font-family: SimpleFontAwesome, serif;
+      font-size: 30px;
+      margin-top: 20px;
+    }
+
+    div.star span {
+      display: inline-block;
+    }
+
+    span.rating::before {
+      content: "\f006";
+      padding-right: 5px;
+      color: #777;
+    }
+
+    span.rating:hover::before,
+    span.rating:hover ~ span.rating::before {
+      content: "\f005";
+      color: #e3cf7a;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Basic Icons</h2>
+  <div class="demo">
+    <span class="fa fa-camera"></span> fa-camera
+  </div>
+
+  <br>
+
+  <h2>Larger Icons</h2>
+  <div class="demo">
+    <span class="fa fa-camera fa-lg"></span> fa-camera <br>
+    <span class="fa fa-camera fa-2x"></span> fa-camera <br>
+    <span class="fa fa-camera fa-3x"></span> fa-camera <br>
+    <span class="fa fa-camera fa-4x"></span> fa-camera <br>
+    <span class="fa fa-camera fa-5x"></span> fa-camera <br>
+  </div>
+
+  <br>
+
+  <h2>Fixed Width Icons</h2>
+  <div class="demo">
+    <span class="fa fa-home fa-fw"></span> home <br>
+    <span class="fa fa-book fa-fw"></span> book <br>
+    <span class="fa fa-bookmark fa-fw"></span> bookmark <br>
+  </div>
+
+  <br>
+
+  <h2>List Icons</h2>
+  <div class="demo">
+    <ul class="fa-ul">
+      <li><i class="fa-li fa fa-check-square"></i>List icons</li>
+      <li><i class="fa-li fa fa-check-square"></i>can be used</li>
+      <li><i class="fa-li fa fa-spinner fa-spin"></i>as bullets</li>
+      <li><i class="fa-li fa fa-square"></i>in lists</li>
+    </ul>
+  </div>
+
+  <br>
+
+  <h2>Bordered and Pulled Icons</h2>
+  <div class="demo quote">
+    <i class="fa fa-quote-left fa-3x fa-pull-left fa-border" aria-hidden="true"></i>
+    ...tomorrow we will run faster, stretch out our arms farther...
+    And then one fine morning&mdash; So we beat on, boats against the
+    current, borne back ceaselessly into the past.
+  </div>
+
+  <br>
+
+  <h2>Stacked Icons</h2>
+  <div class="demo">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-square-o fa-stack-2x"></i>
+      <i class="fa fa-twitter fa-stack-1x"></i>
+    </span>
+    fa-twitter on fa-square-o<br>
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-flag fa-stack-1x fa-inverse"></i>
+    </span>
+    fa-flag on fa-circle<br>
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-square fa-stack-2x"></i>
+      <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+    </span>
+    fa-terminal on fa-square<br>
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-camera fa-stack-1x"></i>
+      <i class="fa fa-ban fa-stack-2x text-danger"></i>
+    </span>
+    fa-ban on fa-camera
+  </div>
+
+  <br>
+  <h2>Stars</h2>
+  <div class="star">
+    <span class="rating"></span><span class="rating"></span><span class="rating"></span><span
+          class="rating"></span><span class="rating"></span>
+  </div>
+</div>
+
+</body>
+</html>
