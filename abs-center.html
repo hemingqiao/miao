@@ -19,7 +19,7 @@
       display: inline-block;
     }
 
-    /* group-1 use inline element */
+    /* -------------------group-1 using inline element------------------- */
     div.center-1 {
       box-shadow: 0 0 10px blueviolet;
       font-size: 0;
@@ -48,7 +48,7 @@
     }
 
 
-    /* group-2 use inline element */
+    /* -------------------group-2 using inline element------------------- */
     .center-2 {
       box-shadow: 0 0 10px orange;
       line-height: 400px;
@@ -65,7 +65,10 @@
     }
 
 
-    /* group-3 use position */
+    /* -------------------group-3 using position------------------- */
+    /*
+    子元素需要定宽高，因为如果不设置宽高的话，四个定位属性全为0，会使得子元素占据整个包含块的范围。
+    */
     .center-3 {
       box-shadow: 0 0 10px red;
       position: relative;
@@ -84,7 +87,11 @@
     }
 
 
-    /* group-4 use position and negative margin */
+    /* -------------------group-4 using position and negative margin------------------- */
+    /*
+    这种方法中，居中的子元素需要定宽高，因为需要使用margin负值移动元素自身的一半来达到居中的效果。和使用translate实现居中很类似，
+    不同之处在于使用translate居中子元素不需要定宽高，因为其百分比值的基准就是子元素本身。
+    */
     .center-4 {
       box-shadow: 0 0 10px rebeccapurple;
       position: relative;
@@ -102,7 +109,7 @@
     }
 
 
-    /* group-5 use display: table-cell */
+    /* -------------------group-5 using display: table-cell------------------- */
     .center-5 {
       box-shadow: 0 0 10px cornflowerblue;
       display: table-cell;
@@ -117,7 +124,7 @@
     }
 
 
-    /* group-6 use flex */
+    /* -------------------group-6 using flex------------------- */
     div.center-6 {
       display: flex;
       box-shadow: 0 0 10px tan;
@@ -128,7 +135,7 @@
     }
 
 
-    /* group-7 use flex */
+    /* -------------------group-7 using flex------------------- */
     div.center-7 {
       display: flex;
       box-shadow: 0 0 10px gold;
@@ -140,6 +147,25 @@
       align-self: center;
       box-sizing: border-box;
       background-color: violet;
+    }
+
+    /* -------------------group-8 using 2d transform------------------- */
+    /*
+    绝对居中的子元素不需要定宽高，但是由于是使用绝对定位，left: 50%;和top: 50%;，导致子元素宽度最大值为包含块宽度的一半，如果子元素内容过多，
+    则会在垂直方向上超出父元素（包含块），但子元素此时仍然在垂直方向和水平方向上是居中的。
+    */
+    div.container {
+      position: relative;
+      box-shadow: 0 0 20px coral;
+      margin: 0 auto;
+    }
+
+    div.container div.inner {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-color: coral;
     }
   </style>
 </head>
@@ -194,7 +220,7 @@
 </div>
 
 
-<!-- use flex -->
+<!-- using flex -->
 <div class="center-6 general-size">
   <div class="inner">hello world</div>
 </div>
@@ -203,6 +229,68 @@
   <div class="inner">hello world</div>
 </div>
 
+
+<!-- 2d transform -->
+<div class="container">
+  <p>
+    US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies in the
+    critical election state of Florida.
+
+    Mr Biden told supporters: "You hold the power. If Florida goes blue [Democratic], it's over."
+
+    Celebrating soaring economic figures, Mr Trump, a Republican, said of his rival: "He's going to lock you down."
+
+    With just five days to go until election day, Mr Biden has a solid lead nationally in opinion polls.
+
+    But his advantage looks less assured in the battleground states, such as Florida, that will decide who ultimately wins
+    the White House.
+
+    More than 81 million people have already voted, 52 million of them by mail, setting the US on course for its highest
+    electoral turnout rate in more than a century.
+  </p>
+  <p>
+    Delivering a statement to the Commons, the health secretary said "things will get worse before they get better".
+
+    "Now, I know that these measures are not easy but I also know that they are vital," Mr Hancock told MPs.
+
+    "Responding to this unprecedented pandemic requires difficult choices, some of the most difficult choices any
+    government has to make in peacetime."
+
+    Labour mayor Sadiq Khan told London's City Hall there was "simply no other option" to the new restrictions.
+
+    "Nobody wants to see more restrictions but this is deemed to be necessary in order to protect Londoners," he said.
+
+    Mr Khan said he is continuing to press the government for more financial support, adding that "we've got a
+    difficult winter ahead".
+
+    The London mayor also backed calls by Labour leader Sir Keir Starmer for a temporary national "circuit-breaker" to
+    stem the spread of the disease.
+  </p>
+  <div class="inner">
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+    hello world US President Donald Trump and his Democratic White House challenger Joe Biden have held duelling rallies
+    in the
+  </div>
+</div>
 
 
 <script>
