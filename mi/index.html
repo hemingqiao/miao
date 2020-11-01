@@ -554,7 +554,7 @@
       height: 0;
       overflow: hidden;
       background-color: white;
-      transition: height 0.3s; /* hover时只动画height，对border-top和box-shadow设置动画 */
+      transition: height 0.3s; /* hover时只动画height */
       color: #e0e0e0;
     }
 
@@ -1513,7 +1513,10 @@
         position: absolute;
         white-space: nowrap;
         right: 40px;
-        top: 12px;
+        top: 6px;
+        width: 74px;
+        height: 30px;
+        line-height: 30px;
         visibility: hidden;
         transition: none;
       }
@@ -1534,15 +1537,16 @@
         border-width: 8px;
       }
 
-      div.home-tool-bar a.item:not(:nth-of-type(1)) > span::before {
-        width: 10px;
-        height: 10px;
-        border: 3px solid transparent;
+      div.home-tool-bar a.item:not(:nth-of-type(1)) > span::after {
+        content: "";
+        display: inline-block;
+        border: 5px solid transparent;
         border-left-color: white;
         position: absolute;
-        left: 0;
-        /*opacity: 0;*/
-        /*transition: 0.2s;*/
+        right: -10px;
+        top: 10px;
+        visibility: hidden;
+        transition: none;
       }
 
       div.home-tool-bar a.item:not(:nth-of-type(1)):hover > span {
@@ -1550,6 +1554,11 @@
         transition: 0.2s;
         color: #757575;
         background: white;
+      }
+
+      div.home-tool-bar a.item:not(:nth-of-type(1)):hover > span::after {
+        visibility: visible;
+        transition: 0.2s;
       }
     }
   </style>
