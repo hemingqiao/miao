@@ -1,0 +1,119 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --balloon-color: rgba(16, 16, 16, 0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+button[aria-label] {
+  display: inline-block;
+  width: 180px;
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  background-color: #b71212;
+  text-align: center;
+  color: white;
+  position: relative;
+  cursor: pointer;
+  overflow: visible;
+}
+
+[aria-label]::before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  /*opacity: 0;*/
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 16;
+  /*pointer-events: none;*/
+}
+
+[aria-label]::after {
+  content: attr(aria-label);
+  position: absolute;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 12px;
+  background: var(--balloon-color);
+  padding: 0.5em 1em;
+  border-radius: 2px;
+  color: white;
+  white-space: nowrap;
+  /*opacity: 0;*/
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 16;
+  /*pointer-events: none;*/
+}
+
+[aria-label]:hover::before,
+[aria-label]:hover::after {
+  /*opacity: 1;*/
+  /*pointer-events: none;*/
+  visibility: visible;
+}
+
+/* ------------------------------position = up------------------------------ */
+[aria-label][data-balloon-pos="up"]::before {
+  border-top-color: var(--balloon-color);
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+[aria-label][data-balloon-pos="up"]::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-bottom: 10px;
+}
+
+/* ------------------------------position = left------------------------------ */
+[aria-label][data-balloon-pos="left"]::before {
+  left: 0;
+  bottom: 50%;
+  transform: translate(-100%, 50%);
+  border-left-color: var(--balloon-color);
+}
+
+[aria-label][data-balloon-pos="left"]::after {
+  right: 100%;
+  bottom: 50%;
+  transform: translate(-10px, 50%); /* 还可以使用margin-right: 10px; */
+}
+
+/* ------------------------------position = up-left------------------------------ */
+[aria-label][data-balloon-pos="up-left"]::before {
+  bottom: 100%;
+  left: 5px;
+  border-top-color: var(--balloon-color);
+}
+
+[aria-label][data-balloon-pos="up-left"]::after {
+  left: 0;
+  bottom: 100%;
+  margin-bottom: 10px;
+}
+
+/* ------------------------------length------------------------------ */
+[aria-label][data-balloon-length="xlarge"]::after {
+  white-space: normal;
+  width: 380px;
+}
+
+[aria-label][data-balloon-length="fit"]::after {
+  white-space: normal;
+  width: 100%;
+}
