@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    label {
+      position: absolute;
+      /*display: inline-block;*/
+      width: 100px;
+      height: 100px;
+      z-index: 1;
+    }
+
+    label.heart {
+      background-image: url("https://css-tricks.com/wp-content/uploads/2016/06/web_heart_animation.png");
+      background-position: 0;
+      background-size: cover;
+      transition: none;
+    }
+
+    input#twitter-heart:checked ~ label.heart {
+      background-position: -2800px;
+      transition: steps(28);
+      transition-duration: 1s;
+    }
+
+    input#twitter-heart:checked ~ label.cancel {
+      z-index: 8;
+    }
+
+    input#cancel:checked ~ label.heart {
+      background-position: 0;
+      /*transition: none;*/
+    }
+
+    input#cancel:checked ~ label.heart {
+      z-index: 8;
+    }
+
+    input {
+      display: none;
+    }
+
+    div.title,
+    div.container {
+      text-align: center;
+    }
+
+    div.title h1 {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<div class="title">
+  <h1>点击一次点赞，再点击一次取消点赞</h1>
+</div>
+<div class="container">
+  <input type="radio" name="twitter" id="twitter-heart">
+  <input type="radio" name="twitter" id="cancel">
+  <label for="cancel" class="cancel"></label>
+  <label for="twitter-heart" class="heart"></label>
+</div>
+</body>
+</html>
