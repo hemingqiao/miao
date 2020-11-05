@@ -668,3 +668,15 @@ div.slogan {
   background-repeat: no-repeat;
   text-indent: -9999em;
 }
+
+/* 智造新生活slogan */
+.doodle .link-block {
+  position: absolute;
+  width: 165px;
+  height: 100px;
+  background-image: url("https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/f58837161090e2e04bf687088b2ffe77.gif?w=165&h=55");
+  background-repeat: no-repeat;
+  right: 3px;
+  top: -12px;
+  background-position: center;
+}
