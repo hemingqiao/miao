@@ -32,11 +32,11 @@ button[aria-label] {
   width: 0;
   height: 0;
   border: 5px solid transparent;
-  /*opacity: 0;*/
-  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  /*visibility: hidden;*/
   transition: 0.3s;
   z-index: 16;
-  /*pointer-events: none;*/
 }
 
 [aria-label]::after {
@@ -51,32 +51,61 @@ button[aria-label] {
   border-radius: 2px;
   color: white;
   white-space: nowrap;
-  /*opacity: 0;*/
-  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
   transition: 0.3s;
   z-index: 16;
-  /*pointer-events: none;*/
 }
 
 [aria-label]:hover::before,
 [aria-label]:hover::after {
-  /*opacity: 1;*/
-  /*pointer-events: none;*/
-  visibility: visible;
+  opacity: 1;
+}
+
+/* up & default hover */
+[aria-label]:not([data-balloon-pos]):hover::before,
+[aria-label][data-balloon-pos="up"]:hover::before {
+  transform: translate(-50%, 0);
+}
+
+[aria-label]:not([data-balloon-pos]):hover::after,
+[aria-label][data-balloon-pos="up"]:hover::after {
+  transform: translate(-50%, 0);
+}
+
+/* left hover */
+[aria-label][data-balloon-pos="left"]:hover::before {
+  transform: translate(-100%, 50%);
+}
+
+[aria-label][data-balloon-pos="left"]:hover::after {
+  transform: translate(-10px, 50%);
+}
+
+/* up-left hover */
+[aria-label][data-balloon-pos="up-left"]:hover::before {
+  transform: translate(0, 0);
+}
+
+[aria-label][data-balloon-pos="up-left"]:hover::after {
+  transform: translateY(0);
 }
 
 /* ------------------------------position = up------------------------------ */
+/* 默认不设置任何data-balloon-pos属性时，气泡也是在上方显示 */
+[aria-label]:not([data-balloon-pos])::before,
 [aria-label][data-balloon-pos="up"]::before {
   border-top-color: var(--balloon-color);
   bottom: 100%;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, 10px);
 }
 
+[aria-label]:not([data-balloon-pos])::after,
 [aria-label][data-balloon-pos="up"]::after {
   bottom: 100%;
   left: 50%;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, 10px);
   margin-bottom: 10px;
 }
 
@@ -84,20 +113,21 @@ button[aria-label] {
 [aria-label][data-balloon-pos="left"]::before {
   left: 0;
   bottom: 50%;
-  transform: translate(-100%, 50%);
+  transform: translate(0, 50%);
   border-left-color: var(--balloon-color);
 }
 
 [aria-label][data-balloon-pos="left"]::after {
   right: 100%;
   bottom: 50%;
-  transform: translate(-10px, 50%); /* 还可以使用margin-right: 10px; */
+  transform: translate(0, 50%); /* 还可以使用margin-right: 10px; */
 }
 
 /* ------------------------------position = up-left------------------------------ */
 [aria-label][data-balloon-pos="up-left"]::before {
   bottom: 100%;
   left: 5px;
+  transform: translate(0, 10px);
   border-top-color: var(--balloon-color);
 }
 
@@ -105,15 +135,35 @@ button[aria-label] {
   left: 0;
   bottom: 100%;
   margin-bottom: 10px;
+  transform: translateY(10px);
 }
 
 /* ------------------------------length------------------------------ */
+/* x-large */
 [aria-label][data-balloon-length="xlarge"]::after {
   white-space: normal;
   width: 380px;
 }
 
+/* fit */
 [aria-label][data-balloon-length="fit"]::after {
   white-space: normal;
   width: 100%;
+}
+
+/* ------------------------------no animation------------------------------ */
+[data-balloon-blunt]::before,
+[data-balloon-blunt]::after {
+  transition: none;
+}
+
+/* ------------------------------always visible------------------------------ */
+[data-balloon-visible]::before,
+[data-balloon-visible]::after {
+  opacity: 1;
+}
+
+[data-balloon-visible][data-balloon-pos="up"]::before,
+[data-balloon-visible][data-balloon-pos="up"]::after {
+  transform: translate(-50%, 0);
 }

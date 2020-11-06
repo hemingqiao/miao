@@ -6,41 +6,68 @@
   <link rel="stylesheet" href="./balloon-button.css">
   <style>
     div.container {
-      margin: 150px auto;
+      margin: 0 auto;
       width: 600px;
       text-align: center;
     }
 
     div.demo {
-      margin: 50px auto;
+      margin: 20px auto;
       display: inline-block;
+    }
+
+    div.demo:first-child {
+      margin-top: 60px;
     }
   </style>
 </head>
 <body>
 <div class="container">
   <div class="demo">
+    <button aria-label="Whats up!">Hover me!</button>
+    <h3>Default</h3>
+  </div>
+  <br>
+
+  <div class="demo">
     <button aria-label="Whats up!" data-balloon-pos="up">Hover me!</button>
+    <h3>Pop up</h3>
   </div>
   <br>
 
   <div class="demo">
     <button aria-label="Whats up!" data-balloon-pos="left">Hover me!</button>
+    <h3>Pop left</h3>
   </div>
   <br>
 
   <div class="demo">
     <button aria-label="Whats up!" data-balloon-pos="up-left">Hover me!</button>
+    <h3>Pop up-left</h3>
   </div>
   <br>
 
   <div class="demo">
     <button data-balloon-length="xlarge" aria-label="What about something really big? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?!" data-balloon-pos="up">I'm a Xlarge tooltip</button>
+    <h3>Width: xlarge</h3>
   </div>
   <br>
 
   <div class="demo">
     <button data-balloon-length="fit" aria-label="What about something really big? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?!" data-balloon-pos="up">My width will fit to element</button>
+    <h3>Width: fit</h3>
+  </div>
+  <br>
+
+  <div class="demo">
+    <button data-balloon-blunt aria-label="No animation!" data-balloon-pos="up">No animation!</button>
+    <h3>No animation</h3>
+  </div>
+  <br>
+
+  <div class="demo">
+    <button data-balloon-visible aria-label="I am always visible!" data-balloon-pos="up">Always visible!</button>
+    <h3>Always visible</h3>
   </div>
 </div>
 </body>
