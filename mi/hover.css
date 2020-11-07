@@ -80,6 +80,7 @@ div.ai div.right-safe div {
   height: 300px;
 }
 
+div.home-brick-box div.inner-container div.brick-item:hover,
 div.right-video > div:hover,
 div.right-hots > div:hover,
 div.left-goods > div:hover,
