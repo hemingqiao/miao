@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      background: rgba(0,0,0,0.1);
+    }
+
+    @keyframes rotate3d {
+      from {
+        transform: rotateX(0deg) rotateY(0deg);
+      }
+
+      to {
+        transform: rotateX(360deg) rotateY(3600deg);
+      }
+    }
+
+    main {
+      animation: rotate3d 16s linear infinite;
+      height: 300px;
+      position: relative;
+      /* CSS 属性 transform-style 设置元素的子元素是位于 3D 空间中还是平面中。 */
+      transform-style: preserve-3d;
+      /*transform: rotateX(130deg) rotateY(70deg);
+      transition: 2s;*/
+      /*animation-play-state: paused;*/
+    }
+
+    main > div {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      font-size: 100px;
+      line-height: 200px;
+      text-align: center;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      box-shadow: 0 0 0 0 rgba(0,0,0,0.1);
+      transition: 2s;
+    }
+
+    html:hover main > div {
+      box-shadow: 0 0 0 50px rgba(0,0,0,0.1);
+    }
+
+    #s1 {
+      transform: translateZ(100px);
+      background-color: navy
+    }
+
+    #s2 {
+      transform: rotateY(-180deg) translateZ(100px);
+      background-color: mediumaquamarine;
+    }
+
+    #s3 {
+      transform: rotateX(90deg) translateZ(100px);
+      background-color: red;
+    }
+
+    #s4 {
+      transform: rotateX(-90deg) translateZ(100px);
+      background-color: cornflowerblue;
+    }
+
+    #s5 {
+      transform: rotateY(90deg) translateZ(100px);
+      background-color: lightskyblue;
+    }
+
+    #s6 {
+      transform: rotateY(-90deg) translateZ(100px);
+      background-color: teal;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div id="s1">1</div>
+  <div id="s2">2</div>
+  <div id="s3">3</div>
+  <div id="s4">4</div>
+  <div id="s5">5</div>
+  <div id="s6">6</div>
+</main>
+</body>
+</html>
