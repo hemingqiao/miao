@@ -226,7 +226,7 @@
 
 
 </script>
-<script type="pass" id="ch0104/09">
+<script xtype="pass" id="ch0104/09">
   (function (a) {
     const r1 = a % 3 === 0;
     const r2 = a % 5 === 0;
@@ -245,6 +245,8 @@
       console.log(5);
     } else if (r3) {
       console.log(7);
+    } else {
+      console.log("n");
     }
   })(+prompt());
 
