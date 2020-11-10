@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script type="pass" id="ch0103/01/">
+  const a = +prompt();
+  const b = +prompt();
+  console.log(a + b);
+
+</script>
+
+<script type="pass" id="ch0103/02/">
+  const a = +prompt();
+  const b = +prompt();
+  const c = +prompt();
+  console.log((a + b) * c);
+
+</script>
+
+<script type="pass" id="ch0103/03/">
+  const a = +prompt();
+  const b = +prompt();
+  const c = +prompt();
+  console.log(Math.floor((a + b) / c));
+
+
+</script>
+
+<script type="pass" id="ch0103/04/">
+  const a = +prompt();
+  const b = +prompt();
+  const result = Math.floor(a / b);
+  const left = a % b;
+  console.log(result, left);
+
+</script>
+
+<script type="pass" id="ch0103/05/">
+  const a = +prompt();
+  const b = +prompt();
+  const result = a / b;
+  console.log(result.toFixed(9));
+
+</script>
+
+<script type="pass" id="ch0103/06/">
+  const total = +prompt();
+  const dead = +prompt();
+  console.log((dead * 100 / total).toFixed(3) + "%")
+
+</script>
+<script type="pass" id="ch0103/07/">
+  (function (x, a, b, c, d) {
+    console.log((a * x ** 3 + b * x ** 2 + c * x + d).toFixed(7));
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
+
+</script>
+<script type="pass" id="ch0103/08/">
+  (function (a) {
+    const result = (a - 32) * 5 / 9;
+    console.log(result.toFixed(5));
+  })(+prompt());
+
+
+
+</script>
+<script type="pass" id="ch0103/09/">
+  (function (radius){
+    const pi = Math.PI.toFixed(5);
+    console.log((2 * radius).toFixed(4), (2 * radius * pi).toFixed(4), (pi * radius ** 2).toFixed(4));
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0103/010/">
+  (function (r1, r2) {
+    const result = r1 * r2 / (r1 + r2);
+    console.log(result.toFixed(2));
+  })(+prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0103/011/">
+  (function (a, b) {
+    console.log((a % b).toFixed(4));
+  })(+prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0103/012/">
+  (function (radius) {
+    const pi = 3.14;
+    const v = 4 / 3 * pi * radius ** 3;
+    console.log(v.toFixed(2));
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0103/013/">
+  // 反向输出一个三位数
+  (function (a) {
+    console.log(a.toString().split("").reverse().join(""));
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0103/014/">
+  (function (h, r){
+    const pi = 3.14159;
+    const v = pi * r ** 2 * h / 1000;
+    console.log(Math.ceil(20 / v));
+  })(+prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0103/015/">
+  (function (total, speed, time) {
+    const eaten = Math.ceil(time / speed);
+    console.log((total - eaten));
+  })(+prompt(), +prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0103/016/">
+  (function (x1, y1, x2, y2) {
+    const result = Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2);
+    console.log(result.toFixed(3));
+  })(+prompt(), +prompt(), +prompt(), +prompt());
+
+</script>
+<script type="pass" id="ch0103/017/">
+  (function (x1, y1, x2, y2, x3, y3) {
+    const l1 = length(x1, y1, x2, y2);
+    const l2 = length(x1, y1, x3, y3);
+    const l3 = length(x2, y2, x3, y3);
+    const temp = (l1 + l2 + l3) / 2;
+    const result = Math.sqrt(temp * (temp - l1) * (temp - l2) * (temp - l3));
+    console.log(result.toFixed(2));
+
+    function length(x1, y1, x2, y2) {
+      return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    }
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0103/018/">
+  (function (a1, a2, n) {
+    const d = a2 - a1;
+    const general = n => a1 + (n - 1) * d;
+    console.log(general(n));
+  })(+prompt(), +prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0103/019/">
+  (function (a, b) {
+    console.log((a * b));
+  })(+prompt(), +prompt());
+
+</script>
+
+<script type="pass" id="ch0103/020/">
+  (function (a) {
+    console.log(Math.pow(2, a));
+  })(+prompt());
+
+
+</script>
+
+
+<script type="pass" id="ch0104/01">
+  (function (num) {
+    console.log(num > 0 ? "positive" : num === 0 ? "zero" : "negative");
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0104/02">
+  (function (num) {
+    console.log(Math.abs(num));
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0104/03">
+  (function (num) {
+    console.log(num % 2 === 0 ? "even" : "odd");
+  })(+prompt());
+
+</script>
+<script type="pass" id="ch0104/04">
+  (function (character) {
+    const num = character.charCodeAt(0);
+    console.log(num % 2 === 0 ? "NO" : "YES");
+  })(prompt());
+
+</script>
+<script type="pass" id="ch0104/05">
+  (function (a, b) {
+    console.log((a > b ? ">" : a === b ? "=" : "<"));
+  })(+prompt(), +prompt());
+
+</script>
+<script type="pass" id="ch0104/06">
+  (function (a) {
+    console.log((a >= 10 && a <= 99 ? 1 : 0));
+  })(+prompt());
+
+</script>
+<script type="pass" id="ch0104/07">
+  (function (lucky, comeon) {
+    console.log((lucky >= 10 || comeon >= 20 ? 1 : 0));
+  })(+prompt(), +prompt());
+
+</script>
+<script type="pass" id="ch0104/08">
+  (function (a) {
+    console.log((a % 3 === 0 && a % 5 === 0 ? "YES" : "NO"));
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0104/09">
+  (function (a) {
+    const r1 = a % 3 === 0;
+    const r2 = a % 5 === 0;
+    const r3 = a % 7 === 0;
+    if (r1 && r2 && r3) {
+      console.log(3, 5, 7);
+    } else if (r1 && r2) {
+      console.log(3, 5);
+    } else if (r1 && r3) {
+      console.log(3, 7);
+    } else if (r2 && r3) {
+      console.log(5, 7);
+    } else if (r1) {
+      console.log(3);
+    } else if (r2) {
+      console.log(5);
+    } else if (r3) {
+      console.log(7);
+    }
+  })(+prompt());
+
+</script>
+<script type="pass" id="ch0104/010">
+  (function (score1, score2) {
+    if (score1 < 60 && score2 >= 60 || score1 >= 60 && score2 < 60) {
+      console.log(1);
+    } else {
+      console.log(0);
+    }
+  })(+prompt(), +prompt());
+
+</script>
+<script type="pass" id="ch0104/011">
+  (function (day) {
+    switch (day) {
+      case 1:
+      case 3:
+      case 5:
+        console.log("NO");
+        break;
+      default:
+        console.log("YES");
+    }
+  })(+prompt());
+
+</script>
+<script type="pass" id="ch0104/012">
+  (function (s) {
+    const bike = 50 + s / 3;
+    const walk = s / 1.2;
+    console.log(bike > walk ? "Walk" : bike === walk ? "All" : "Bike");
+  })(+prompt());
+
+</script>
+<script type="pass" id="ch0104/013">
+  (function (n) {
+    if (n >= 0 && n < 5) {
+      console.log((2.5 - n).toFixed(3));
+    } else if (n >= 5 && n < 10) {
+      const result = 2 - 1.5 * (n - 3) ** 2;
+      console.log(result.toFixed(3));
+    } else if (n >= 10 && n < 20) {
+      console.log((n / 2 - 1.5).toFixed(3));
+    } else {
+      throw new RangeError("input out of bounds!");
+    }
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0104/014">
+  (function (weigh, boo) {
+    let sum = 8;
+    if (weigh > 1000) {
+      const temp = Math.ceil((weigh - 1000) / 500);
+      sum += temp * 4;
+    }
+    if (boo === "y") {
+      sum += 5;
+    }
+    console.log(sum);
+  })(+prompt(), prompt());
+
+
+
+</script>
+<script type="pass" id="ch0104/015">
+  (function (a, b, c) {
+    console.log(Math.max(a, b, c));
+  })(+prompt(), +prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0104/016">
+  (function (a, b, c) {
+    if (a + b > c && a + c > b && b + c > a) {
+      console.log("yes");
+    } else {
+      console.log("no");
+    }
+  })(+prompt(), +prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0104/017">
+  (function (year) {
+    if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
+      console.log("Y");
+    } else {
+      console.log("N");
+    }
+  })(+prompt());
+
+
+</script>
+<script type="pass" id="ch0104/018">
+  (function (x, y) {
+    if (x >= -1 && x <= 1 && y >= -1 && y <= 1) {
+      console.log("yes");
+    } else {
+      console.log("no");
+    }
+  })(+prompt(), +prompt());
+
+
+</script>
+<script type="pass" id="ch0104/019">
+  (function (a, b, operator) {
+    switch (operator) {
+      case "+":
+        console.log(a + b);
+        break;
+      case "-":
+        console.log(a - b);
+        break;
+      case "*":
+        console.log(a * b);
+        break;
+      case "/":
+        console.log(a / b);
+        break;
+      default:
+        console.log("Invalid operator!");
+    }
+  })(+prompt(), +prompt(), prompt());
+
+</script>
+<script id="ch0104/020">
+  (function (a, b, c) {
+    const format = x => x.toFixed(5);
+
+    const delta = b ** 2 - 4 * a * c;
+    if (delta === 0) {
+      console.log(`x1 = x2 = ${format((-1 * b) / 2 * a)}`);
+    } else if (delta > 0) {
+      console.log(`x1 = ${format(((-1 * b) + Math.sqrt(delta)) / 2 * a)}, x2 = ${format(((-1 * b) - Math.sqrt(delta)) / 2 * a)}`)
+    } else {
+      const x1 = format((-1 * b) / 2 * a) + " + " + (format(Math.sqrt(-1 * delta) / 2 * a) + "i");
+      const x2 = format((-1 * b) / 2 * a) + " - " + (format(Math.sqrt(-1 * delta) / 2 * a) + "i");
+      console.log(`x1 = ${x1}, x2 = ${x2}`);
+    }
+  })(+prompt(), +prompt(), +prompt());
+</script>
+<script type="pass" id="ch0104/021">
+  (function (n, x, y) {
+    const temp = Math.ceil(y / x);
+    console.log(n - temp);
+  })(+prompt(), +prompt(), +prompt());
+
+</script>
+</body>
+</html>
