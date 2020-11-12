@@ -378,7 +378,7 @@
   })(+prompt(), +prompt(), prompt());
 
 </script>
-<script id="ch0104/020">
+<script type="pass" id="ch0104/020">
   (function (a, b, c) {
     const format = x => x.toFixed(5);
 
@@ -388,8 +388,16 @@
     } else if (delta > 0) {
       console.log(`x1 = ${format(((-1 * b) + Math.sqrt(delta)) / 2 * a)}, x2 = ${format(((-1 * b) - Math.sqrt(delta)) / 2 * a)}`)
     } else {
-      const x1 = format((-1 * b) / 2 * a) + " + " + (format(Math.sqrt(-1 * delta) / 2 * a) + "i");
-      const x2 = format((-1 * b) / 2 * a) + " - " + (format(Math.sqrt(-1 * delta) / 2 * a) + "i");
+      const imaginary = format(Math.sqrt(-1 * delta) / 2 * a);
+      let x1, x2;
+      if (imaginary > 0) {
+        x1 = format((-1 * b) / 2 * a) + " + " + (imaginary + "i");
+        x2 = format((-1 * b) / 2 * a) + " - " + (imaginary + "i");
+      } else {
+        x1 = format((-1 * b) / 2 * a) + " + " + (format(-imaginary) + "i");
+        x2 = format((-1 * b) / 2 * a) + " - " + (format(-imaginary) + "i");
+      }
+
       console.log(`x1 = ${x1}, x2 = ${x2}`);
     }
   })(+prompt(), +prompt(), +prompt());
@@ -401,6 +409,636 @@
     console.log(n - temp);
   })(+prompt(), +prompt(), +prompt());
 
+</script>
+
+
+
+
+<script type="pass" id="ch0105/01">
+  (function (...ages) {
+    const sum = ages.reduce((prev, next) => prev + next, 0);
+    console.log((sum / ages.length).toFixed(2));
+  })(+prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/02">
+  (function (...left) {
+    const sum = left.reduce((prev, next) => prev + next, 0);
+    console.log("$" + (sum / left.length).toFixed(2));
+  })(+prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/03">
+  (function (number, ...args) {
+    const sum = args.reduce((prev, next) => prev + next);
+    console.log((sum / number).toFixed(4));
+  })(+prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/04">
+  (function (number, ...args) {
+    const sum = args.reduce((prev, next) => prev + next);
+    console.log(sum, (sum / number).toFixed(4));
+  })(+prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/05">
+  ((number, ...args) => {
+    let max = args[0];
+    for (let i = 1; i < args.length; i++) {
+      max = Math.max(max, args[i]);
+    }
+    console.log(max);
+  })(+prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/06">
+  ((number, ...args) => {
+    args.sort((a, b) => a - b);
+    console.log(args[args.length - 1] - args[0]);
+  })(+prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/07">
+  ((number, ...args) => {
+    let gold = 0;
+    let silver = 0;
+    let copper = 0;
+    for (let i = 0; i < args.length; i += 3) {
+      gold += args[i];
+    }
+    for (let i = 1; i < args.length; i += 3) {
+      silver += args[i];
+    }
+    for (let i = 2; i < args.length; i += 3) {
+      copper += args[i];
+    }
+    console.log(gold, silver, copper, gold + silver + copper)
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/08">
+  ((number, ...args) => {
+    const total = (number - 2) * 180;
+    console.log(total - args.reduce((prev, next) => prev + next));
+  })(+prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/09">
+  ((a, b) => {
+    const isOdd = x => x % 2 !== 0;
+    let sum = 0;
+    for (let i = a; i <= b; i++) {
+      if (isOdd(i)) sum += i;
+    }
+    console.log(sum);
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/010">
+  ((a, b) => {
+    const isSeventeen = x => x % 17 === 0;
+    let sum = 0;
+    for (let i = a; i <= b; i++) {
+      if (isSeventeen(i)) sum += i;
+    }
+    console.log(sum);
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/011">
+  ((number, ...args) => {
+    let one = 0;
+    let five = 0;
+    let ten = 0;
+    args.forEach(value => {
+      if (value === 1) {
+        one++;
+      } else if (value === 5) {
+        five++;
+      } else if (value === 10) {
+        ten++;
+      }
+    });
+    console.log(one, five, ten);
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/012">
+  ((number, target, ...args) => {
+    let sum = 0;
+    args.forEach(value => {
+      if (value === target) sum++;
+    });
+    console.log(sum);
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/013">
+  ((a, b) => {
+    let result = 1;
+    while (b--) {
+      result *= a;
+    }
+    console.log(result);
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/014">
+  ((a, b) => {
+    let result = 13;
+    while (b--) {
+      result *= 1.001;
+    }
+    console.log(result.toFixed(4));
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/015">
+  ((R, M, Y) => {
+    result = M * Math.pow((1 + R / 100), Y);x
+    console.log(Math.floor(result));
+  })(+prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/016">
+  // 第一年就有了N万元的存款
+  ((N, K) => {
+    let homePrice = 200;
+    let money = N;
+    let year;
+    for (year = 1; year < Number.MAX_VALUE; year++) {
+      money += N;
+      homePrice *= (1 + K / 100);
+      if (money >= homePrice) {
+        console.log(year + 1);
+        break;
+      }
+      if (year + 1 > 20) {
+        console.log("he can't afford the home, he died.");
+        break;
+      }
+    }
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/017">
+  (n => {
+    function fib(n, a = 1, b = 1) {
+      if (n === 1) return a;
+      return fib(n - 1, b, a + b);
+    }
+
+    console.log(fib(n));
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/018">
+  ((number, ...args) => {
+    const analysis = (a, b) => a - b > 0.005 ? "worse" : b - a > 0.005 ? "better" : "same";
+    let[y1, x1, y2, x2, y3, x3] = args;
+    const HAART = x1 / y1;
+    const t1 = x2 / y2;
+    const t2 = x3 / y3;
+
+    const res1 = analysis(HAART, t1);
+    const res2 = analysis(HAART, t2);
+    console.log(res1, res2);
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt())
+</script>
+
+<script type="pass" id="ch0105/019">
+  ((number, x, y, people) => {
+    const getDistance = (x, y) => Math.sqrt(x ** 2 + y ** 2);
+    const timeRaw = 2 * getDistance(x, y) / 50 + people * 1.5;
+    console.log(Math.ceil(timeRaw));
+  })(+prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/020">
+  (heightInit => {
+    function calc(height, times) {
+      if (times === 1) return height;
+      let h = height / 2;
+      let sum = height;
+      for (let i = 1; i < times; i++) {
+        sum += h * 2;
+        h /= 2;
+      }
+      return sum;
+    }
+    console.log(calc(heightInit, 10), heightInit / Math.pow(2, 10));
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/021">
+  (n => {
+    const isOdd = num => num % 2 !== 0;
+    print(n);
+
+    function print(number) {
+      if (number === 1) {
+        console.log("End");
+        return;
+      }
+      if (isOdd(number)) {
+        console.log(`${number}*3+1=${number * 3 + 1}`);
+        print(number * 3 + 1);
+      } else {
+        console.log(`${number}/2=${number / 2}`);
+        print(number / 2);
+      }
+    }
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/022">
+  ((...args) => {
+    let initial = 300;
+    let sumD = 0;
+    let sumM = 0;
+    // debugger
+    for (let i = 0; i < args.length; i++) {
+      let left = sumD +  initial - args[i];
+      if (left < 0) {
+        console.log((i + 1) * -1);
+        return;
+      }
+      let temp = Math.floor(left / 100);
+      sumM += temp * 100;
+      sumD = left - temp * 100;
+    }
+    // console.log(sumM);
+    // console.log(sumD);
+    console.log(sumM * 1.2);
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(),
+    +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/023">
+  ((total, num, ...args) => {
+     let count = 0;
+     for (let e of args) {
+       if (e <= total) {
+         total -= e;
+       } else {
+         count++;
+       }
+     }
+     console.log(count);
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/024">
+  ((total, ...args) => {
+    let max = 0;
+    let temp = 0;
+    for (let i = 0; i < args.length - 1; i += 2) {
+      if (args[i] >= 90 && args[i] <= 140 && args[i + 1] >= 60 && args[i + 1] <= 90) {
+        temp++;
+      } else {
+        max = Math.max(temp, max);
+        temp = 0;
+      }
+    }
+    max = Math.max(temp, max);
+    console.log(max);
+  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/025">
+  (() => {
+    let i = 0;
+    while (i <= 336) {
+      if (i.toString(7) === i.toString(9).split("").reverse().join("")) {
+        console.log(i);
+        console.log(i.toString(7));
+        console.log(i.toString(9));
+        break;
+      }
+    }
+  })()
+</script>
+
+<script type="pass" id="ch0105/026">
+  (num => {
+    const arr = num.toString().split("");
+    let r1 = +arr[arr.length - 1];
+    let temp = 0;
+    for (let i = 0; i < arr.length - 1; i++) {
+      temp += +arr[i];
+    }
+    if (r1 - temp > 0) {
+      console.log(num);
+    } else {
+      console.log("no");
+    }
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/027">
+  (n => {
+    let temp = 0;
+    for (let i = 0; i < Number.MAX_VALUE; i++) {
+      temp += 1 / (i + 1);
+      if (temp > n) {
+        console.log(i + 1);
+        return;
+      }
+    }
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/028">
+  (number => {
+    let n = Math.pow(10, Math.floor(Math.log10(number)));
+    let result = [];
+    let reminder = number;
+    while (reminder) {
+      result.push(Math.floor(reminder / n));
+      reminder %= n;
+      n /= 10;
+    }
+    console.log(result.reverse().join(" "));
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/029">
+  (number => {
+    let negativeFlag = number.toString().charAt(0) === "-";
+    number = Math.abs(number);
+    let n = Math.pow(10, Math.floor(Math.log10(number)));
+    let result = [];
+    let reminder = number;
+    while (reminder) {
+      result.push(Math.floor(reminder / n));
+      reminder %= n;
+      n /= 10;
+    }
+    if (result[result.length - 1] === 0) result.pop();
+    const temp = result.reverse().join("");
+    if (negativeFlag) {
+      console.log(`-${temp}`);
+    } else {
+      console.log(temp);
+    }
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/030">
+  ((number, target) => {
+    let count = 0;
+    const result = number.toString().split("");
+    result.forEach(value => {
+      if (+value === target) count++;
+    });
+    if (number % 19 === 0 && count === target) {
+      console.log("YES");
+    } else {
+      console.log("NO");
+    }
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/031">
+  ((N, M) => {
+    /**
+     * 返回当有limit个人时，编号为number的灯泡可以被几个人按下一次
+     * @param number 灯泡编号
+     * @param limit 总人数
+     * @returns {number} 编号为number的灯泡共被按下几次
+     */
+    function factor(number, limit) {
+      let count = 0;
+      for (let i = 1; i <= limit && i <= number; i++) {
+        if (number % i === 0) count++;
+      }
+      return count;
+    }
+
+    let result = [];
+    for (let i = 1; i <= N; i++) {
+      // result[i]表示编号为i的灯泡共被按下几次，如果次数是奇数，灯泡亮，否则，灯泡灭
+      result[i - 1] = factor(i, M);
+    }
+    let res = [];
+    result.forEach(((value, index) => {
+      if (value % 2 !== 0) res.push(index + 1);
+    }))
+    console.log(res.toString());
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/032">
+  (n => {
+    let q = 2;
+    let p = 1;
+    let result = 0;
+    while (n--) {
+      result += q / p;
+      let temp = q;
+      q = p + q;
+      p = temp;
+    }
+    console.log(result.toFixed(5));
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/033">
+  (n => {
+    let result = 0;
+    for (let i = 1; i <= n; i++) {
+      result += 1 / (i * Math.pow(-1, (i - 1)));
+    }
+    console.log(result);
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/034">
+  (n => {
+    let result = 0;
+    for (let i = 1; i <= n; i++) {
+      result += factorial(i);
+    }
+    console.log(result);
+
+    function factorial(n, res = 1) {
+      if (n === 0) return res;
+      return factorial(n - 1, res * n);
+    }
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/035">
+  (n => {
+    let result = 1;
+    for (let i = 1; i <= n; i++) {
+      result += 1 / factorial(i);
+    }
+    console.log(result);
+
+    function factorial(n, res = 1) {
+      if (n === 0) return res;
+      return factorial(n - 1, res * n);
+    }
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/036">
+  ((x, n) => {
+    let result = 0;
+    while (n) {
+      result += Math.pow(x, n);
+      --n;
+    }
+    console.log(result + 1);
+  })(+prompt(), +prompt());
+</script>
+<script id="ch0105/037"></script>
+
+<script type="pass" id="ch0105/038">
+  ((n, ...args) => {
+    let result = [];
+    while (n) {
+      result.push(n * args.shift());
+      n--;
+    }
+    console.log(result.join(" "));
+  })(+prompt(), +prompt(), +prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/039">
+  (n => {
+    const related = number => {
+      const arr = number.toString().split("");
+      return arr.includes("7") || number % 7 === 0;
+    }
+
+    let result = 0;
+    for (let i = 1; i <= n; i++) {
+      if (!related(i)) {
+        result += i ** 2;
+      }
+    }
+    console.log(result);
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/040">
+  (n => {
+    let result = [];
+    for (let i = 1; i <= n; i++) {
+      result = result.concat(i.toString().split(""));
+    }
+    let count = 0;
+    result.forEach(value => {
+      if (value === "1") count++;
+    });
+    console.log(count);
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/041">
+  ((L, R) => {
+    let result = [];
+    for (let i = L; i <= R; i++) {
+      result = result.concat(i.toString().split(""));
+    }
+    let count = 0;
+    result.forEach(value => {
+      if (value === "2") count++;
+    });
+    console.log(count);
+  })(+prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/042">
+  ((height, width, char, bool) => {
+    let result = Array(height).fill([]);
+    result = result.map(value => {
+      return Array(width).fill(0);
+    });
+
+    // 生成一个螺旋形递增矩阵
+    let left = 0, right = result[0].length - 1, top = 0, bottom = result.length - 1;
+    let count = 1;
+    while (true) {
+      for (let i = left; i <= right; i++) result[top][i] = count++;
+      if (++top > bottom) break;
+      for (let i = top; i <= bottom; i++) result[i][right] = count++;
+      if (--right < left) break;
+      for (let i = right; i >= left; i--) result[bottom][i] = count++;
+      if (--bottom < top) break;
+      for (let i = bottom; i >= top; i--) result[i][left] = count++;
+      if (++left > right) break;
+      if (bool === 0) break;
+    }
+    console.log(result);
+  })(+prompt(), +prompt(), prompt(), +prompt());
+</script>
+
+<script type="pass" id="ch0105/043">
+  (n => {
+    const isPrime = num => {
+      if (num < 2) return false;
+      if (num === 2) return true;
+      for (let i = 2; i * i <= num; i++) {
+        if (num % i === 0) return false;
+      }
+      return true;
+    }
+
+    for (let i = 2; i * i <= n; i++) {
+      if (isPrime(i)) {
+        if (n % i === 0) {
+          console.log(n / i);
+          return;
+        }
+      }
+    }
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/044">
+  (n => {
+    const isPrime = num => {
+      if (num < 2) return false;
+      if (num === 2) return true;
+      for (let i = 2; i * i <= num; i++) {
+        if (num % i === 0) return false;
+      }
+      return true;
+    }
+
+    let result = [];
+    for (let i = 1; i <= Number.MAX_VALUE; i++) {
+      if (isPrime(i)) {
+        result.push(i);
+      }
+      if (result.length === n) break;
+    }
+    console.log(result[result.length - 1]);
+  })(+prompt());
+</script>
+
+<script type="pass" id="ch0105/045">
+  (n => {
+    let result = [];
+    let i = 1;
+    outer:
+    while (true) {
+      let temp = i;
+      while (temp--) {
+        result.push(i);
+        if (temp === 0) {
+          i++;
+        }
+        if (result.length >= n) break outer;
+      }
+    }
+    console.log(result);
+    console.log(result.reduce((prev, next) => prev + next));
+  })(+prompt());
 </script>
 </body>
 </html>
