@@ -10,6 +10,8 @@
   const b = +prompt();
   console.log(a + b);
 
+
+
 </script>
 
 <script type="pass" id="ch0103/02/">
@@ -18,6 +20,8 @@
   const c = +prompt();
   console.log((a + b) * c);
 
+
+
 </script>
 
 <script type="pass" id="ch0103/03/">
@@ -25,6 +29,8 @@
   const b = +prompt();
   const c = +prompt();
   console.log(Math.floor((a + b) / c));
+
+
 
 </script>
 
@@ -35,6 +41,8 @@
   const left = a % b;
   console.log(result, left);
 
+
+
 </script>
 
 <script type="pass" id="ch0103/05/">
@@ -43,6 +51,8 @@
   const result = a / b;
   console.log(result.toFixed(9));
 
+
+
 </script>
 
 <script type="pass" id="ch0103/06/">
@@ -50,12 +60,16 @@
   const dead = +prompt();
   console.log((dead * 100 / total).toFixed(3) + "%")
 
+
+
 </script>
 
 <script type="pass" id="ch0103/07/">
   (function (x, a, b, c, d) {
     console.log((a * x ** 3 + b * x ** 2 + c * x + d).toFixed(7));
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
 
 </script>
 
@@ -65,6 +79,8 @@
     console.log(result.toFixed(5));
   })(+prompt());
 
+
+
 </script>
 
 <script type="pass" id="ch0103/09/">
@@ -72,6 +88,8 @@
     const pi = Math.PI.toFixed(5);
     console.log((2 * radius).toFixed(4), (2 * radius * pi).toFixed(4), (pi * radius ** 2).toFixed(4));
   })(+prompt());
+
+
 
 </script>
 
@@ -81,12 +99,16 @@
     console.log(result.toFixed(2));
   })(+prompt(), +prompt());
 
+
+
 </script>
 
 <script type="pass" id="ch0103/011/">
   (function (a, b) {
     console.log((a % b).toFixed(4));
   })(+prompt(), +prompt());
+
+
 
 </script>
 <script type="pass" id="ch0103/012/">
@@ -96,11 +118,15 @@
     console.log(v.toFixed(2));
   })(+prompt());
 
+
+
 </script>
 <script type="pass" id="ch0103/013/">
   (function (a) {
     console.log(a.toString().split("").reverse().join(""));
   })(+prompt());
+
+
 
 </script>
 <script type="pass" id="ch0103/014/">
@@ -110,6 +136,8 @@
     console.log(Math.ceil(20 / v));
   })(+prompt(), +prompt());
 
+
+
 </script>
 <script type="pass" id="ch0103/015/">
   (function (total, speed, time) {
@@ -117,12 +145,16 @@
     console.log((total - eaten));
   })(+prompt(), +prompt(), +prompt());
 
+
+
 </script>
 <script type="pass" id="ch0103/016/">
   (function (x1, y1, x2, y2) {
     const result = Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2);
     console.log(result.toFixed(3));
   })(+prompt(), +prompt(), +prompt(), +prompt());
+
+
 
 </script>
 <script type="pass" id="ch0103/017/">
@@ -139,6 +171,8 @@
     }
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
 
+
+
 </script>
 <script type="pass" id="ch0103/018/">
   (function (a1, a2, n) {
@@ -147,11 +181,15 @@
     console.log(general(n));
   })(+prompt(), +prompt(), +prompt());
 
+
+
 </script>
 <script type="pass" id="ch0103/019/">
   (function (a, b) {
     console.log((a * b));
   })(+prompt(), +prompt());
+
+
 
 </script>
 
@@ -160,6 +198,8 @@
     console.log(Math.pow(2, a));
   })(+prompt());
 
+
+
 </script>
 
 <script type="pass" id="ch0104/01">
@@ -167,17 +207,23 @@
     console.log(num > 0 ? "positive" : num === 0 ? "zero" : "negative");
   })(+prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/02">
   (function (num) {
     console.log(Math.abs(num));
   })(+prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/03">
   (function (num) {
     console.log(num % 2 === 0 ? "even" : "odd");
   })(+prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/04">
@@ -186,11 +232,15 @@
     console.log(num % 2 === 0 ? "NO" : "YES");
   })(prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/05">
   (function (a, b) {
     console.log((a > b ? ">" : a === b ? "=" : "<"));
   })(+prompt(), +prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/06">
@@ -198,17 +248,23 @@
     console.log((a >= 10 && a <= 99 ? 1 : 0));
   })(+prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/07">
   (function (lucky, comeon) {
     console.log((lucky >= 10 || comeon >= 20 ? 1 : 0));
   })(+prompt(), +prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/08">
   (function (a) {
     console.log((a % 3 === 0 && a % 5 === 0 ? "YES" : "NO"));
   })(+prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/09">
@@ -259,6 +315,8 @@
     if (!flag) console.log("n");
     else console.log(res.trim());
   })(+prompt());
+
+
 </script>
 <script type="pass" id="ch0104/010">
   (function (score1, score2) {
@@ -268,6 +326,8 @@
       console.log(0);
     }
   })(+prompt(), +prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/011">
@@ -283,6 +343,8 @@
     }
   })(+prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/012">
   (function (s) {
@@ -290,6 +352,8 @@
     const walk = s / 1.2;
     console.log(bike > walk ? "Walk" : bike === walk ? "All" : "Bike");
   })(+prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/013">
@@ -306,6 +370,8 @@
     }
   })(+prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/014">
   (function (weigh, boo) {
@@ -320,11 +386,15 @@
     console.log(sum);
   })(+prompt(), prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/015">
   (function (a, b, c) {
     console.log(Math.max(a, b, c));
   })(+prompt(), +prompt(), +prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/016">
@@ -336,6 +406,8 @@
     }
   })(+prompt(), +prompt(), +prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/017">
   (function (year) {
@@ -346,6 +418,8 @@
     }
   })(+prompt());
 
+
+
 </script>
 <script type="pass" id="ch0104/018">
   (function (x, y) {
@@ -355,6 +429,8 @@
       console.log("no");
     }
   })(+prompt(), +prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/019">
@@ -376,6 +452,8 @@
         console.log("Invalid operator!");
     }
   })(+prompt(), +prompt(), prompt());
+
+
 
 </script>
 <script type="pass" id="ch0104/020">
@@ -401,6 +479,8 @@
       console.log(`x1 = ${x1}, x2 = ${x2}`);
     }
   })(+prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0104/021">
@@ -409,9 +489,9 @@
     console.log(n - temp);
   })(+prompt(), +prompt(), +prompt());
 
+
+
 </script>
-
-
 
 
 <script type="pass" id="ch0105/01">
@@ -419,6 +499,8 @@
     const sum = ages.reduce((prev, next) => prev + next, 0);
     console.log((sum / ages.length).toFixed(2));
   })(+prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/02">
@@ -426,6 +508,8 @@
     const sum = left.reduce((prev, next) => prev + next, 0);
     console.log("$" + (sum / left.length).toFixed(2));
   })(+prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/03">
@@ -433,6 +517,8 @@
     const sum = args.reduce((prev, next) => prev + next);
     console.log((sum / number).toFixed(4));
   })(+prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/04">
@@ -440,6 +526,8 @@
     const sum = args.reduce((prev, next) => prev + next);
     console.log(sum, (sum / number).toFixed(4));
   })(+prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/05">
@@ -450,6 +538,8 @@
     }
     console.log(max);
   })(+prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/06">
@@ -457,6 +547,8 @@
     args.sort((a, b) => a - b);
     console.log(args[args.length - 1] - args[0]);
   })(+prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/07">
@@ -475,6 +567,8 @@
     }
     console.log(gold, silver, copper, gold + silver + copper)
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/08">
@@ -482,6 +576,8 @@
     const total = (number - 2) * 180;
     console.log(total - args.reduce((prev, next) => prev + next));
   })(+prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/09">
@@ -493,6 +589,8 @@
     }
     console.log(sum);
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/010">
@@ -504,6 +602,8 @@
     }
     console.log(sum);
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/011">
@@ -522,6 +622,8 @@
     });
     console.log(one, five, ten);
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/012">
@@ -532,6 +634,8 @@
     });
     console.log(sum);
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/013">
@@ -542,6 +646,8 @@
     }
     console.log(result);
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/014">
@@ -552,6 +658,8 @@
     }
     console.log(result.toFixed(4));
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/015">
@@ -559,6 +667,8 @@
     result = M * Math.pow((1 + R / 100), Y);x
     console.log(Math.floor(result));
   })(+prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/016">
@@ -580,6 +690,8 @@
       }
     }
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/017">
@@ -591,6 +703,8 @@
 
     console.log(fib(n));
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/018">
@@ -605,6 +719,8 @@
     const res2 = analysis(HAART, t2);
     console.log(res1, res2);
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt())
+
+
 </script>
 
 <script type="pass" id="ch0105/019">
@@ -613,6 +729,8 @@
     const timeRaw = 2 * getDistance(x, y) / 50 + people * 1.5;
     console.log(Math.ceil(timeRaw));
   })(+prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/020">
@@ -629,6 +747,8 @@
     }
     console.log(calc(heightInit, 10), heightInit / Math.pow(2, 10));
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/021">
@@ -650,16 +770,18 @@
       }
     }
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/022">
   ((...args) => {
     let initial = 300;
-    let sumD = 0;
-    let sumM = 0;
+    let sumD = 0; // 女儿手上的钱
+    let sumM = 0; // 存到妈妈处的钱
     // debugger
     for (let i = 0; i < args.length; i++) {
-      let left = sumD +  initial - args[i];
+      let left = sumD +  initial - args[i]; // 减去预算后剩余的钱
       if (left < 0) {
         console.log((i + 1) * -1);
         return;
@@ -670,9 +792,11 @@
     }
     // console.log(sumM);
     // console.log(sumD);
-    console.log(sumM * 1.2);
+    console.log(sumM * 1.2 + sumD);
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(),
     +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/023">
@@ -687,6 +811,8 @@
      }
      console.log(count);
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/024">
@@ -704,20 +830,45 @@
     max = Math.max(temp, max);
     console.log(max);
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/025">
   (() => {
-    let i = 0;
-    while (i <= 336) {
-      if (i.toString(7) === i.toString(9).split("").reverse().join("")) {
+    let i = 7;
+    // 342对应7进制是666，超过342就不能使用三位数的7进制来表示了
+    while (i <= 342) {
+      if (mod(i, 7, 3) === mod(i, 9, 3).split("").reverse().join("")) {
         console.log(i);
         console.log(i.toString(7));
         console.log(i.toString(9));
         break;
       }
+      i++;
+    }
+
+    /**
+     * 将一个数转为对应位数的进制
+     * @param number 十进制下的表示
+     * @param n 待转化的进制
+     * @param m 返回的进制的位数
+     * @returns {string} 返回n进制下m位的表示
+     */
+    function mod(number, n, m) {
+      let result = [];
+      while (number) {
+        result.push(number % n);
+        number = Math.floor(number / n);
+      }
+      while (result.length < m) {
+        result.push(0);
+      }
+      return result.reverse().join("");
     }
   })()
+
+
 </script>
 
 <script type="pass" id="ch0105/026">
@@ -734,6 +885,8 @@
       console.log("no");
     }
   })(+prompt());
+
+  <!-- 倒序update到此 -->
 </script>
 
 <script type="pass" id="ch0105/027">
@@ -747,42 +900,82 @@
       }
     }
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/028">
+  // (number => {
+  //   let n = Math.pow(10, Math.floor(Math.log10(number)));
+  //   let result = [];
+  //   let reminder = number;
+  //   while (reminder) {
+  //     result.push(Math.floor(reminder / n));
+  //     reminder %= n;
+  //     n /= 10;
+  //   }
+  //   console.log(result.reverse().join(" "));
+  // })(+prompt());
+
   (number => {
-    let n = Math.pow(10, Math.floor(Math.log10(number)));
     let result = [];
-    let reminder = number;
-    while (reminder) {
-      result.push(Math.floor(reminder / n));
-      reminder %= n;
-      n /= 10;
+    if (number < 0) number = -number; // 将负数统一转为正数
+    while (number) {
+      result.push(number % 10);
+      number = Math.floor(number / 10);
     }
-    console.log(result.reverse().join(" "));
+    console.log(result.join(" "));
   })(+prompt());
+
 </script>
 
 <script type="pass" id="ch0105/029">
+  // (number => {
+  //   let negativeFlag = number.toString().charAt(0) === "-";
+  //   number = Math.abs(number);
+  //   let n = Math.pow(10, Math.floor(Math.log10(number)));
+  //   let result = [];
+  //   let reminder = number;
+  //   while (reminder) {
+  //     result.push(Math.floor(reminder / n));
+  //     reminder %= n;
+  //     n /= 10;
+  //   }
+  //   if (result[result.length - 1] === 0) result.pop();
+  //   const temp = result.reverse().join("");
+  //   if (negativeFlag) {
+  //     console.log(`-${temp}`);
+  //   } else {
+  //     console.log(temp);
+  //   }
+  // })(+prompt());
+
   (number => {
-    let negativeFlag = number.toString().charAt(0) === "-";
-    number = Math.abs(number);
-    let n = Math.pow(10, Math.floor(Math.log10(number)));
-    let result = [];
-    let reminder = number;
-    while (reminder) {
-      result.push(Math.floor(reminder / n));
-      reminder %= n;
-      n /= 10;
-    }
-    if (result[result.length - 1] === 0) result.pop();
-    const temp = result.reverse().join("");
-    if (negativeFlag) {
-      console.log(`-${temp}`);
-    } else {
-      console.log(temp);
+    console.log(reverseNumber(number));
+
+    /**
+     * 返回一个数值的逆序数值表示（保留正负号，去掉先导的0）
+     * @param number
+     * @returns {number}
+     */
+    function reverseNumber(number) {
+      let negativeFlag = false;
+      if (number < 0) {
+        number = -number;
+        negativeFlag = true;
+      }
+
+      let result = 0;
+      while (number) {
+        result = result * 10 + number % 10;
+        number = Math.floor(number / 10);
+      }
+      if (negativeFlag) return -result;
+      return result;
     }
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/030">
@@ -798,19 +991,21 @@
       console.log("NO");
     }
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/031">
   ((N, M) => {
     /**
-     * 返回当有limit个人时，编号为number的灯泡可以被几个人按下一次
+     * 返回当有一共limit个人时，编号为number的灯泡可以被几个人按下一次
      * @param number 灯泡编号
-     * @param limit 总人数
+     * @param limit 总人数（题目限定总人数小于等于灯泡数）
      * @returns {number} 编号为number的灯泡共被按下几次
      */
     function factor(number, limit) {
       let count = 0;
-      for (let i = 1; i <= limit && i <= number; i++) {
+      for (let i = 1; i <= limit; i++) {
         if (number % i === 0) count++;
       }
       return count;
@@ -818,15 +1013,18 @@
 
     let result = [];
     for (let i = 1; i <= N; i++) {
-      // result[i]表示编号为i的灯泡共被按下几次，如果次数是奇数，灯泡亮，否则，灯泡灭
+      // result[i - 1]表示编号为i的灯泡共被按下几次，如果次数是奇数，灯泡灭，否则，灯泡亮
       result[i - 1] = factor(i, M);
     }
     let res = [];
     result.forEach(((value, index) => {
       if (value % 2 !== 0) res.push(index + 1);
     }))
+    console.log(result);
     console.log(res.toString());
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/032">
@@ -842,6 +1040,8 @@
     }
     console.log(result.toFixed(5));
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/033">
@@ -852,6 +1052,8 @@
     }
     console.log(result);
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/034">
@@ -862,11 +1064,19 @@
     }
     console.log(result);
 
+    /**
+     * 计算给定非负数的阶乘（负数没有阶乘）
+     * @param n
+     * @param res
+     * @returns {number}
+     */
     function factorial(n, res = 1) {
       if (n === 0) return res;
       return factorial(n - 1, res * n);
     }
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/035">
@@ -877,11 +1087,19 @@
     }
     console.log(result);
 
+    /**
+     * 计算给定非负数的阶乘（负数没有阶乘）
+     * @param n
+     * @param res
+     * @returns {number}
+     */
     function factorial(n, res = 1) {
       if (n === 0) return res;
       return factorial(n - 1, res * n);
     }
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/036">
@@ -891,24 +1109,48 @@
       result += Math.pow(x, n);
       --n;
     }
-    console.log(result + 1);
+    console.log(result + 1); // x的0次方为1，单独加上
   })(+prompt(), +prompt());
+
+
 </script>
 <script id="ch0105/037"></script>
 
 <script type="pass" id="ch0105/038">
-  ((n, ...args) => {
+  // ((n, ...args) => {
+  //   let result = [];
+  //   while (n) {
+  //     result.push(n * args.shift());
+  //     n--;
+  //   }
+  //   console.log(result.join(" "));
+  // })(+prompt(), +prompt(), +prompt(), +prompt());
+
+  (n => {
     let result = [];
+    let args = [];
+    for (let i = 1; i <= n + 1; i++) {
+      args.push(+prompt());
+    }
+    // 特判，当n为0时，直接推入一个0
+    if (n === 0) result.push(0);
     while (n) {
       result.push(n * args.shift());
       n--;
     }
     console.log(result.join(" "));
-  })(+prompt(), +prompt(), +prompt(), +prompt());
+  })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/039">
   (n => {
+    /**
+     * 判断一个数是否与7有关
+     * @param number
+     * @returns {boolean}
+     */
     const related = number => {
       const arr = number.toString().split("");
       return arr.includes("7") || number % 7 === 0;
@@ -922,6 +1164,8 @@
     }
     console.log(result);
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/040">
@@ -936,6 +1180,8 @@
     });
     console.log(count);
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/041">
@@ -950,14 +1196,14 @@
     });
     console.log(count);
   })(+prompt(), +prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/042">
   ((height, width, char, bool) => {
-    let result = Array(height).fill([]);
-    result = result.map(value => {
-      return Array(width).fill(0);
-    });
+    let result = Array(height).fill([])
+      .map(_ => Array(width).fill(0));
 
     // 生成一个螺旋形递增矩阵
     let left = 0, right = result[0].length - 1, top = 0, bottom = result.length - 1;
@@ -975,10 +1221,18 @@
     }
     console.log(result);
   })(+prompt(), +prompt(), prompt(), +prompt());
+
 </script>
 
 <script type="pass" id="ch0105/043">
   (n => {
+    /**
+     * 判断给定的正数是否是质数。
+     * <p>
+     * 百度百科对质数的定义：质数是指在大于1的自然数中，除了1和它本身以外不再有其他因数的自然数。
+     * @param num
+     * @returns {boolean}
+     */
     const isPrime = num => {
       if (num < 2) return false;
       if (num === 2) return true;
@@ -997,10 +1251,19 @@
       }
     }
   })(+prompt());
+
+
 </script>
 
 <script type="pass" id="ch0105/044">
   (n => {
+    /**
+     * 判断给定的正数是否是质数。
+     * <p>
+     * 百度百科对质数的定义：质数是指在大于1的自然数中，除了1和它本身以外不再有其他因数的自然数。
+     * @param num
+     * @returns {boolean}
+     */
     const isPrime = num => {
       if (num < 2) return false;
       if (num === 2) return true;
@@ -1017,28 +1280,46 @@
       }
       if (result.length === n) break;
     }
-    console.log(result[result.length - 1]);
+    console.log(result);
+    console.log(result.pop());
   })(+prompt());
+
 </script>
 
 <script type="pass" id="ch0105/045">
+  // (n => {
+  //   let result = [];
+  //   let i = 1;
+  //   outer:
+  //   while (true) {
+  //     let temp = i;
+  //     while (temp--) {
+  //       result.push(i);
+  //       if (temp === 0) {
+  //         i++;
+  //       }
+  //       if (result.length >= n) break outer;
+  //     }
+  //   }
+  //   console.log(result);
+  //   console.log(result.reduce((prev, next) => prev + next));
+  // })(+prompt());
+
   (n => {
-    let result = [];
-    let i = 1;
+    let res = 0;
+    let times = 0;
     outer:
-    while (true) {
-      let temp = i;
-      while (temp--) {
-        result.push(i);
-        if (temp === 0) {
-          i++;
-        }
-        if (result.length >= n) break outer;
+    for (let i = 1; i <= 10000; i++) {
+      for (let j = 1; j <= i; j++) {
+        res += i;
+        times++;
+        if (times === n) break outer;
       }
     }
-    console.log(result);
-    console.log(result.reduce((prev, next) => prev + next));
+    console.log(res);
   })(+prompt());
+
+
 </script>
 </body>
 </html>
