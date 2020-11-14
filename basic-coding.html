@@ -10,8 +10,6 @@
   const b = +prompt();
   console.log(a + b);
 
-
-
 </script>
 
 <script type="pass" id="ch0103/02/">
@@ -20,8 +18,6 @@
   const c = +prompt();
   console.log((a + b) * c);
 
-
-
 </script>
 
 <script type="pass" id="ch0103/03/">
@@ -29,8 +25,6 @@
   const b = +prompt();
   const c = +prompt();
   console.log(Math.floor((a + b) / c));
-
-
 
 </script>
 
@@ -41,8 +35,6 @@
   const left = a % b;
   console.log(result, left);
 
-
-
 </script>
 
 <script type="pass" id="ch0103/05/">
@@ -51,8 +43,6 @@
   const result = a / b;
   console.log(result.toFixed(9));
 
-
-
 </script>
 
 <script type="pass" id="ch0103/06/">
@@ -60,16 +50,12 @@
   const dead = +prompt();
   console.log((dead * 100 / total).toFixed(3) + "%")
 
-
-
 </script>
 
 <script type="pass" id="ch0103/07/">
   (function (x, a, b, c, d) {
     console.log((a * x ** 3 + b * x ** 2 + c * x + d).toFixed(7));
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt());
-
-
 
 </script>
 
@@ -79,8 +65,6 @@
     console.log(result.toFixed(5));
   })(+prompt());
 
-
-
 </script>
 
 <script type="pass" id="ch0103/09/">
@@ -88,8 +72,6 @@
     const pi = Math.PI.toFixed(5);
     console.log((2 * radius).toFixed(4), (2 * radius * pi).toFixed(4), (pi * radius ** 2).toFixed(4));
   })(+prompt());
-
-
 
 </script>
 
@@ -99,16 +81,12 @@
     console.log(result.toFixed(2));
   })(+prompt(), +prompt());
 
-
-
 </script>
 
 <script type="pass" id="ch0103/011/">
   (function (a, b) {
     console.log((a % b).toFixed(4));
   })(+prompt(), +prompt());
-
-
 
 </script>
 <script type="pass" id="ch0103/012/">
@@ -118,15 +96,11 @@
     console.log(v.toFixed(2));
   })(+prompt());
 
-
-
 </script>
 <script type="pass" id="ch0103/013/">
   (function (a) {
     console.log(a.toString().split("").reverse().join(""));
   })(+prompt());
-
-
 
 </script>
 <script type="pass" id="ch0103/014/">
@@ -136,8 +110,6 @@
     console.log(Math.ceil(20 / v));
   })(+prompt(), +prompt());
 
-
-
 </script>
 <script type="pass" id="ch0103/015/">
   (function (total, speed, time) {
@@ -145,16 +117,12 @@
     console.log((total - eaten));
   })(+prompt(), +prompt(), +prompt());
 
-
-
 </script>
 <script type="pass" id="ch0103/016/">
   (function (x1, y1, x2, y2) {
     const result = Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2);
     console.log(result.toFixed(3));
   })(+prompt(), +prompt(), +prompt(), +prompt());
-
-
 
 </script>
 <script type="pass" id="ch0103/017/">
@@ -171,8 +139,6 @@
     }
   })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
 
-
-
 </script>
 <script type="pass" id="ch0103/018/">
   (function (a1, a2, n) {
@@ -181,15 +147,11 @@
     console.log(general(n));
   })(+prompt(), +prompt(), +prompt());
 
-
-
 </script>
 <script type="pass" id="ch0103/019/">
   (function (a, b) {
     console.log((a * b));
   })(+prompt(), +prompt());
-
-
 
 </script>
 
@@ -198,8 +160,6 @@
     console.log(Math.pow(2, a));
   })(+prompt());
 
-
-
 </script>
 
 <script type="pass" id="ch0104/01">
@@ -207,23 +167,17 @@
     console.log(num > 0 ? "positive" : num === 0 ? "zero" : "negative");
   })(+prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/02">
   (function (num) {
     console.log(Math.abs(num));
   })(+prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/03">
   (function (num) {
     console.log(num % 2 === 0 ? "even" : "odd");
   })(+prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/04">
@@ -232,15 +186,11 @@
     console.log(num % 2 === 0 ? "NO" : "YES");
   })(prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/05">
   (function (a, b) {
     console.log((a > b ? ">" : a === b ? "=" : "<"));
   })(+prompt(), +prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/06">
@@ -248,23 +198,17 @@
     console.log((a >= 10 && a <= 99 ? 1 : 0));
   })(+prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/07">
   (function (lucky, comeon) {
     console.log((lucky >= 10 || comeon >= 20 ? 1 : 0));
   })(+prompt(), +prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/08">
   (function (a) {
     console.log((a % 3 === 0 && a % 5 === 0 ? "YES" : "NO"));
   })(+prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/09">
@@ -316,7 +260,6 @@
     else console.log(res.trim());
   })(+prompt());
 
-
 </script>
 <script type="pass" id="ch0104/010">
   (function (score1, score2) {
@@ -326,8 +269,6 @@
       console.log(0);
     }
   })(+prompt(), +prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/011">
@@ -343,8 +284,6 @@
     }
   })(+prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/012">
   (function (s) {
@@ -352,8 +291,6 @@
     const walk = s / 1.2;
     console.log(bike > walk ? "Walk" : bike === walk ? "All" : "Bike");
   })(+prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/013">
@@ -370,8 +307,6 @@
     }
   })(+prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/014">
   (function (weigh, boo) {
@@ -386,15 +321,11 @@
     console.log(sum);
   })(+prompt(), prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/015">
   (function (a, b, c) {
     console.log(Math.max(a, b, c));
   })(+prompt(), +prompt(), +prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/016">
@@ -406,8 +337,6 @@
     }
   })(+prompt(), +prompt(), +prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/017">
   (function (year) {
@@ -418,8 +347,6 @@
     }
   })(+prompt());
 
-
-
 </script>
 <script type="pass" id="ch0104/018">
   (function (x, y) {
@@ -429,8 +356,6 @@
       console.log("no");
     }
   })(+prompt(), +prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/019">
@@ -452,8 +377,6 @@
         console.log("Invalid operator!");
     }
   })(+prompt(), +prompt(), prompt());
-
-
 
 </script>
 <script type="pass" id="ch0104/020">
@@ -480,7 +403,6 @@
     }
   })(+prompt(), +prompt(), +prompt());
 
-
 </script>
 
 <script type="pass" id="ch0104/021">
@@ -489,70 +411,91 @@
     console.log(n - temp);
   })(+prompt(), +prompt(), +prompt());
 
-
-
 </script>
 
 
 <script type="pass" id="ch0105/01">
-  (function (...ages) {
+  (number => {
+    const ages = [];
+    while (number--) {
+      ages.push(+prompt());
+    }
+
     const sum = ages.reduce((prev, next) => prev + next, 0);
     console.log((sum / ages.length).toFixed(2));
-  })(+prompt(), +prompt(), +prompt(), +prompt());
-
-
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/02">
-  (function (...left) {
+  (() => {
+    const left = [];
+    let times = 12;
+    while (times--) {
+      left.push(+prompt());
+    }
+
     const sum = left.reduce((prev, next) => prev + next, 0);
     console.log("$" + (sum / left.length).toFixed(2));
-  })(+prompt(), +prompt(), +prompt(), +prompt());
-
-
+  })();
 </script>
 
 <script type="pass" id="ch0105/03">
-  (function (number, ...args) {
+  (number => {
+    const args = [];
+    let times = number;
+    while (times--) {
+      args.push(+prompt());
+    }
+
     const sum = args.reduce((prev, next) => prev + next);
     console.log((sum / number).toFixed(4));
-  })(+prompt(), +prompt(), +prompt());
-
-
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/04">
-  (function (number, ...args) {
+  (number => {
+    const args = [];
+    let times = number;
+    while (times--) {
+      args.push(+prompt());
+    }
+
     const sum = args.reduce((prev, next) => prev + next);
     console.log(sum, (sum / number).toFixed(4));
-  })(+prompt(), +prompt(), +prompt());
-
-
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/05">
-  ((number, ...args) => {
-    let max = args[0];
-    for (let i = 1; i < args.length; i++) {
-      max = Math.max(max, args[i]);
+  (number => {
+    const args = [];
+    while (number--) {
+      args.push(+prompt());
     }
-    console.log(max);
-  })(+prompt(), +prompt(), +prompt(), +prompt());
 
-
+    args.sort((a, b) => a - b);
+    console.log(args[args.length - 1]);
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/06">
-  ((number, ...args) => {
+  (number => {
+    const args = [];
+    while (number--) {
+      args.push(+prompt());
+    }
+
     args.sort((a, b) => a - b);
     console.log(args[args.length - 1] - args[0]);
-  })(+prompt(), +prompt(), +prompt(), +prompt());
-
-
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/07">
-  ((number, ...args) => {
+  (number => {
+    const args = [];
+    while (number--) {
+      args.push(+prompt(), +prompt(), +prompt());
+    }
+
     let gold = 0;
     let silver = 0;
     let copper = 0;
@@ -565,19 +508,23 @@
     for (let i = 2; i < args.length; i += 3) {
       copper += args[i];
     }
-    console.log(gold, silver, copper, gold + silver + copper)
-  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
-
-
+    console.log(gold, silver, copper, gold + silver + copper);
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/08">
-  ((number, ...args) => {
+  (number => {
     const total = (number - 2) * 180;
+
+    // 获取输入数据
+    const args = [];
+    number--;
+    while (number--) {
+      args.push(+prompt());
+    }
+
     console.log(total - args.reduce((prev, next) => prev + next));
-  })(+prompt(), +prompt(), +prompt());
-
-
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/09">
@@ -589,7 +536,6 @@
     }
     console.log(sum);
   })(+prompt(), +prompt());
-
 
 </script>
 
@@ -603,11 +549,15 @@
     console.log(sum);
   })(+prompt(), +prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/011">
-  ((number, ...args) => {
+  (number => {
+    const args = [];
+    while (number--) {
+      args.push(+prompt());
+    }
+
     let one = 0;
     let five = 0;
     let ten = 0;
@@ -621,21 +571,23 @@
       }
     });
     console.log(one, five, ten);
-  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
-
-
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/012">
-  ((number, target, ...args) => {
+  ((number, target) => {
+    // 获取输入数据
+    const args = [];
+    while (number--) {
+      args.push(+prompt());
+    }
+
     let sum = 0;
     args.forEach(value => {
       if (value === target) sum++;
     });
     console.log(sum);
-  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt());
-
-
+  })(+prompt(), +prompt());
 </script>
 
 <script type="pass" id="ch0105/013">
@@ -646,7 +598,6 @@
     }
     console.log(result);
   })(+prompt(), +prompt());
-
 
 </script>
 
@@ -659,7 +610,6 @@
     console.log(result.toFixed(4));
   })(+prompt(), +prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/015">
@@ -667,7 +617,6 @@
     result = M * Math.pow((1 + R / 100), Y);
     console.log(Math.floor(result));
   })(+prompt(), +prompt(), +prompt());
-
 
 </script>
 
@@ -691,11 +640,17 @@
     }
   })(+prompt(), +prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/017">
   (n => {
+    /**
+     * 使用尾递归计算斐波那契数列
+     * @param n
+     * @param a
+     * @param b
+     * @returns {number}
+     */
     function fib(n, a = 1, b = 1) {
       if (n === 1) return a;
       return fib(n - 1, b, a + b);
@@ -708,28 +663,44 @@
 </script>
 
 <script type="pass" id="ch0105/018">
-  ((number, ...args) => {
+  (number => {
+    // 获取输入数据
+    const args = [];
+    while (number--) {
+      const temp = [];
+      temp.push(+prompt(), +prompt());
+      args.push(temp);
+    }
+
     const analysis = (a, b) => a - b > 0.005 ? "worse" : b - a > 0.005 ? "better" : "same";
-    let[y1, x1, y2, x2, y3, x3] = args;
-    const HAART = x1 / y1;
-    const t1 = x2 / y2;
-    const t2 = x3 / y3;
-
-    const res1 = analysis(HAART, t1);
-    const res2 = analysis(HAART, t2);
-    console.log(res1, res2);
-  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt())
-
-
+    const [x0, y0] = args.shift();
+    const HAART = y0 / x0;
+    args.forEach(value => {
+      const [x, y] = value;
+      console.log(analysis(HAART, y / x));
+    });
+  })(+prompt());
 </script>
 
 <script type="pass" id="ch0105/019">
-  ((number, x, y, people) => {
-    const getDistance = (x, y) => Math.sqrt(x ** 2 + y ** 2);
-    const timeRaw = 2 * getDistance(x, y) / 50 + people * 1.5;
-    console.log(Math.ceil(timeRaw));
-  })(+prompt(), +prompt(), +prompt(), +prompt());
+  (n => {
+    // 获取输入数据
+    const args = [];
+    while (n--) {
+      let temp = [];
+      temp.push(+prompt(), +prompt(), +prompt());
+      args.push(temp);
+    }
 
+    const getDistance = (x, y) => Math.sqrt(x ** 2 + y ** 2);
+    let total = 0;
+    args.forEach(value => {
+      let [x, y, people] = value;
+      const timeRaw = 2 * getDistance(x, y) / 50 + people * 1.5;
+      total += timeRaw;
+    });
+    console.log(Math.ceil(total));
+  })(+prompt());
 
 </script>
 
@@ -747,7 +718,6 @@
     }
     console.log(calc(heightInit, 10), heightInit / Math.pow(2, 10));
   })(+prompt());
-
 
 </script>
 
@@ -771,17 +741,43 @@
     }
   })(+prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/022">
-  ((...args) => {
+  // ((...args) => {
+  //   let initial = 300;
+  //   let sumD = 0; // 女儿手上的钱
+  //   let sumM = 0; // 存到妈妈处的钱
+  //   // debugger
+  //   for (let i = 0; i < args.length; i++) {
+  //     let left = sumD +  initial - args[i]; // 减去预算后剩余的钱
+  //     if (left < 0) {
+  //       console.log((i + 1) * -1);
+  //       return;
+  //     }
+  //     let temp = Math.floor(left / 100);
+  //     sumM += temp * 100;
+  //     sumD = left - temp * 100;
+  //   }
+  //   // console.log(sumM);
+  //   // console.log(sumD);
+  //   console.log(sumM * 1.2 + sumD);
+  // })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(),
+  //   +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
+
+  (() => {
+    // 获取输入数据
+    const args = [];
+    let month = 12;
+    while (month--) {
+      args.push(+prompt());
+    }
+
     let initial = 300;
     let sumD = 0; // 女儿手上的钱
     let sumM = 0; // 存到妈妈处的钱
-    // debugger
     for (let i = 0; i < args.length; i++) {
-      let left = sumD +  initial - args[i]; // 减去预算后剩余的钱
+      let left = sumD +  initial - args[i]; // 减去预算后女儿剩余的钱
       if (left < 0) {
         console.log((i + 1) * -1);
         return;
@@ -790,47 +786,51 @@
       sumM += temp * 100;
       sumD = left - temp * 100;
     }
-    // console.log(sumM);
-    // console.log(sumD);
     console.log(sumM * 1.2 + sumD);
-  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(),
-    +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
-
-
+  })();
 </script>
 
 <script type="pass" id="ch0105/023">
-  ((total, num, ...args) => {
-     let count = 0;
-     for (let e of args) {
-       if (e <= total) {
-         total -= e;
-       } else {
-         count++;
-       }
-     }
-     console.log(count);
-  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
-
-
+  ((total, num) => {
+    const args = [];
+    while (num--) {
+      args.push(+prompt());
+    }
+    let count = 0;
+    for (let arg of args) {
+      if (arg <= total) {
+        total -= arg;
+      } else {
+        count++;
+      }
+    }
+    console.log(count);
+  })(+prompt(), +prompt());
 </script>
 
 <script type="pass" id="ch0105/024">
-  ((total, ...args) => {
+  /* update input */
+  (total => {
+    const args = [];
+    while (total--) {
+      let temp = [];
+      temp.push(+prompt(), +prompt());
+      args.push(temp);
+    }
     let max = 0;
     let temp = 0;
-    for (let i = 0; i < args.length - 1; i += 2) {
-      if (args[i] >= 90 && args[i] <= 140 && args[i + 1] >= 60 && args[i + 1] <= 90) {
+    for (let i = 0; i < args.length; i++) {
+      let [high, low] = args[i];
+      if (high >= 90 && high <= 140 && low >= 60 && low <= 90) {
         temp++;
+        max = Math.max(max, temp);
       } else {
-        max = Math.max(temp, max);
         temp = 0;
       }
     }
-    max = Math.max(temp, max);
-    console.log(max);
-  })(+prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt(), +prompt());
 
+    console.log(max);
+  })(+prompt());
 
 </script>
 
@@ -868,25 +868,29 @@
     }
   })()
 
-
 </script>
 
 <script type="pass" id="ch0105/026">
   (num => {
-    const arr = num.toString().split("");
-    let r1 = +arr[arr.length - 1];
-    let temp = 0;
-    for (let i = 0; i < arr.length - 1; i++) {
-      temp += +arr[i];
+    let args = [];
+    while (num--) {
+      args.push(+prompt());
     }
-    if (r1 - temp > 0) {
-      console.log(num);
-    } else {
-      console.log("no");
+    console.log(args.filter(value => calc(value)).length);
+
+    /**
+     * 计算一个给定四位数的个位数减去剩余位上的数之和是否大于零
+     * @param number
+     * @returns {boolean}
+     */
+    function calc(number) {
+      const arr = number.toString().split("");
+      const top = +arr.pop();
+      const leftSum = arr.reduce((prev, next) => +prev + (+next));
+      return top - leftSum > 0;
     }
   })(+prompt());
 
-  <!-- 倒序update到此 -->
 </script>
 
 <script type="pass" id="ch0105/027">
@@ -1024,7 +1028,6 @@
     console.log(res.toString());
   })(+prompt(), +prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/032">
@@ -1041,7 +1044,6 @@
     console.log(result.toFixed(5));
   })(+prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/033">
@@ -1052,7 +1054,6 @@
     }
     console.log(result);
   })(+prompt());
-
 
 </script>
 
@@ -1076,7 +1077,6 @@
     }
   })(+prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/035">
@@ -1099,7 +1099,6 @@
     }
   })(+prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/036">
@@ -1111,7 +1110,6 @@
     }
     console.log(result + 1); // x的0次方为1，单独加上
   })(+prompt(), +prompt());
-
 
 </script>
 <script id="ch0105/037"></script>
@@ -1141,7 +1139,6 @@
     console.log(result.join(" "));
   })(+prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/039">
@@ -1165,7 +1162,6 @@
     console.log(result);
   })(+prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/040">
@@ -1181,7 +1177,6 @@
     console.log(count);
   })(+prompt());
 
-
 </script>
 
 <script type="pass" id="ch0105/041">
@@ -1196,7 +1191,6 @@
     });
     console.log(count);
   })(+prompt(), +prompt());
-
 
 </script>
 
@@ -1251,7 +1245,6 @@
       }
     }
   })(+prompt());
-
 
 </script>
 
@@ -1318,7 +1311,6 @@
     }
     console.log(res);
   })(+prompt());
-
 
 </script>
 </body>
