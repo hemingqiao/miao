@@ -1112,7 +1112,28 @@
   })(+prompt(), +prompt());
 
 </script>
-<script id="ch0105/037"></script>
+<script id="ch0105/037">
+  ((M, N, X) => {
+    let power = N; // 初始战斗力为N
+    while (power <= M && X > 0) {
+      X -= Math.ceil(M / power);
+      if (X < 0) break;
+      power += Math.floor(M / power);
+    }
+    console.log(power);
+  })(+prompt(), +prompt(), +prompt());
+
+  // var M = +prompt();
+  // var N = +prompt();
+  // var X = +prompt();
+  // var power = N; // 初始战斗力为N
+  // while (power <= M && X > 0) {
+  //   X -= Math.ceil(M / power);
+  //   if (X < 0) break;
+  //   power += Math.floor(M / power);
+  // }
+  // console.log(power);
+</script>
 
 <script type="pass" id="ch0105/038">
   // ((n, ...args) => {
