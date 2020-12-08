@@ -180,6 +180,24 @@ var hemingqiao = (function () {
 
 
   /**
+   * 这个方法类似 _.difference ，除了它接受一个 comparator，它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
+   * @param arr
+   * @param values
+   * @param comparator
+   * @return {[]}
+   */
+  function differenceWith(arr, values, comparator) {
+    let res = [];
+    for (let e of arr) {
+      for (let v of values) {
+        if (!comparator(e, v)) res.push(e);
+      }
+    }
+    return res;
+  }
+
+
+  /**
    * 将 array 中的所有元素转换为由 separator 分隔的字符串。
    * @param arr
    * @param separator
@@ -258,3 +276,6 @@ var hemingqiao = (function () {
   }
 
 })();
+
+let res = hemingqiao.differenceBy([{"x":2},{"x":1}],[{"x":1}],"x");
+console.log(res);
