@@ -33,6 +33,7 @@ var hemingqiao = (function () {
     every,
     filter,
     find,
+    toArray,
 
   };
 
@@ -717,4 +718,23 @@ var hemingqiao = (function () {
     }
   }
 
+
+  function toArray(value) {
+    let ret = [];
+    if (Array.isArray(value)) {
+      return value;
+    } else if (typeof value === "string") {
+      ret = [...value];
+      return ret;
+    } else if (value !== null && typeof value === "object") {
+      for (let key of Object.keys(value)) {
+        ret.push(value[key]);
+      }
+      return ret
+    } else {
+      return [];
+    }
+  }
+
 })();
+
