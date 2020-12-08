@@ -34,6 +34,7 @@ var hemingqiao = (function () {
     filter,
     find,
     toArray,
+    intersection,
 
   };
 
@@ -739,6 +740,27 @@ var hemingqiao = (function () {
     } else {
       return [];
     }
+  }
+
+
+  /**
+   * 求交集
+   * @param source
+   * @param args
+   * @return {[]}
+   */
+  function intersection(source, ...args) {
+    let ret = [];
+    for (let arg of args) {
+      for (let e of arg) {
+        if (source.includes(e)) {
+          ret.push(e);
+        }
+      }
+      source = ret;
+      ret = [];
+    }
+    return source;
   }
 
 })();
