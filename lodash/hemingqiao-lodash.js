@@ -160,7 +160,7 @@ var hemingqiao = (function () {
 
     let ret = [];
     for (let e of copy) {
-      if (!res.includes(iteratee(e))) ret.push(e);
+      if (res.includes(iteratee(e))) ret.push(e);
     }
     return ret;
     // const set = new Set(copy);
