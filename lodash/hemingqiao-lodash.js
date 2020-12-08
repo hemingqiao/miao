@@ -538,25 +538,43 @@ var hemingqiao = (function () {
   }
 
 
+  // /**
+  //  * 使用二分查找来决定 value值 应该插入到数组中 尽可能小的索引位置，以保证array的排序。
+  //  * 要求数组不能有重复元素
+  //  * @param array
+  //  * @param value
+  //  * @return {number}
+  //  */
+  // function sortedIndex(array, value) {
+  //   let low = 0, high = array.length - 1;
+  //   while (low <= high) {
+  //     let mid = (low + high) >>> 1;
+  //     if (array[mid] === value) {
+  //       return mid;
+  //     } else if (array[mid] > value) {
+  //       high = mid - 1;
+  //     } else {
+  //       low = mid + 1;
+  //     }
+  //   }
+  //   return low;
+  // }
+
+
   /**
-   * 使用二分查找来决定 value值 应该插入到数组中 尽可能小的索引位置，以保证array的排序。
+   * 采取暴力破解
+   * 将 value 值插入到有序数组中 尽可能小的索引位置，以保证array的排序。
    * @param array
    * @param value
-   * @return {number}
+   * @return {number|*}
    */
   function sortedIndex(array, value) {
-    let low = 0, high = array.length - 1;
-    while (low <= high) {
-      let mid = (low + high) >>> 1;
-      if (array[mid] === value) {
-        return mid;
-      } else if (array[mid] > value) {
-        high = mid - 1;
-      } else {
-        low = mid + 1;
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] >= value) {
+        return i;
       }
     }
-    return low;
+    return array.length;
   }
 
 })();
