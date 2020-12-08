@@ -719,6 +719,11 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * 转换 value 为一个数组。
+   * @param value
+   * @return {[]|*[]|*}
+   */
   function toArray(value) {
     let ret = [];
     if (Array.isArray(value)) {
@@ -730,11 +735,10 @@ var hemingqiao = (function () {
       for (let key of Object.keys(value)) {
         ret.push(value[key]);
       }
-      return ret
+      return ret;
     } else {
       return [];
     }
   }
 
 })();
-
