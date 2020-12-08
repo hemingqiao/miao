@@ -25,6 +25,11 @@ var hemingqiao = (function () {
     flatten,
     flattenDeep,
     flattenDepth,
+    fromPairs,
+    head,
+    initial,
+    reverse,
+    sortedIndex,
 
   };
 
@@ -473,6 +478,83 @@ var hemingqiao = (function () {
       res = [].concat(...res);
     }
     return res;
+  }
+
+
+  /**
+   * 与 _.toPairs正好相反；这个方法返回一个由键值对pairs构成的对象。
+   * @param pairs
+   * @return {{}}
+   */
+  function fromPairs(pairs) {
+    let ret = {};
+    for (let pair of pairs) {
+      const [key, value] = pair;
+      ret[key] = value;
+    }
+    return ret;
+  }
+
+  /**
+   * 获取数组 array 的第一个元素。
+   * @param arr
+   * @return {*|undefined}
+   */
+  function head(arr) {
+    return arr.length ? arr[0] : undefined;
+  }
+
+
+  /**
+   * 获取数组array中除了最后一个元素之外的所有元素（去除数组array中的最后一个元素）。
+   * @param array
+   * @return {[]}
+   */
+  function initial(array) {
+    let ret = [];
+    for (let i = 0; i < array.length - 1; i++) {
+      ret.push(array[i]);
+    }
+    return ret;
+  }
+
+
+  /**
+   * 反转array，使得第一个元素变为最后一个元素，第二个元素变为倒数第二个元素，依次类推。
+   * Note: 这个方法会改变原数组 array，基于 Array#reverse.
+   * @param array
+   * @return {*}
+   */
+  function reverse(array) {
+    let low = 0, high = array.length - 1;
+    while (low <= high) {
+      let temp = array[low];
+      array[low] = array[high];
+      array[high] = temp;
+    }
+    return array;
+  }
+
+
+  /**
+   * 使用二分查找来决定 value值 应该插入到数组中 尽可能小的索引位置，以保证array的排序。
+   * @param array
+   * @param value
+   * @return {number}
+   */
+  function sortedIndex(array, value) {
+    let low = 0, high = array.length - 1;
+    while (low <= high) {
+      let mid = (low + high) >>> 1;
+      if (array[mid] === value) {
+        return mid;
+      } else if (array[mid] > value) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    }
+    return low;
   }
 
 })();
