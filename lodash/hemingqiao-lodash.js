@@ -41,6 +41,3 @@ const hemingqiao = (function (){
   }
 
 })();
-
-let res = hemingqiao.chunk([32, 64, 1024, 2048], 1)
-console.log(res);
