@@ -207,8 +207,7 @@ var hemingqiao = (function () {
         }
       } else if (Object.prototype.toString.call(iteratee) === "[object RegExp]") {
         return val => iteratee.test(val);
-      }
-      else {
+      } else {
         return iterateeEqual(iteratee);
       }
     }
