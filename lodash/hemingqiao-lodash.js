@@ -5,12 +5,13 @@ created by WebStorm
 description: 简单实现lodash中的一些方法
 ***************************************************************************** */
 
-var hemingqiao = (function (){
+var hemingqiao = (function () {
   return {
     chunk,
     compact,
     concat,
-    difference
+    difference,
+    differenceBy
   };
 
   /**
@@ -102,6 +103,37 @@ var hemingqiao = (function (){
     }
 
     return [...set];
+  }
+
+  /**
+   * see official document
+   * @param array
+   * @param values
+   * @param iteratee
+   * @return {any[]}
+   */
+  function differenceBy(array, values, iteratee) {
+    iteratee = transform(iteratee);
+    let copy = array.slice();
+    let mapped = array.map(value => iteratee(value));
+    let args = Array.from(arguments);
+    args.shift();
+    args.pop();
+    args = args.map(value => value.map(value1 => iteratee(value1)));
+    let res = difference(mapped, ...args);
+    const set = new Set(copy);
+    for (let e of set) {
+      if (!res.includes(iteratee(e))) set.delete(e);
+    }
+    return [...set];
+  }
+
+  // 只判断字符串和函数
+  function transform(iteratee) {
+    if (typeof iteratee === "function") return iteratee;
+    if (typeof iteratee === "string") {
+      return val => val[iteratee];
+    }
   }
 
 })();
