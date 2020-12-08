@@ -12,6 +12,7 @@ var hemingqiao = (function () {
     concat,
     difference,
     differenceBy,
+    differenceWith,
     join,
     last,
     indexOf,
