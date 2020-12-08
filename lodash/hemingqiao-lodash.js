@@ -191,7 +191,6 @@ var hemingqiao = (function () {
    * @return {(function(*): *)|*}
    */
   function transform(iteratee) {
-    // 这什么鬼玩意iteratee自创的吧？？？？
     if (typeof iteratee === "string") {
       return val => val[iteratee];
     }
@@ -207,13 +206,7 @@ var hemingqiao = (function () {
           return obj[iteratee[0]] === iteratee[1];
         }
       } else if (Object.prototype.toString.call(iteratee) === "[object RegExp]") {
-        return function (val) {
-          if (!iteratee.test(val)) {
-            return false;
-          } else {
-            return val.match(iteratee)[0] === val;
-          }
-        }
+        return val => iteratee.test(val);
       }
       else {
         return iterateeEqual(iteratee);
