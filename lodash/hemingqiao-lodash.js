@@ -30,6 +30,9 @@ var hemingqiao = (function () {
     initial,
     reverse,
     sortedIndex,
+    every,
+    filter,
+    find,
 
   };
 
@@ -213,6 +216,47 @@ var hemingqiao = (function () {
     }
   }
 
+  // /**
+  //  * 简单实现深比较
+  //  * @param a
+  //  * @param b
+  //  * @return {boolean}
+  //  */
+  // function deepEqual(a, b) {
+  //   const keysA = Reflect.ownKeys(a);
+  //   const keysB = Reflect.ownKeys(b);
+  //
+  //   if (keysA.length !== keysB.length) {
+  //     return false;
+  //   }
+  //   for (let key of keysA) {
+  //     if (!keysB.includes(key)) {
+  //       return false;
+  //     }
+  //   }
+  //   for (let key of keysA) {
+  //     let val = a[key];
+  //     if (val === null) {
+  //       if (b[key] !== val) {
+  //         return false;
+  //       }
+  //     } else if (typeof val === "object") {
+  //       if (typeof b[key] !== "object") {
+  //         return false;
+  //       }
+  //       if (!deepEqual(val, b[key])) {
+  //         return false;
+  //       }
+  //     } else {
+  //       if (val !== b[key]) {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // }
+
+
   /**
    * 简单实现深比较
    * @param a
@@ -223,7 +267,7 @@ var hemingqiao = (function () {
     const keysA = Reflect.ownKeys(a);
     const keysB = Reflect.ownKeys(b);
 
-    if (keysA.length !== keysB.length) {
+    if (keysA.length >= keysB.length) {
       return false;
     }
     for (let key of keysA) {
@@ -575,6 +619,102 @@ var hemingqiao = (function () {
       }
     }
     return array.length;
+  }
+
+
+  /**
+   * 通过 predicate（断言函数） 检查 collection（集合）中的 所有 元素是否都返回真值。一旦 predicate（断言函数） 返回假值，迭代就马上停止。
+   * predicate（断言函数）调用三个参数： (value, index|key, collection)。
+   * @param collection
+   * @param predicate
+   * @return {boolean}
+   */
+  function every(collection, predicate) {
+    predicate = transform(predicate);
+    if (Array.isArray(collection)) {
+      if (!collection.length) {
+        return true;
+      } else {
+        for (let e of collection) {
+          if (!predicate(e)) return false;
+        }
+      }
+    } else if (typeof collection === "object" && collection !== null) {
+      if (!Object.keys(collection).length) {
+        return true;
+      } else {
+        for (let key of Object.keys(collection)) {
+          if (!predicate(collection[key])) return false;
+        }
+      }
+    }
+    return true;
+  }
+
+
+  /**
+   * 遍历 collection（集合）元素，返回 predicate（断言函数）返回真值 的所有元素的数组。 predicate（断言函数）调用三个参数：(value, index|key, collection)。
+   * @param collection
+   * @param predicate
+   * @return {{}|boolean}
+   */
+  function filter(collection, predicate) {
+    let res;
+    predicate = transform(predicate);
+    if (Array.isArray(collection)) {
+      res = [];
+      if (!collection.length) {
+        return true;
+      } else {
+        for (let e of collection) {
+          if (predicate(e)) res.push(e);
+        }
+      }
+    } else if (typeof collection === "object" && collection !== null) {
+      res = {};
+      if (!Object.keys(collection).length) {
+        return true;
+      } else {
+        for (let key of Object.keys(collection)) {
+          if (predicate(collection[key])) res[key] = collection[key];
+        }
+      }
+    }
+    return res;
+  }
+
+
+  /**
+   * 遍历 collection（集合）元素，返回 predicate（断言函数）第一个返回真值的第一个元素。predicate（断言函数）调用3个参数： (value, index|key, collection)。
+   * @param collection
+   * @param predicate
+   * @param fromIdx
+   * @return {null|*}
+   */
+  function find(collection, predicate, fromIdx = 0) {
+    predicate = transform(predicate);
+    if (Array.isArray(collection)) {
+      if (!collection.length) {
+        return null;
+      } else {
+        for (let i = fromIdx; i < collection.length; i++) {
+          if (predicate(collection[i])) {
+            return collection[i];
+          }
+        }
+      }
+    } else if (typeof collection === "object" && collection !== null) {
+      res = {};
+      if (!Object.keys(collection).length) {
+        return null;
+      } else {
+        for (let key of Object.keys(collection)) {
+          if (predicate(collection[key])) {
+            return collection[key];
+          }
+        }
+      }
+    }
   }
 
 })();
