@@ -21,6 +21,10 @@ var hemingqiao = (function () {
     dropRight,
     fill,
     findIndex,
+    findLastIndex,
+    flatten,
+    flattenDeep,
+    flattenDepth,
 
   };
 
@@ -168,7 +172,9 @@ var hemingqiao = (function () {
     return ret;
   }
 
-  // 只判断字符串和函数
+
+  /** ------------------------------- 以下辅助函数 ------------------------------- **/
+
   /**
    * 改变iteratee
    * @param iteratee
@@ -179,8 +185,12 @@ var hemingqiao = (function () {
     if (typeof iteratee === "string") {
       return val => val[iteratee];
     }
-    if (typeof iteratee === "function") return iteratee;
-    if (iteratee === null) return val => val;
+    if (typeof iteratee === "function") {
+      return iteratee;
+    }
+    if (iteratee === null) {
+      return val => val;
+    }
     if (typeof iteratee === "object") {
       if (Array.isArray(iteratee)) {
         return function (obj) {
@@ -237,6 +247,9 @@ var hemingqiao = (function () {
     }
     return true;
   }
+
+
+  /** ------------------------------- 以上辅助函数 ------------------------------- **/
 
 
   /**
@@ -396,6 +409,13 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * 该方法类似 _.find，区别是该方法返回第一个通过 predicate 判断为真值的元素的索引值（index），而不是元素本身。
+   * @param arr
+   * @param predicate
+   * @param fromIdx
+   * @return {number}
+   */
   function findIndex(arr, predicate, fromIdx = 0) {
     predicate = transform(predicate);
     for (let i = fromIdx; i < arr.length; i++) {
@@ -406,12 +426,53 @@ var hemingqiao = (function () {
     return -1;
   }
 
-})();
+  /**
+   * 这个方式类似 _.findIndex， 区别是它是从右到左的迭代集合array中的元素。
+   * @param arr
+   * @param predicate
+   * @param fromIdx
+   * @return {number}
+   */
+  function findLastIndex(arr, predicate, fromIdx = arr.length - 1) {
+    predicate = transform(predicate);
+    for (let i = fromIdx; i >= 0; i--) {
+      if (predicate(arr[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
-var users = [
-  { 'user': 'barney',  'active': false },
-  { 'user': 'fred',    'active': false },
-  { 'user': 'pebbles', 'active': true }
-];
-let res = hemingqiao.findIndex(users, 'active');
-console.log(res);
+  /**
+   * 减少一级array嵌套深度。
+   * @param array
+   * @return {*[]}
+   */
+  function flatten(array) {
+    return [...array];
+  }
+
+  /**
+   * 将array递归为一维数组。
+   * @param array
+   * @return {*}
+   */
+  function flattenDeep(array) {
+    return array.reduce((prev, next) => prev.concat(Array.isArray(next) ? flattenDeep(next) : next), []);
+  }
+
+  /**
+   * 根据 depth 递归减少 array 的嵌套层级
+   * @param array
+   * @param depth
+   * @return {*[]}
+   */
+  function flattenDepth(array, depth = 1) {
+    let res = array.slice();
+    while (depth--) {
+      res = [].concat(...res);
+    }
+    return res;
+  }
+
+})();
