@@ -131,7 +131,7 @@ var hemingqiao = (function () {
     }
 
     for (let e of copy) {
-      if (!e) res.push(e);
+      if (e) res.push(e);
     }
     return res;
   }
