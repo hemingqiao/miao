@@ -531,6 +531,8 @@ var hemingqiao = (function () {
       let temp = array[low];
       array[low] = array[high];
       array[high] = temp;
+      low++;
+      high--;
     }
     return array;
   }
