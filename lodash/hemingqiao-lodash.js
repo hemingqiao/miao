@@ -16,7 +16,12 @@ var hemingqiao = (function () {
     join,
     last,
     indexOf,
-    lastIndexOf
+    lastIndexOf,
+    drop,
+    dropRight,
+    fill,
+    findIndex,
+
   };
 
   /**
@@ -161,19 +166,76 @@ var hemingqiao = (function () {
       if (res.includes(iteratee(e))) ret.push(e);
     }
     return ret;
-    // const set = new Set(copy);
-    // for (let e of set) {
-    //   if (!res.includes(iteratee(e))) set.delete(e);
-    // }
-    // return [...set];
   }
 
   // 只判断字符串和函数
+  /**
+   * 改变iteratee
+   * @param iteratee
+   * @return {(function(*): *)|*}
+   */
   function transform(iteratee) {
+    // 这什么鬼玩意iteratee自创的吧？？？？
     if (typeof iteratee === "string") {
       return val => val[iteratee];
     }
     if (typeof iteratee === "function") return iteratee;
+    if (iteratee === null) return val => val;
+    if (typeof iteratee === "object") {
+      if (Array.isArray(iteratee)) {
+        return function (obj) {
+          return obj[iteratee[0]] === iteratee[1];
+        }
+      } else {
+        return iterateeEqual(iteratee);
+      }
+    }
+  }
+
+  function iterateeEqual(source) {
+    return function compare(target) {
+      return deepEqual(source, target);
+    }
+  }
+
+  /**
+   * 简单实现深比较
+   * @param a
+   * @param b
+   * @return {boolean}
+   */
+  function deepEqual(a, b) {
+    const keysA = Reflect.ownKeys(a);
+    const keysB = Reflect.ownKeys(b);
+
+    if (keysA.length !== keysB.length) {
+      return false;
+    }
+    for (let key of keysA) {
+      if (!keysB.includes(key)) {
+        return false;
+      }
+    }
+    for (let key of keysA) {
+      let val = a[key];
+      if (val === null) {
+        if (b[key] !== val) {
+          return false;
+        }
+      } else if (typeof val === "object") {
+        if (typeof b[key] !== "object") {
+          return false;
+        }
+        if (!deepEqual(val, b[key])) {
+          return false;
+        }
+      } else {
+        if (val !== b[key]) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
 
@@ -273,7 +335,83 @@ var hemingqiao = (function () {
     return -1;
   }
 
+  /**
+   * 创建一个切片数组，去除array前面的n个元素。（n默认值为1。）
+   * @param arr
+   * @param n
+   * @return {[]|*}
+   */
+  function drop(arr, n = 1) {
+    let len = arr.length;
+    let res = [];
+    if (!len) return res;
+    if (n < 0) return arr.slice();
+    for (let i = n; i < len; i++) {
+      res.push(arr[i]);
+    }
+    return res;
+  }
+
+
+  /**
+   * 创建一个切片数组，去除array尾部的n个元素。（n默认值为1。）
+   * @param arr
+   * @param n
+   * @return {[]|*}
+   */
+  function dropRight(arr, n = 1) {
+    let len = arr.length;
+    let res = [];
+    if (!len) return res;
+    if (n < 0) return arr.slice();
+    for (let i = 0; i < len - n; i++) {
+      res.push(arr[i]);
+    }
+    return res;
+  }
+
+  /**
+   * 使用 value 值来填充（替换） array，从start位置开始, 到end位置结束（但不包含end位置）。
+   * Note: 这个方法会改变 array
+   * @param arr
+   * @param val
+   * @param start
+   * @param end
+   * @return {*}
+   */
+  function fill(arr, val, start = 0, end = arr.length) {
+    let len = arr.length;
+    if (start >= end) {
+      return arr;
+    } else {
+      start = start < 0 ? start + len : start;
+      end = end < 0 ? end + len : end;
+      for (let i = start; i < end; i++) {
+        if (i < 0) continue;
+        if (i >= len) break;
+        arr[i] = val;
+      }
+    }
+    return arr;
+  }
+
+
+  function findIndex(arr, predicate, fromIdx = 0) {
+    predicate = transform(predicate);
+    for (let i = fromIdx; i < arr.length; i++) {
+      if (predicate(arr[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
 })();
 
-let res = hemingqiao.differenceBy([{"x":2},{"x":1}],[{"x":1}],"x");
+var users = [
+  { 'user': 'barney',  'active': false },
+  { 'user': 'fred',    'active': false },
+  { 'user': 'pebbles', 'active': true }
+];
+let res = hemingqiao.findIndex(users, 'active');
 console.log(res);
