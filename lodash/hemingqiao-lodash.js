@@ -11,7 +11,8 @@ var hemingqiao = (function () {
     compact,
     concat,
     difference,
-    differenceBy
+    differenceBy,
+    join
   };
 
   /**
@@ -113,12 +114,17 @@ var hemingqiao = (function () {
    * @return {any[]}
    */
   function differenceBy(array, values, iteratee) {
+    let args = Array.from(arguments);
+    args.shift();
+    let last = args[args.length - 1];
+    if (Array.isArray(last) || last === undefined) {
+      return difference(array, ...args);
+    }
+
+    iteratee = args.pop();
     iteratee = transform(iteratee);
     let copy = array.slice();
     let mapped = array.map(value => iteratee(value));
-    let args = Array.from(arguments);
-    args.shift();
-    args.pop();
     args = args.map(value => value.map(value1 => iteratee(value1)));
     let res = difference(mapped, ...args);
     const set = new Set(copy);
@@ -130,10 +136,29 @@ var hemingqiao = (function () {
 
   // 只判断字符串和函数
   function transform(iteratee) {
-    if (typeof iteratee === "function") return iteratee;
+    if (iteratee === undefined) return val => val;
     if (typeof iteratee === "string") {
       return val => val[iteratee];
     }
+    if (typeof iteratee === "function") return iteratee;
+  }
+
+
+  /**
+   * 将 array 中的所有元素转换为由 separator 分隔的字符串。
+   * @param arr
+   * @param separator
+   * @return {string}
+   */
+  function join(arr, separator) {
+    let res = "";
+    if (arr.length === 0) return res;
+    separator = String(separator);
+    for (let i = 0; i < arr.length - 1; i++) {
+      res = res + arr[i] + separator;
+    }
+    res += arr[arr.length - 1];
+    return res;
   }
 
 })();
