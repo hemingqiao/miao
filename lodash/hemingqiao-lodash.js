@@ -449,7 +449,7 @@ var hemingqiao = (function () {
    * @return {*[]}
    */
   function flatten(array) {
-    return [...array];
+    return [].concat(...array);
   }
 
   /**
