@@ -12,7 +12,10 @@ var hemingqiao = (function () {
     concat,
     difference,
     differenceBy,
-    join
+    join,
+    last,
+    indexOf,
+    lastIndexOf
   };
 
   /**
@@ -85,25 +88,52 @@ var hemingqiao = (function () {
 
   // 返回给定数组array和传入的数组之间的差集(a - b)。
   // 一般地，记A和B是两个集合，则所有属于A且不属于B的元素构成的集合,叫做集合A和集合B的差集。
+  // /**
+  //  * 创建一个具有唯一array值的数组，每个值不包含在其他给定的数组中。该方法使用 SameValueZero做相等比较。结果值的顺序是由第一个数组中的顺序确定。
+  //  * @param {number[]} array
+  //  * @param values
+  //  */
+  // function difference(array, ...values) {
+  //   const set = new Set(array);
+  //   for (let value of values) {
+  //     if (!Array.isArray(value)) {
+  //       throw new TypeError("argument should be an array");
+  //     }
+  //     for (let e of value) {
+  //       if (array.includes(e)) {
+  //         set.delete(e);
+  //       }
+  //     }
+  //   }
+  //
+  //   return [...set];
+  // }
+
+
   /**
-   * Creates an array of array values not included in the other given arrays using SameValueZero for equality comparisons. The order and references of result values are determined by the first array.
+   * 创建一个具有唯一array值的数组，每个值不包含在其他给定的数组中。该方法使用 SameValueZero做相等比较。结果值的顺序是由第一个数组中的顺序确定。
    * @param {number[]} array
    * @param values
    */
   function difference(array, ...values) {
-    const set = new Set(array);
+    const res = [];
+    const copy = array.slice();
     for (let value of values) {
       if (!Array.isArray(value)) {
         throw new TypeError("argument should be an array");
       }
       for (let e of value) {
-        if (array.includes(e)) {
-          set.delete(e);
+        // 排除掉重复的元素
+        while (copy.includes(e)) {
+          copy[copy.indexOf(e)] = null;
         }
       }
     }
 
-    return [...set];
+    for (let e of copy) {
+      if (!e) res.push(e);
+    }
+    return res;
   }
 
   /**
@@ -127,16 +157,21 @@ var hemingqiao = (function () {
     let mapped = array.map(value => iteratee(value));
     args = args.map(value => value.map(value1 => iteratee(value1)));
     let res = difference(mapped, ...args);
-    const set = new Set(copy);
-    for (let e of set) {
-      if (!res.includes(iteratee(e))) set.delete(e);
+
+    let ret = [];
+    for (let e of copy) {
+      if (!res.includes(iteratee(e))) ret.push(e);
     }
-    return [...set];
+    return ret;
+    // const set = new Set(copy);
+    // for (let e of set) {
+    //   if (!res.includes(iteratee(e))) set.delete(e);
+    // }
+    // return [...set];
   }
 
   // 只判断字符串和函数
   function transform(iteratee) {
-    if (iteratee === undefined) return val => val;
     if (typeof iteratee === "string") {
       return val => val[iteratee];
     }
@@ -159,6 +194,67 @@ var hemingqiao = (function () {
     }
     res += arr[arr.length - 1];
     return res;
+  }
+
+
+  /**
+   * 获取array中的最后一个元素。
+   * @param {number[]} arr
+   * @return {*}
+   */
+  function last(arr) {
+    let res;
+    if (arr.length) res = arr[arr.length - 1];
+    return res;
+  }
+
+  /**
+   * 同值比较算法（sameValueZero algorithm）
+   * @param a
+   * @param b
+   * @return {boolean}
+   */
+  function sameValueZero(a, b) {
+    if (a === b) return a !== 0 || 1 / a === 1 / b;
+    return a !== a && b !== b;
+  }
+
+
+  /**
+   * 使用 SameValueZero 等值比较，返回首次 value 在数组array中被找到的 索引值， 如果 fromIndex 为负值，将从数组array尾端索引进行匹配。
+   * @param {number[]} arr
+   * @param {number} val
+   * @param {number} fromIdx
+   * @return {number|*}
+   */
+  function indexOf(arr, val, fromIdx = 0) {
+    let len = arr.length;
+    if (!len) return -1;
+    if (fromIdx < 0) {
+      fromIdx = len + fromIdx;
+    }
+    for (let i = fromIdx < 0 ? 0 : fromIdx; i < len; i++) {
+      if (sameValueZero(val, arr[i])) return i;
+    }
+    return -1;
+  }
+
+  /**
+   * 这个方法类似 _.indexOf ，区别是它是从右到左遍历array的元素。
+   * @param arr
+   * @param val
+   * @param fromIdx
+   * @return {number}
+   */
+  function lastIndexOf(arr, val, fromIdx = arr.length - 1) {
+    if (!arr.length) return -1;
+    if (fromIdx < 0) {
+      fromIdx = arr.length + fromIdx;
+    }
+    for (let i = fromIdx < 0 ? 0 : fromIdx; i >= 0; i--) {
+      if (sameValueZero(val, arr[i])) return i;
+    }
+    return -1;
   }
 
 })();
