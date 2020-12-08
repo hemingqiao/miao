@@ -33,6 +33,7 @@ var hemingqiao = (function () {
       res.push(arr);
       return res;
     }
+    // 还可以使用splice
     let j = 0;
     let temp = [];
     for (let i = 0; i < len; i++) {
@@ -118,21 +119,17 @@ var hemingqiao = (function () {
    */
   function difference(array, ...values) {
     const res = [];
-    const copy = array.slice();
-    for (let value of values) {
+
+    values.forEach(value => {
       if (!Array.isArray(value)) {
         throw new TypeError("argument should be an array");
       }
-      for (let e of value) {
-        // 排除掉重复的元素
-        while (copy.includes(e)) {
-          copy[copy.indexOf(e)] = null;
-        }
+    });
+    const total = concat([], ...values);
+    for (let e of array) {
+      if (!total.includes(e)) {
+        res.push(e);
       }
-    }
-
-    for (let e of copy) {
-      if (e) res.push(e);
     }
     return res;
   }
