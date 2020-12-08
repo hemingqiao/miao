@@ -5,7 +5,7 @@ created by WebStorm
 description: 简单实现lodash中的一些方法
 ***************************************************************************** */
 
-const hemingqiao = (function (){
+var hemingqiao = (function (){
   return {
     chunk,
     compact,
