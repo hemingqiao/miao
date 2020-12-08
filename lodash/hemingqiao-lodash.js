@@ -206,7 +206,16 @@ var hemingqiao = (function () {
         return function (obj) {
           return obj[iteratee[0]] === iteratee[1];
         }
-      } else {
+      } else if (Object.prototype.toString.call(iteratee) === "[object RegExp]") {
+        return function (val) {
+          if (!iteratee.test(val)) {
+            return false;
+          } else {
+            return val.match(iteratee)[0] === val;
+          }
+        }
+      }
+      else {
         return iterateeEqual(iteratee);
       }
     }
@@ -269,7 +278,7 @@ var hemingqiao = (function () {
     const keysA = Reflect.ownKeys(a);
     const keysB = Reflect.ownKeys(b);
 
-    if (keysA.length >= keysB.length) {
+    if (keysA.length > keysB.length) {
       return false;
     }
     for (let key of keysA) {
@@ -666,7 +675,7 @@ var hemingqiao = (function () {
     if (Array.isArray(collection)) {
       res = [];
       if (!collection.length) {
-        return true;
+        return null;
       } else {
         for (let e of collection) {
           if (predicate(e)) res.push(e);
@@ -675,7 +684,7 @@ var hemingqiao = (function () {
     } else if (typeof collection === "object" && collection !== null) {
       res = {};
       if (!Object.keys(collection).length) {
-        return true;
+        return null;
       } else {
         for (let key of Object.keys(collection)) {
           if (predicate(collection[key])) res[key] = collection[key];
