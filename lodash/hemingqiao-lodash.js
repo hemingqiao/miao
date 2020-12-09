@@ -35,35 +35,6 @@ var hemingqiao = (function () {
     };
   });
 
-  // /**
-  //  * 包装iteratee
-  //  * @param iteratee
-  //  * @return {(function(*): *)|*}
-  //  */
-  // function transform(iteratee) {
-  //   if (typeof iteratee === "string") {
-  //     return val => val[iteratee];
-  //   }
-  //   if (typeof iteratee === "function") {
-  //     return iteratee;
-  //   }
-  //   if (iteratee === null) {
-  //     return val => val;
-  //   }
-  //   if (typeof iteratee === "object") {
-  //     if (Array.isArray(iteratee)) {
-  //       return function (obj) {
-  //         return obj[iteratee[0]] === iteratee[1];
-  //       }
-  //     } else if (typeUtils.isRegExp(val)) {
-  //       return val => iteratee.test(val);
-  //     } else {
-  //       // return iterateeEqual(iteratee);
-  //       return deepEqual.bind(null, iteratee);
-  //     }
-  //   }
-  // }
-
 
   /**
    * 包装iteratee
@@ -254,6 +225,7 @@ var hemingqiao = (function () {
     return res;
   }
 
+
   // 返回给定数组array和传入的数组之间的差集(a - b)。
   // 一般地，记A和B是两个集合，则所有属于A且不属于B的元素构成的集合,叫做集合A和集合B的差集。
   /**
@@ -277,6 +249,7 @@ var hemingqiao = (function () {
     }
     return res;
   }
+
 
   /**
    * see official document
@@ -375,6 +348,7 @@ var hemingqiao = (function () {
     return -1;
   }
 
+
   /**
    * 这个方法类似 _.indexOf ，区别是它是从右到左遍历array的元素。
    * @param arr
@@ -392,6 +366,7 @@ var hemingqiao = (function () {
     }
     return -1;
   }
+
 
   /**
    * 创建一个切片数组，去除array前面的n个元素。（n默认值为1。）
@@ -427,6 +402,7 @@ var hemingqiao = (function () {
     }
     return res;
   }
+
 
   /**
    * 使用 value 值来填充（替换） array，从start位置开始, 到end位置结束（但不包含end位置）。
@@ -471,6 +447,7 @@ var hemingqiao = (function () {
     return -1;
   }
 
+
   /**
    * 这个方式类似 _.findIndex， 区别是它是从右到左的迭代集合array中的元素。
    * @param arr
@@ -488,6 +465,7 @@ var hemingqiao = (function () {
     return -1;
   }
 
+
   /**
    * 减少一级array嵌套深度。
    * @param array
@@ -497,6 +475,7 @@ var hemingqiao = (function () {
     return [].concat(...array);
   }
 
+
   /**
    * 将array递归为一维数组。
    * @param array
@@ -505,6 +484,7 @@ var hemingqiao = (function () {
   function flattenDeep(array) {
     return array.reduce((prev, next) => prev.concat(Array.isArray(next) ? flattenDeep(next) : next), []);
   }
+
 
   /**
    * 根据 depth 递归减少 array 的嵌套层级
@@ -535,6 +515,7 @@ var hemingqiao = (function () {
     return ret;
   }
 
+  
   /**
    * 获取数组 array 的第一个元素。
    * @param arr
