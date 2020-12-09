@@ -35,6 +35,12 @@ var hemingqiao = (function () {
     find,
     toArray,
     intersection,
+    max,
+    maxBy,
+    min,
+    minBy,
+    sum,
+    sumBy,
 
   };
 
@@ -762,6 +768,77 @@ var hemingqiao = (function () {
       ret = [];
     }
     return source;
+  }
+
+
+  /**
+   * 计算 array 中的最大值。 如果 array 是 空的或者假值将会返回 undefined。
+   * @param array
+   * @return {undefined|*}
+   */
+  function max(array) {
+    if (!array.length) return undefined;
+    return array.reduce((prev, next) => Math.max(prev, next), -Infinity);
+  }
+
+
+  /**
+   * 这个方法类似 _.max 除了它接受 iteratee 来调用 array中的每一个元素，来生成其值排序的标准。 iteratee 会调用1个参数: (value) 。
+   * @param array
+   * @param iteratee
+   * @return {undefined|*}
+   */
+  function maxBy(array, iteratee) {
+    iteratee = transform(iteratee);
+    array.sort((a, b) => iteratee(a) - iteratee(b));
+    return array[array.length - 1];
+  }
+
+
+  /**
+   * 计算 array 中的最小值。 如果 array 是 空的或者假值将会返回 undefined。
+   * @param array
+   * @return {undefined|*}
+   */
+  function min(array) {
+    if (!array.length) return undefined;
+    return array.reduce((prev, next) => Math.min(prev, next), Infinity);
+  }
+
+
+  /**
+   * 这个方法类似 _.min 除了它接受 iteratee 来调用 array中的每一个元素，来生成其值排序的标准。 iteratee 会调用1个参数: (value) 。
+   * @param array
+   * @param iteratee
+   * @return {*}
+   */
+  function minBy(array, iteratee) {
+    iteratee = transform(iteratee);
+    array.sort((a, b) => iteratee(a) - iteratee(b));
+    return array[0];
+  }
+
+
+  /**
+   * 计算 array 中值的总和
+   * @param array
+   * @return {*}
+   */
+  function sum(array) {
+    return array.reduce((prev, next) => prev + next);
+  }
+
+
+  /**
+   * 这个方法类似 _.summin 除了它接受 iteratee 来调用 array中的每一个元素，来生成其值排序的标准。 iteratee 会调用1个参数: (value) 。
+   * @param array
+   * @param iteratee
+   * @return {*}
+   */
+  function sumBy(array, iteratee) {
+    iteratee = transform(iteratee);
+    const mapped = array.map(value => iteratee(value));
+    return sum(mapped);
   }
 
 })();
