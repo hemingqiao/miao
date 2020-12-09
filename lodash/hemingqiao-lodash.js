@@ -908,10 +908,18 @@ var hemingqiao = (function () {
    * @param values
    */
   function pullAll(array, values) {
-    pull(array, ...values);
+    return pull(array, ...values);
   }
 
 
+  /**
+   * 这个方法类似于 _.pullAll ，区别是这个方法接受一个 iteratee（迭代函数） 调用 array 和 values的每个值以产生一个值，通过产生的值进行了比较。iteratee 会传入一个参数： (value)。
+   * Note: 不同于 _.differenceBy, 这个方法会改变数组 array。
+   * @param array
+   * @param values
+   * @param iteratee
+   * @return {*}
+   */
   function pullAllBy(array, values, iteratee) {
     iteratee = transform(iteratee);
     let copy = array;
@@ -926,6 +934,14 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * 这个方法类似于 _.pullAll，区别是这个方法接受 comparator 调用array中的元素和values比较。comparator 会传入两个参数：(arrVal, othVal)。
+   * 注意: 和 _.differenceWith 不同, 这个方法会改变数组 array。
+   * @param array
+   * @param values
+   * @param comparator
+   * @return {*}
+   */
   function pullAllWith(array, values, comparator) {
     let copy = [];
     for (let val of values) {
@@ -939,6 +955,7 @@ var hemingqiao = (function () {
     for (let i = 0; i < copy.length; i++) {
       array[i] = copy[i];
     }
+    return array;
   }
 
   /**
@@ -965,3 +982,7 @@ var hemingqiao = (function () {
   }
 
 })();
+
+let array = ["a","b","c","a","b","c"];
+hemingqiao.pullAll(array,["a","c"]);
+console.log(array);
