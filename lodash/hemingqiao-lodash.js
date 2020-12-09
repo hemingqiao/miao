@@ -151,6 +151,11 @@ var hemingqiao = (function () {
     minBy,
     sum,
     sumBy,
+    nth,
+    pull,
+    pullAll,
+    pullAllBy,
+    pullAllWith,
     curry,
 
   };
@@ -741,6 +746,11 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * 这个方法类似 _.intersection，区别是它接受一个 iteratee 调用每一个arrays的每个值以产生一个值，通过产生的值进行了比较。结果值是从第一数组中选择。iteratee 会传入一个参数：(value)。
+   * @param args
+   * @return {[]|*[]}
+   */
   function intersectionBy(...args) {
     let last = args[args.length - 1];
     let first = args.shift();
@@ -763,6 +773,11 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * 这个方法类似 _.intersection，区别是它接受一个 comparator 调用比较arrays中的元素。结果值是从第一数组中选择。comparator 会传入两个参数：(arrVal, othVal)。
+   * @param args
+   * @return {[]}
+   */
   function intersectionWith(...args) {
     let last = args.pop();
     let first = args[0];
@@ -854,6 +869,79 @@ var hemingqiao = (function () {
 
 
   /**
+   * 获取array数组的第n个元素。如果n为负数，则返回从数组结尾开始的第n个元素。
+   * @param array
+   * @param n
+   * @return {*}
+   */
+  function nth(array, n = 0) {
+    let len = array.length;
+    if (n < 0) n = n + len;
+    return array[n];
+  }
+
+
+  /**
+   * 移除数组array中所有和给定值相等的元素，使用 SameValueZero 进行全等比较。
+   * 注意： 和 _.without 方法不同，这个方法会改变数组。使用 _.remove 从一个数组中移除元素。
+   * @param array
+   * @param values
+   * @return {*}
+   */
+  function pull(array, ...values) {
+    let copy = array;
+    for (let val of values) {
+      copy = filter(copy, res => !sameValueZero(res, val));
+    }
+    array.length = copy.length;
+    for (let i = 0; i < copy.length; i++) {
+      array[i] = copy[i];
+    }
+    return array;
+  }
+
+
+  /**
+   * 这个方法类似 _.pull，区别是这个方法接收一个要移除值的数组。
+   * Note: 不同于 _.difference, 这个方法会改变数组 array。
+   * @param array
+   * @param values
+   */
+  function pullAll(array, values) {
+    pull(array, ...values);
+  }
+
+
+  function pullAllBy(array, values, iteratee) {
+    iteratee = transform(iteratee);
+    let copy = array;
+    for (let val of values) {
+      copy = filter(copy, res => iteratee(res) !== iteratee(val));
+    }
+    array.length = copy.length;
+    for (let i = 0; i < copy.length; i++) {
+      array[i] = copy[i];
+    }
+    return array;
+  }
+
+
+  function pullAllWith(array, values, comparator) {
+    let copy = [];
+    for (let val of values) {
+      for (let e of array) {
+        if (!comparator(val, e)) {
+          copy.push(e);
+        }
+      }
+    }
+    array.length = copy.length;
+    for (let i = 0; i < copy.length; i++) {
+      array[i] = copy[i];
+    }
+  }
+
+  /**
    * 函数的柯里化（不支持占位符功能）
    * @param fn
    * @param arity
@@ -877,21 +965,3 @@ var hemingqiao = (function () {
   }
 
 })();
-
-var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
-var others = [{ 'x': 1, 'y': 1 }, { 'x': 1, 'y': 2 }];
-
-console.log(hemingqiao.intersectionWith(objects, others, (a, b) => {
-  let keysA = Object.keys(a);
-  let keysB = Object.keys(b);
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-  for (let key of keysA) {
-    if (a[key] !== b[key]) {
-      return false;
-    }
-  }
-  return true;
-}));
-// => [{ 'x': 1, 'y': 2 }]
