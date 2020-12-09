@@ -156,6 +156,9 @@ var hemingqiao = (function () {
     pullAll,
     pullAllBy,
     pullAllWith,
+    union,
+    unionBy,
+    unionWith,
     curry,
 
   };
@@ -958,6 +961,63 @@ var hemingqiao = (function () {
     return array;
   }
 
+
+  /**
+   * 创建一个按顺序排列的唯一值的数组。所有给定数组的元素值使用 SameValueZero做等值比较。
+   * @param initArr
+   * @param arrays
+   * @return {any[]}
+   */
+  function union(initArr, ...arrays) {
+    const set = new Set(initArr);
+    arrays.forEach(value => value.forEach(v => set.add(v)));
+    return [...set];
+  }
+
+
+  /**
+   * 这个方法类似 _.union ，除了它接受一个 iteratee （迭代函数），调用每一个数组（array）的每个元素以产生唯一性计算的标准。iteratee 会传入一个参数：(value)。
+   * @param values
+   * @return {*[]}
+   */
+  function unionBy(...values) {
+    let last = values[values.length - 1];
+    if (Array.isArray(last) || last == null) {
+      return union(...values);
+    }
+
+    last = transform(last);
+    values.pop();
+    let first = values.shift();
+    const ret = [...first];
+    values = concat([], ...values);
+    for (let i = 0; i < values.length; i++) {
+      let temp = last(values[i]);
+      if (!ret.map(value => last(value)).includes(temp)) {
+        ret.push(values[i]);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * 这个方法类似 _.union， 除了它接受一个 comparator 调用比较arrays数组的每一个元素。 comparator 调用时会传入2个参数： (arrVal, othVal)。
+   * @param values
+   * @return {*[]}
+   */
+  function unionWith(...values) {
+    let comparator = values.pop();
+
+    let first = values.shift();
+    const ret = [...first];
+    values = concat([], ...values);
+    for (let val of first) {
+      values = filter(values, res => !comparator(res, val));
+    }
+    return ret.concat(values);
+  }
+
   /**
    * 函数的柯里化（不支持占位符功能）
    * @param fn
@@ -982,7 +1042,3 @@ var hemingqiao = (function () {
   }
 
 })();
-
-let array = ["a","b","c","a","b","c"];
-hemingqiao.pullAll(array,["a","c"]);
-console.log(array);
