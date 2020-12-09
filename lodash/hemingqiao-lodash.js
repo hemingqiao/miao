@@ -143,6 +143,8 @@ var hemingqiao = (function () {
     find,
     toArray,
     intersection,
+    intersectionBy,
+    intersectionWith,
     max,
     maxBy,
     min,
@@ -515,7 +517,7 @@ var hemingqiao = (function () {
     return ret;
   }
 
-  
+
   /**
    * 获取数组 array 的第一个元素。
    * @param arr
@@ -739,6 +741,47 @@ var hemingqiao = (function () {
   }
 
 
+  function intersectionBy(...args) {
+    let last = args[args.length - 1];
+    let first = args.shift();
+    if (Array.isArray(last) || last == null) {
+      return intersection(first, args);
+    }
+
+    const ret = [];
+    last = transform(last);
+    args.pop();
+    args = args.map(arg => arg.map(value => last(value)));
+    let copy = first.slice().map(value => last(value));
+    const res = intersection(copy, ...args);
+    for (let e of first) {
+      if (res.includes(last(e))) {
+        ret.push(e);
+      }
+    }
+    return ret;
+  }
+
+
+  function intersectionWith(...args) {
+    let last = args.pop();
+    let first = args[0];
+    last = transform(last);
+    const ret = [];
+
+    for (let i = 1; i < args.length; i++) {
+      for (let e of args[i]) {
+        for (let v of first) {
+          if (last(e, v)) {
+            ret.push(e);
+          }
+        }
+      }
+    }
+    return ret;
+  }
+
+
   /**
    * 计算 array 中的最大值。 如果 array 是 空的或者假值将会返回 undefined。
    * @param array
@@ -834,3 +877,21 @@ var hemingqiao = (function () {
   }
 
 })();
+
+var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
+var others = [{ 'x': 1, 'y': 1 }, { 'x': 1, 'y': 2 }];
+
+console.log(hemingqiao.intersectionWith(objects, others, (a, b) => {
+  let keysA = Object.keys(a);
+  let keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+  for (let key of keysA) {
+    if (a[key] !== b[key]) {
+      return false;
+    }
+  }
+  return true;
+}));
+// => [{ 'x': 1, 'y': 2 }]
