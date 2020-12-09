@@ -41,6 +41,7 @@ var hemingqiao = (function () {
     minBy,
     sum,
     sumBy,
+    curry,
 
   };
 
@@ -192,7 +193,7 @@ var hemingqiao = (function () {
   /** ------------------------------- 以下辅助函数 ------------------------------- **/
 
   /**
-   * 改变iteratee
+   * 包装iteratee
    * @param iteratee
    * @return {(function(*): *)|*}
    */
@@ -214,55 +215,16 @@ var hemingqiao = (function () {
       } else if (Object.prototype.toString.call(iteratee) === "[object RegExp]") {
         return val => iteratee.test(val);
       } else {
-        return iterateeEqual(iteratee);
+        // return iterateeEqual(iteratee);
+        return deepEqual.bind(null, iteratee);
       }
     }
   }
 
-  function iterateeEqual(source) {
-    return function compare(target) {
-      return deepEqual(source, target);
-    }
-  }
-
-  // /**
-  //  * 简单实现深比较
-  //  * @param a
-  //  * @param b
-  //  * @return {boolean}
-  //  */
-  // function deepEqual(a, b) {
-  //   const keysA = Reflect.ownKeys(a);
-  //   const keysB = Reflect.ownKeys(b);
-  //
-  //   if (keysA.length !== keysB.length) {
-  //     return false;
+  // function iterateeEqual(source) {
+  //   return function compare(target) {
+  //     return deepEqual(source, target);
   //   }
-  //   for (let key of keysA) {
-  //     if (!keysB.includes(key)) {
-  //       return false;
-  //     }
-  //   }
-  //   for (let key of keysA) {
-  //     let val = a[key];
-  //     if (val === null) {
-  //       if (b[key] !== val) {
-  //         return false;
-  //       }
-  //     } else if (typeof val === "object") {
-  //       if (typeof b[key] !== "object") {
-  //         return false;
-  //       }
-  //       if (!deepEqual(val, b[key])) {
-  //         return false;
-  //       }
-  //     } else {
-  //       if (val !== b[key]) {
-  //         return false;
-  //       }
-  //     }
-  //   }
-  //   return true;
   // }
 
 
@@ -839,6 +801,30 @@ var hemingqiao = (function () {
     iteratee = transform(iteratee);
     const mapped = array.map(value => iteratee(value));
     return sum(mapped);
+  }
+
+
+  /**
+   * 函数的柯里化（不支持占位符功能）
+   * @param fn
+   * @param arity
+   * @return {function(...[*]): (*)}
+   */
+  function curry(fn, arity = fn.length) {
+    return function (...args) {
+      if (arity <= args.length) {
+        return fn(...args);
+      } else {
+        return curry(curryAuxiliary(fn, ...args), arity - args.length);
+      }
+    }
+  }
+
+  // 柯里化辅助函数
+  function curryAuxiliary(fn, ...args) {
+    return function (...vars) {
+      return fn(...args, ...vars);
+    }
   }
 
 })();
