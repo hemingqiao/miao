@@ -6,6 +6,143 @@ description: 简单实现lodash中的一些方法
 ***************************************************************************** */
 
 var hemingqiao = (function () {
+
+  /** ------------------------------- 以下为辅助工具 ------------------------------- **/
+
+  /**
+   * 同值比较算法（sameValueZero algorithm）
+   * @param a
+   * @param b
+   * @return {boolean}
+   */
+  function sameValueZero(a, b) {
+    if (a === b) return a !== 0 || 1 / a === 1 / b;
+    return a !== a && b !== b;
+  }
+
+
+  // 类型判断工具
+  const typeUtils = {};
+  const types = [
+    "Boolean", "Number", "String", "Symbol",
+    "Array", "Date", "Null", "Undefined", "Function",
+    "RegExp", "Object", "Error", "BigInt"
+  ];
+
+  types.forEach(type => {
+    typeUtils["is" + type] = function (obj) {
+      return Object.prototype.toString.call(obj) === "[object " + type + "]";
+    };
+  });
+
+  // /**
+  //  * 包装iteratee
+  //  * @param iteratee
+  //  * @return {(function(*): *)|*}
+  //  */
+  // function transform(iteratee) {
+  //   if (typeof iteratee === "string") {
+  //     return val => val[iteratee];
+  //   }
+  //   if (typeof iteratee === "function") {
+  //     return iteratee;
+  //   }
+  //   if (iteratee === null) {
+  //     return val => val;
+  //   }
+  //   if (typeof iteratee === "object") {
+  //     if (Array.isArray(iteratee)) {
+  //       return function (obj) {
+  //         return obj[iteratee[0]] === iteratee[1];
+  //       }
+  //     } else if (typeUtils.isRegExp(val)) {
+  //       return val => iteratee.test(val);
+  //     } else {
+  //       // return iterateeEqual(iteratee);
+  //       return deepEqual.bind(null, iteratee);
+  //     }
+  //   }
+  // }
+
+
+  /**
+   * 包装iteratee
+   * @param iteratee
+   * @return {(function(*): *)|*}
+   */
+  function transform(iteratee) {
+    if (typeUtils.isString(iteratee)) {
+      return val => val[iteratee];
+    }
+    if (typeUtils.isFunction(iteratee)) {
+      return iteratee;
+    }
+    if (typeUtils.isNull(iteratee)) {
+      return val => val;
+    }
+
+    if (typeUtils.isObject(iteratee)) {
+      // return iterateeEqual(iteratee);
+      return deepEqual.bind(null, iteratee);
+    } else if (typeUtils.isArray(iteratee)) {
+      return function (obj) {
+        return obj[iteratee[0]] === iteratee[1];
+      }
+    } else if (typeUtils.isRegExp(iteratee)) {
+      return val => iteratee.test(val);
+    }
+  }
+
+  // function iterateeEqual(source) {
+  //   return function compare(target) {
+  //     return deepEqual(source, target);
+  //   }
+  // }
+
+
+  /**
+   * 简单实现深比较
+   * @param a
+   * @param b
+   * @return {boolean}
+   */
+  function deepEqual(a, b) {
+    const keysA = Reflect.ownKeys(a);
+    const keysB = Reflect.ownKeys(b);
+
+    if (keysA.length > keysB.length) {
+      return false;
+    }
+    for (let key of keysA) {
+      if (!keysB.includes(key)) {
+        return false;
+      }
+    }
+    for (let key of keysA) {
+      let val = a[key];
+      if (val === null) {
+        if (b[key] !== val) {
+          return false;
+        }
+      } else if (typeof val === "object") {
+        if (typeof b[key] !== "object") {
+          return false;
+        }
+        if (!deepEqual(val, b[key])) {
+          return false;
+        }
+      } else {
+        if (val !== b[key]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /** ------------------------------- 以上为辅助工具 ------------------------------- **/
+
+
   return {
     chunk,
     compact,
@@ -44,6 +181,10 @@ var hemingqiao = (function () {
     curry,
 
   };
+
+
+  /** ------------------------------- 以下为具体实现 ------------------------------- **/
+
 
   /**
    * Creates an array of elements split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
@@ -113,31 +254,8 @@ var hemingqiao = (function () {
     return res;
   }
 
-
   // 返回给定数组array和传入的数组之间的差集(a - b)。
   // 一般地，记A和B是两个集合，则所有属于A且不属于B的元素构成的集合,叫做集合A和集合B的差集。
-  // /**
-  //  * 创建一个具有唯一array值的数组，每个值不包含在其他给定的数组中。该方法使用 SameValueZero做相等比较。结果值的顺序是由第一个数组中的顺序确定。
-  //  * @param {number[]} array
-  //  * @param values
-  //  */
-  // function difference(array, ...values) {
-  //   const set = new Set(array);
-  //   for (let value of values) {
-  //     if (!Array.isArray(value)) {
-  //       throw new TypeError("argument should be an array");
-  //     }
-  //     for (let e of value) {
-  //       if (array.includes(e)) {
-  //         set.delete(e);
-  //       }
-  //     }
-  //   }
-  //
-  //   return [...set];
-  // }
-
-
   /**
    * 创建一个具有唯一array值的数组，每个值不包含在其他给定的数组中。该方法使用 SameValueZero做相等比较。结果值的顺序是由第一个数组中的顺序确定。
    * @param {number[]} array
@@ -190,88 +308,6 @@ var hemingqiao = (function () {
   }
 
 
-  /** ------------------------------- 以下辅助函数 ------------------------------- **/
-
-  /**
-   * 包装iteratee
-   * @param iteratee
-   * @return {(function(*): *)|*}
-   */
-  function transform(iteratee) {
-    if (typeof iteratee === "string") {
-      return val => val[iteratee];
-    }
-    if (typeof iteratee === "function") {
-      return iteratee;
-    }
-    if (iteratee === null) {
-      return val => val;
-    }
-    if (typeof iteratee === "object") {
-      if (Array.isArray(iteratee)) {
-        return function (obj) {
-          return obj[iteratee[0]] === iteratee[1];
-        }
-      } else if (Object.prototype.toString.call(iteratee) === "[object RegExp]") {
-        return val => iteratee.test(val);
-      } else {
-        // return iterateeEqual(iteratee);
-        return deepEqual.bind(null, iteratee);
-      }
-    }
-  }
-
-  // function iterateeEqual(source) {
-  //   return function compare(target) {
-  //     return deepEqual(source, target);
-  //   }
-  // }
-
-
-  /**
-   * 简单实现深比较
-   * @param a
-   * @param b
-   * @return {boolean}
-   */
-  function deepEqual(a, b) {
-    const keysA = Reflect.ownKeys(a);
-    const keysB = Reflect.ownKeys(b);
-
-    if (keysA.length > keysB.length) {
-      return false;
-    }
-    for (let key of keysA) {
-      if (!keysB.includes(key)) {
-        return false;
-      }
-    }
-    for (let key of keysA) {
-      let val = a[key];
-      if (val === null) {
-        if (b[key] !== val) {
-          return false;
-        }
-      } else if (typeof val === "object") {
-        if (typeof b[key] !== "object") {
-          return false;
-        }
-        if (!deepEqual(val, b[key])) {
-          return false;
-        }
-      } else {
-        if (val !== b[key]) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-
-  /** ------------------------------- 以上辅助函数 ------------------------------- **/
-
-
   /**
    * 这个方法类似 _.difference ，除了它接受一个 comparator，它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
    * @param arr
@@ -317,17 +353,6 @@ var hemingqiao = (function () {
     let res;
     if (arr.length) res = arr[arr.length - 1];
     return res;
-  }
-
-  /**
-   * 同值比较算法（sameValueZero algorithm）
-   * @param a
-   * @param b
-   * @return {boolean}
-   */
-  function sameValueZero(a, b) {
-    if (a === b) return a !== 0 || 1 / a === 1 / b;
-    return a !== a && b !== b;
   }
 
 
@@ -610,7 +635,7 @@ var hemingqiao = (function () {
           if (!predicate(e)) return false;
         }
       }
-    } else if (typeof collection === "object" && collection !== null) {
+    } else if (typeUtils.isObject(collection)) {
       if (!Object.keys(collection).length) {
         return true;
       } else {
@@ -641,7 +666,7 @@ var hemingqiao = (function () {
           if (predicate(e)) res.push(e);
         }
       }
-    } else if (typeof collection === "object" && collection !== null) {
+    } else if (typeUtils.isObject(collection)) {
       res = {};
       if (!Object.keys(collection).length) {
         return null;
@@ -674,7 +699,7 @@ var hemingqiao = (function () {
           }
         }
       }
-    } else if (typeof collection === "object" && collection !== null) {
+    } else if (typeUtils.isObject(collection)) {
       res = {};
       if (!Object.keys(collection).length) {
         return null;
@@ -698,10 +723,10 @@ var hemingqiao = (function () {
     let ret = [];
     if (Array.isArray(value)) {
       return value;
-    } else if (typeof value === "string") {
+    } else if (typeUtils.isString(value)) {
       ret = [...value];
       return ret;
-    } else if (value !== null && typeof value === "object") {
+    } else if (typeUtils.isObject(value)) {
       for (let key of Object.keys(value)) {
         ret.push(value[key]);
       }
