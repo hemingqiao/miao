@@ -1454,7 +1454,9 @@ var hemingqiao = (function () {
    * @return {*|boolean}
    */
   function isSafeInteger(value) {
-    return typeUtils.isNumber(value) && Math.abs(value) <= Number.MAX_SAFE_INTEGER;
+    return typeUtils.isNumber(value)
+      && Math.abs(value) <= Number.MAX_SAFE_INTEGER
+      && Math.abs(value) >= Number.MIN_VALUE;
   }
 
 
