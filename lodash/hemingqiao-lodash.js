@@ -1286,7 +1286,7 @@ var hemingqiao = (function () {
    * @return {boolean|*|boolean}
    */
   function isFinite(value) {
-    return typeUtils.isNumber(value) && (value !== Infinity || value !== -Infinity);
+    return typeUtils.isNumber(value) && (value !== Infinity && value !== -Infinity);
   }
 
 
