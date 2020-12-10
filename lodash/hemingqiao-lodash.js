@@ -48,13 +48,14 @@ var hemingqiao = (function () {
       if (splited.length === 1) {
         return val => val[iteratee];
       }
-      return val => {
-        let ret = val;
-        for (let prop of splited) {
-          ret = ret[prop];
-        }
-        return ret;
-      }
+      // return val => {
+      //   let ret = val;
+      //   for (let prop of splited) {
+      //     ret = ret[prop];
+      //   }
+      //   return ret;
+      // }
+      return val => splited.reduce((ret, cur) => ret[cur], val);
     }
     if (typeUtils.isFunction(iteratee)) {
       return iteratee;
