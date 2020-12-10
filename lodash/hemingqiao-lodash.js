@@ -1034,8 +1034,8 @@ var hemingqiao = (function () {
       if (!collection.length) {
         return res;
       } else {
-        for (let e of collection) {
-          res.push(iteratee(e));
+        for (let i = 0; i < collection.length; i++) {
+          res.push(iteratee(collection[i], i, collection));
         }
       }
     } else if (typeUtils.isObject(collection)) {
@@ -1053,7 +1053,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 深比较
+   * 深比较（不支持循环引用）
    * @param obj1
    * @param obj2
    * @return {boolean}
@@ -1075,6 +1075,8 @@ var hemingqiao = (function () {
      * @return {boolean}
      */
     function _deepEqual(o1, o2) {
+      const {toString: toStr} = Object.prototype;
+      if (toStr.call(o1) !== toStr.call(o2)) return false;
       // 获取对象自身的所有属性（包括不可枚举属性和Symbol属性）
       const keysA = Reflect.ownKeys(o1);
       const keysB = Reflect.ownKeys(o2);
