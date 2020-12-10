@@ -159,6 +159,8 @@ var hemingqiao = (function () {
     union,
     unionBy,
     unionWith,
+    map,
+    isEqual,
     curry,
 
   };
@@ -1016,6 +1018,106 @@ var hemingqiao = (function () {
       values = filter(values, res => !comparator(res, val));
     }
     return ret.concat(values);
+  }
+
+
+  /**
+   * 创建一个数组， value（值） 是 iteratee（迭代函数）遍历 collection（集合）中的每个元素后返回的结果。
+   * @param collection
+   * @param iteratee
+   * @return {[]}
+   */
+  function map(collection, iteratee) {
+    iteratee = transform(iteratee);
+    let res = [];
+    if (Array.isArray(collection)) {
+      if (!collection.length) {
+        return res;
+      } else {
+        for (let e of collection) {
+          res.push(iteratee(e));
+        }
+      }
+    } else if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      if (!keys.length) {
+        return res;
+      } else {
+        for (let key of keys) {
+          res.push(iteratee(collection[key]));
+        }
+      }
+    }
+    return res;
+  }
+
+
+  /**
+   * 深比较
+   * @param obj1
+   * @param obj2
+   * @return {boolean}
+   */
+  function isEqual(obj1, obj2) {
+    if (obj1 === null) {
+      return obj2 === null;
+    } else if (typeof obj1 === "object") {
+      // 确保传递给_deepEqual()的两个参数均是非null的对象
+      return typeof obj2 === "object" && _deepEqual(obj1, obj2);
+    } else {
+      return sameValueZero(obj1, obj2);
+    }
+
+    /**
+     * 假定传入的两个参数o1和o2都是非null的对象
+     * @param {any} o1
+     * @param {any} o2
+     * @return {boolean}
+     */
+    function _deepEqual(o1, o2) {
+      // 获取对象自身的所有属性（包括不可枚举属性和Symbol属性）
+      const keysA = Reflect.ownKeys(o1);
+      const keysB = Reflect.ownKeys(o2);
+
+      // 如果两者的属性个数不同，直接返回false
+      if (keysA.length !== keysB.length) {
+        return false;
+      }
+
+      // 如果一个对象拥有另一个对象所没有的属性，直接返回false
+      for (let key of keysA) {
+        if (!keysB.includes(key)) {
+          return false;
+        }
+      }
+
+      // 逐一判断对应的属性是否相同（内容）
+      for (let key of keysA) {
+        // 特判null
+        if (o1[key] === null) {
+          if (o2[key] !== null) {
+            return false;
+          }
+          // o1[key]和o2[key]均为null时本轮比较为true，进行下一轮比较
+        } else if (typeof o1[key] === "object") {
+          if (typeof o2[key] !== "object") {
+            return false;
+          }
+
+          // 如果两者都是对象，递归调用进行深度比较
+          // 要确保传递给_deepEqual方法的参数是非null的对象，否则Reflect.ownKeys会抛出错误
+          if (!_deepEqual(o1[key], o2[key])) {
+            return false;
+          }
+        } else {
+          if (o1[key] !== o2[key]) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
   }
 
   /**
