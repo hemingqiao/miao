@@ -27,7 +27,7 @@ var hemingqiao = (function () {
     "Boolean", "Number", "String", "Symbol", "Arguments",
     "Array", "Date", "Null", "Undefined", "Function",
     "RegExp", "Object", "Error", "BigInt", "ArrayBuffer",
-    "Map", "Set",
+    "Map", "Set", "WeakMap", "WeakSet",
   ];
 
   types.forEach(type => {
@@ -65,7 +65,8 @@ var hemingqiao = (function () {
 
     if (typeUtils.isObject(iteratee)) {
       // return iterateeEqual(iteratee);
-      return deepEqual.bind(null, iteratee);
+      // return deepEqual.bind(null, iteratee);
+      return matches(iteratee);
     } else if (typeUtils.isArray(iteratee)) {
       return function (obj) {
         return obj[iteratee[0]] === iteratee[1];
@@ -186,6 +187,9 @@ var hemingqiao = (function () {
     isFinite,
     isFunction,
     isInteger,
+    isLength,
+    isMap,
+    matches,
     curry,
 
   };
@@ -1310,6 +1314,27 @@ var hemingqiao = (function () {
     return isFinite(value) && Math.floor(value) === value;
   }
 
+
+  /**
+   * Checks if value is a valid array-like length.
+   * Note: This method is loosely based on ToLength.
+   * @param value
+   * @return {boolean|*|boolean}
+   */
+  function isLength(value) {
+    return typeUtils.isNumber(value) && (value <= Number.MAX_SAFE_INTEGER && value >= Number.MIN_SAFE_INTEGER);
+  }
+
+
+  /**
+   * Checks if value is classified as a Map object.
+   * @param value
+   * @return {*}
+   */
+  function isMap(value) {
+    return typeUtils.isMap(value);
+  }
+
   /**
    * 函数的柯里化（不支持占位符功能）
    * @param fn
@@ -1331,6 +1356,57 @@ var hemingqiao = (function () {
     return function (...vars) {
       return fn(...args, ...vars);
     }
+  }
+
+
+  function matches(source) {
+    return partialDeepEqual.bind(null, source);
+  }
+
+  function partialDeepEqual(source, target) {
+    const {toString} = Object.prototype;
+    if (toString.call(source) !== toString.call(target)) return false;
+    // 获取对象自身的所有属性（包括不可枚举属性和Symbol属性）
+    const keysS = Reflect.ownKeys(source);
+    const keysT = Reflect.ownKeys(target);
+
+    // 如果source的属性值个数大于比较值的属性值个数，返回false
+    if (keysS.length > keysT.length) {
+      return false;
+    }
+
+    for (let key of keysS) {
+      if (!keysT.includes(key)) {
+        return false;
+      }
+    }
+
+    // 逐一判断source和target对应的属性是否相同（内容）
+    for (let key of keysS) {
+      // 特判null
+      if (source[key] === null) {
+        if (target[key] !== null) {
+          return false;
+        }
+        // source[key]和target[key]均为null时本轮比较为true，进行下一轮比较
+      } else if (typeof source[key] === "object") {
+        if (typeof target[key] !== "object") {
+          return false;
+        }
+
+        // 如果两者都是对象，递归调用进行深度比较
+        // 要确保传递给_deepEqual方法的参数是非null的对象，否则Reflect.ownKeys会抛出错误
+        if (!partialDeepEqual(source[key], target[key])) {
+          return false;
+        }
+      } else {
+        if (source[key] !== target[key]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
 })();
