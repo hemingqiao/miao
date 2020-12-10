@@ -193,6 +193,19 @@ var hemingqiao = (function () {
     isMatch,
     matches,
     isNaN,
+    isNil,
+    isNull,
+    isNumber,
+    isObject,
+    isObjectLike,
+    isPlainObject,
+    isSafeInteger,
+    isSet,
+    isString,
+    isSymbol,
+    isUndefined,
+    isWeakMap,
+    isWeakSet,
     curry,
 
   };
@@ -1373,6 +1386,139 @@ var hemingqiao = (function () {
 
 
   /**
+   * Checks if value is null or undefined.
+   * @param value
+   * @return {boolean}
+   */
+  function isNil(value) {
+    return value == undefined;
+  }
+
+
+  /**
+   * Checks if value is null.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isNull(value) {
+    return typeUtils.isNull(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a Number primitive or object.
+   * Note: To exclude Infinity, -Infinity, and NaN, which are classified as numbers, use the _.isFinite method.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isNumber(value) {
+    return typeUtils.isNumber(value);
+  }
+
+
+  /**
+   * Checks if value is the language type of Object. (e.g. arrays, functions, objects, regexes, new Number(0), and new String(''))
+   * @param value
+   * @return {boolean}
+   */
+  function isObject(value) {
+    return typeof value === "object" && value !== null || typeof value === "function";
+  }
+
+
+  /**
+   * Checks if value is object-like. A value is object-like if it's not null and has a typeof result of "object".
+   * @param value
+   * @return {boolean}
+   */
+  function isObjectLike(value) {
+    return typeof value === "object" && value !== null;
+  }
+
+
+  /**
+   * Checks if value is a plain object, that is, an object created by the Object constructor or one with a [[Prototype]] of null.
+   * @param value
+   * @return {boolean}
+   */
+  function isPlainObject(value) {
+    let proto = Object.getPrototypeOf(value);
+    return proto === Object.prototype || proto === null;
+  }
+
+
+  /**
+   * Checks if value is a safe integer. An integer is safe if it's an IEEE-754 double precision number which isn't the result of a rounded unsafe integer.
+   * Note: This method is based on Number.isSafeInteger.
+   * @param value
+   * @return {*|boolean}
+   */
+  function isSafeInteger(value) {
+    return typeUtils.isNumber(value) && Math.abs(value) <= Number.MAX_SAFE_INTEGER;
+  }
+
+
+  /**
+   * Checks if value is classified as a Set object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isSet(value) {
+    return typeUtils.isSet(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a String primitive or object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isString(value) {
+    return typeUtils.isString(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a Symbol primitive or object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isSymbol(value) {
+    return typeUtils.isSymbol(value);
+  }
+
+
+  /**
+   * Checks if value is undefined.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isUndefined(value) {
+    return typeUtils.isUndefined(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a WeakMap object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isWeakMap(value) {
+    return typeUtils.isWeakMap(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a WeakSet object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isWeakSet(value) {
+    return typeUtils.isWeakSet(value);
+  }
+
+
+  /**
    * 函数的柯里化（不支持占位符功能）
    * @param fn
    * @param arity
@@ -1406,7 +1552,7 @@ var hemingqiao = (function () {
     return partialDeepEqual.bind(null, source);
   }
 
-  
+
   /**
    * partial deep equal
    * @param source
@@ -1460,3 +1606,44 @@ var hemingqiao = (function () {
   }
 
 })();
+
+// var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
+// var others = [{ 'x': 1, 'y': 1 }, { 'x': 1, 'y': 2 }];
+//
+// console.log(hemingqiao.unionWith(objects, others, (a, b) => {
+//   const keysA = Object.keys(a);
+//   const keysB = Object.keys(b);
+//
+//   if (keysA.length !== keysB.length) {
+//     return false;
+//   }
+//   for (let key of keysA) {
+//     if (a[key] !== b[key]) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }));
+// => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 1 }]
+
+// function square(n) {
+//   return n * n;
+// }
+//
+// console.log(hemingqiao.map([4, 8], square));
+// // => [16, 64]
+//
+// console.log(hemingqiao.map({'a': 4, 'b': 8}, square));
+// // => [16, 64] (iteration order is not guaranteed)
+//
+// var users = [
+//   { 'user': 'barney' },
+//   { 'user': 'fred' }
+// ];
+//
+// // The `_.property` iteratee shorthand.
+// console.log(hemingqiao.map(users, 'user'));
+// // => ['barney', 'fred']
+
+console.log(hemingqiao.isSymbol(Symbol.iterator));
+
