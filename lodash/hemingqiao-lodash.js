@@ -83,45 +83,46 @@ var hemingqiao = (function () {
   // }
 
 
-  /**
-   * 简单实现深比较
-   * @param a
-   * @param b
-   * @return {boolean}
-   */
-  function deepEqual(a, b) {
-    const keysA = Reflect.ownKeys(a);
-    const keysB = Reflect.ownKeys(b);
-
-    if (keysA.length > keysB.length) {
-      return false;
-    }
-    for (let key of keysA) {
-      if (!keysB.includes(key)) {
-        return false;
-      }
-    }
-    for (let key of keysA) {
-      let val = a[key];
-      if (val === null) {
-        if (b[key] !== val) {
-          return false;
-        }
-      } else if (typeof val === "object") {
-        if (typeof b[key] !== "object") {
-          return false;
-        }
-        if (!deepEqual(val, b[key])) {
-          return false;
-        }
-      } else {
-        if (val !== b[key]) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
+  // 使用下面定义的partialDeepEqual替代
+  // /**
+  //  * 简单实现深比较
+  //  * @param a
+  //  * @param b
+  //  * @return {boolean}
+  //  */
+  // function deepEqual(a, b) {
+  //   const keysA = Reflect.ownKeys(a);
+  //   const keysB = Reflect.ownKeys(b);
+  //
+  //   if (keysA.length > keysB.length) {
+  //     return false;
+  //   }
+  //   for (let key of keysA) {
+  //     if (!keysB.includes(key)) {
+  //       return false;
+  //     }
+  //   }
+  //   for (let key of keysA) {
+  //     let val = a[key];
+  //     if (val === null) {
+  //       if (b[key] !== val) {
+  //         return false;
+  //       }
+  //     } else if (typeof val === "object") {
+  //       if (typeof b[key] !== "object") {
+  //         return false;
+  //       }
+  //       if (!deepEqual(val, b[key])) {
+  //         return false;
+  //       }
+  //     } else {
+  //       if (val !== b[key]) {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // }
 
   /** ------------------------------- 以上为辅助工具 ------------------------------- **/
 
@@ -1361,7 +1362,7 @@ var hemingqiao = (function () {
    * @return {boolean}
    */
   function isNaN(value) {
-    if (typeUtils.isNumber(value)) {
+    if (!typeUtils.isNumber(value)) {
       return false;
     }
     if (typeof value === "object") {
@@ -1369,6 +1370,7 @@ var hemingqiao = (function () {
     }
     return value !== value;
   }
+
 
   /**
    * 函数的柯里化（不支持占位符功能）
@@ -1404,6 +1406,7 @@ var hemingqiao = (function () {
     return partialDeepEqual.bind(null, source);
   }
 
+  
   /**
    * partial deep equal
    * @param source
