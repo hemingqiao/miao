@@ -27,7 +27,7 @@ var hemingqiao = (function () {
     "Boolean", "Number", "String", "Symbol", "Arguments",
     "Array", "Date", "Null", "Undefined", "Function",
     "RegExp", "Object", "Error", "BigInt", "ArrayBuffer",
-    "Map",
+    "Map", "Set",
   ];
 
   types.forEach(type => {
@@ -182,6 +182,10 @@ var hemingqiao = (function () {
     isArrayBuffer,
     isError,
     isRegExp,
+    isEmpty,
+    isFinite,
+    isFunction,
+    isInteger,
     curry,
 
   };
@@ -1229,6 +1233,33 @@ var hemingqiao = (function () {
 
 
   /**
+   * Checks if value is an empty object, collection, map, or set.
+   * Objects are considered empty if they have no own enumerable string keyed properties.
+   * Array-like values such as arguments objects, arrays, buffers, strings, or jQuery-like collections are considered
+   * empty if they have a length of 0. Similarly, maps and sets are considered empty if they have a size of 0.
+   * @param value
+   * @return {boolean}
+   */
+  function isEmpty(value) {
+    if (typeUtils.isBoolean(value)
+      || typeUtils.isNumber(value)
+      || typeUtils.isNull(value)
+      || typeUtils.isUndefined(value)) {
+      return true;
+    } else if (typeUtils.isString(value)
+      || typeUtils.isArguments(value)
+      || typeUtils.isArray(value)) {
+      return value.length === 0;
+    } else if (typeUtils.isMap(value)
+      || typeUtils.isSet(value)) {
+      return value.size === 0;
+    } else if (typeUtils.isObject(value)) {
+      return Object.keys(value).length === 0;
+    }
+  }
+
+
+  /**
    * Checks if value is an Error, EvalError, RangeError, ReferenceError, SyntaxError, TypeError, or URIError object.
    * @param value
    * @return {boolean|*}
@@ -1245,6 +1276,38 @@ var hemingqiao = (function () {
    */
   function isRegExp(value) {
     return typeUtils.isRegExp(value);
+  }
+
+
+  /**
+   * Checks if value is a finite primitive number.
+   * Note: This method is based on Number.isFinite.
+   * @param value
+   * @return {boolean|*|boolean}
+   */
+  function isFinite(value) {
+    return typeUtils.isNumber(value) && (value !== Infinity || value !== -Infinity);
+  }
+
+
+  /**
+   * Checks if value is classified as a Function object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isFunction(value) {
+    return typeUtils.isFunction(value);
+  }
+
+
+  /**
+   * Checks if value is an integer.
+   * Note: This method is based on Number.isInteger.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isInteger(value) {
+    return isFinite(value) && Math.floor(value) === value;
   }
 
   /**
