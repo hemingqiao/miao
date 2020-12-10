@@ -189,7 +189,9 @@ var hemingqiao = (function () {
     isInteger,
     isLength,
     isMap,
+    isMatch,
     matches,
+    isNaN,
     curry,
 
   };
@@ -1322,7 +1324,13 @@ var hemingqiao = (function () {
    * @return {boolean|*|boolean}
    */
   function isLength(value) {
-    return typeUtils.isNumber(value) && (value <= Number.MAX_SAFE_INTEGER && value >= Number.MIN_SAFE_INTEGER);
+    if (!typeUtils.isNumber(value)) {
+      return false;
+    }
+    if (value < 0) {
+      value = -value;
+    }
+    return value > Number.MIN_VALUE && value < Number.MAX_VALUE;
   }
 
 
@@ -1333,6 +1341,33 @@ var hemingqiao = (function () {
    */
   function isMap(value) {
     return typeUtils.isMap(value);
+  }
+
+
+  /**
+   * Performs a partial deep comparison between object and source to determine if object contains equivalent property values.
+   * @param object
+   * @param source
+   * @return {boolean}
+   */
+  function isMatch(object, source) {
+    return partialDeepEqual(source, object);
+  }
+
+
+  /**
+   * Checks if value is NaN.
+   * @param value
+   * @return {boolean}
+   */
+  function isNaN(value) {
+    if (typeUtils.isNumber(value)) {
+      return false;
+    }
+    if (typeof value === "object") {
+      value = value.valueOf();
+    }
+    return value !== value;
   }
 
   /**
@@ -1359,10 +1394,22 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * Creates a function that performs a partial deep comparison between a given object and source, returning true
+   * if the given object has equivalent property values, else false.
+   * @param source
+   * @return {any}
+   */
   function matches(source) {
     return partialDeepEqual.bind(null, source);
   }
 
+  /**
+   * partial deep equal
+   * @param source
+   * @param target
+   * @return {boolean}
+   */
   function partialDeepEqual(source, target) {
     const {toString} = Object.prototype;
     if (toString.call(source) !== toString.call(target)) return false;
