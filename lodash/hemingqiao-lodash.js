@@ -43,7 +43,17 @@ var hemingqiao = (function () {
    */
   function transform(iteratee) {
     if (typeUtils.isString(iteratee)) {
-      return val => val[iteratee];
+      let splited = iteratee.split(".");
+      if (splited.length === 1) {
+        return val => val[iteratee];
+      }
+      return val => {
+        let ret = val;
+        for (let prop of splited) {
+          ret = ret[prop];
+        }
+        return ret;
+      }
     }
     if (typeUtils.isFunction(iteratee)) {
       return iteratee;
