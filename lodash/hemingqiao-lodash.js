@@ -27,7 +27,7 @@ var hemingqiao = (function () {
     "Boolean", "Number", "String", "Symbol", "Arguments",
     "Array", "Date", "Null", "Undefined", "Function",
     "RegExp", "Object", "Error", "BigInt", "ArrayBuffer",
-    "Map", 
+    "Map",
   ];
 
   types.forEach(type => {
@@ -176,6 +176,9 @@ var hemingqiao = (function () {
     isArray,
     isArrayLike,
     isArrayLikeObject,
+    isBoolean,
+    isDate,
+    isElement,
     isArrayBuffer,
     isError,
     isRegExp,
@@ -1191,6 +1194,37 @@ var hemingqiao = (function () {
    */
   function isArrayLikeObject(value) {
     return !typeUtils.isObject(value) && isArrayLike(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a boolean primitive or object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isBoolean(value) {
+    return typeUtils.isBoolean(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a Date object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isDate(value) {
+    return typeUtils.isDate(value);
+  }
+
+
+  /**
+   * Checks if value is likely a DOM element.
+   * @param value
+   * @return {boolean}
+   */
+  function isElement(value) {
+    let regexp = /^\[object HTML\w+\]$/;
+    return regexp.test(Object.prototype.toString.call(value));
   }
 
 
