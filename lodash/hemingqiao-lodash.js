@@ -24,9 +24,10 @@ var hemingqiao = (function () {
   // 类型判断工具
   const typeUtils = {};
   const types = [
-    "Boolean", "Number", "String", "Symbol",
+    "Boolean", "Number", "String", "Symbol", "Arguments",
     "Array", "Date", "Null", "Undefined", "Function",
-    "RegExp", "Object", "Error", "BigInt"
+    "RegExp", "Object", "Error", "BigInt", "ArrayBuffer",
+    "Map", 
   ];
 
   types.forEach(type => {
@@ -171,6 +172,13 @@ var hemingqiao = (function () {
     unionWith,
     map,
     isEqual,
+    isArguments,
+    isArray,
+    isArrayLike,
+    isArrayLikeObject,
+    isArrayBuffer,
+    isError,
+    isRegExp,
     curry,
 
   };
@@ -1130,6 +1138,79 @@ var hemingqiao = (function () {
 
       return true;
     }
+  }
+
+
+  /**
+   * 检查 value 是否是一个类 arguments 对象。
+   * @param value
+   * @return {boolean|*}
+   */
+  function isArguments(value) {
+    return typeUtils.isArguments(value);
+  }
+
+  /**
+   * 检查 value 是否是 Array 类对象。
+   * @param value
+   * @return {*}
+   */
+  function isArray(value) {
+    return typeUtils.isArray(value);
+  }
+
+
+  /**
+   * 检查 value 是否是 ArrayBuffer 对象。
+   * @param value
+   * @return {boolean|*}
+   */
+  function isArrayBuffer(value) {
+    return typeUtils.isArrayBuffer(value);
+  }
+
+
+  /**
+   * Checks if value is array-like. A value is considered array-like if it's not a function and has a value.length
+   * that's an integer greater than or equal to 0 and less than or equal to Number.MAX_SAFE_INTEGER.
+   * @param value
+   * @return {boolean|boolean|*|boolean}
+   */
+  function isArrayLike(value) {
+    return !typeUtils.isFunction(value)
+      && typeUtils.isNumber(value.length)
+      && value.length >= 0
+      && value.length <= Number.MAX_SAFE_INTEGER;
+  }
+
+
+  /**
+   * This method is like _.isArrayLike except that it also checks if value is an object.
+   * @param value
+   * @return {boolean|boolean|*}
+   */
+  function isArrayLikeObject(value) {
+    return !typeUtils.isObject(value) && isArrayLike(value);
+  }
+
+
+  /**
+   * Checks if value is an Error, EvalError, RangeError, ReferenceError, SyntaxError, TypeError, or URIError object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isError(value) {
+    return typeUtils.isError(value);
+  }
+
+
+  /**
+   * Checks if value is classified as a RegExp object.
+   * @param value
+   * @return {boolean|*}
+   */
+  function isRegExp(value) {
+    return typeUtils.isRegExp(value);
   }
 
   /**
