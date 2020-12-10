@@ -55,6 +55,7 @@ var hemingqiao = (function () {
       //   }
       //   return ret;
       // }
+      // 简洁是简洁了，不过不好做错误处理
       return val => splited.reduce((ret, cur) => ret[cur], val);
     }
     if (typeUtils.isFunction(iteratee)) {
