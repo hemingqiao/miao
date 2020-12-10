@@ -1085,8 +1085,8 @@ var hemingqiao = (function () {
      * @return {boolean}
      */
     function _deepEqual(o1, o2) {
-      const {toString: toStr} = Object.prototype;
-      if (toStr.call(o1) !== toStr.call(o2)) return false;
+      const {toString} = Object.prototype;
+      if (toString.call(o1) !== toString.call(o2)) return false;
       // 获取对象自身的所有属性（包括不可枚举属性和Symbol属性）
       const keysA = Reflect.ownKeys(o1);
       const keysB = Reflect.ownKeys(o2);
