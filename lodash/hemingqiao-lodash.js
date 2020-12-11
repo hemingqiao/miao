@@ -142,6 +142,8 @@ var hemingqiao = (function () {
     lastIndexOf,
     drop,
     dropRight,
+    dropRightWhile,
+    dropWhile,
     fill,
     findIndex,
     findLastIndex,
@@ -442,6 +444,41 @@ var hemingqiao = (function () {
       res.push(arr[i]);
     }
     return res;
+  }
+
+
+  /**
+   * Creates a slice of array excluding elements dropped from the end. Elements are dropped until predicate returns falsey.
+   * The predicate is invoked with three arguments: (value, index, array).
+   * @param array
+   * @param predicate
+   * @return {*}
+   */
+  function dropRightWhile(array, predicate) {
+    predicate = transform(predicate);
+    const ret = array.slice();
+    for (let i = array.length - 1; i >= 0; i--) {
+      if (predicate(array[i])) ret.pop();
+      else break;
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates a slice of array excluding elements dropped from the beginning. Elements are dropped until predicate returns falsey.
+   * The predicate is invoked with three arguments: (value, index, array).
+   * @param array
+   * @param predicate
+   * @return {[]}
+   */
+  function dropWhile(array, predicate) {
+    predicate = transform(predicate);
+    let i;
+    for (i = 0; i < array.length; i++) {
+      if (!predicate(array[i])) break;
+    }
+    return array.slice(i);
   }
 
 
@@ -1648,5 +1685,3 @@ var hemingqiao = (function () {
 // // The `_.property` iteratee shorthand.
 // console.log(hemingqiao.map(users, 'user'));
 // // => ['barney', 'fred']
-
-console.log(hemingqiao.isSymbol(Symbol.iterator));
