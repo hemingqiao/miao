@@ -155,6 +155,8 @@ var hemingqiao = (function () {
     initial,
     reverse,
     sortedIndex,
+    sortedIndexBy,
+    sortedIndexOf,
     every,
     filter,
     find,
@@ -655,43 +657,81 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * Uses a binary search to determine the lowest index at which value should be inserted into array in order to maintain its sort order.
+   * @param array
+   * @param value
+   * @return {number}
+   */
+  function sortedIndex(array, value) {
+    let low = 0, high = array.length; // 插入位置可能是数组的末尾，因此将high初始化为length
+    while (low < high) {
+      let mid = (low + high) >>> 1;
+      // 小于value的位置一定不是寻找的解
+      if (array[mid] < value) {
+        // 新的搜索区间为[mid + 1, high]
+        low = mid + 1;
+      } else {
+        // array[mid]大于等于value时还需要继续向左进行查找
+        // 因为数组中可能存在重复元素，而要求是寻找可能的最小的插入位置
+        // 新的搜索区间为[low, high]
+        high = mid;
+      }
+    }
+    return high; // 退出循环时low == high，返回high和low均可
+  }
+
   // /**
-  //  * 使用二分查找来决定 value值 应该插入到数组中 尽可能小的索引位置，以保证array的排序。
-  //  * 要求数组不能有重复元素
+  //  * 采取暴力破解
+  //  * 将 value 值插入到有序数组中 尽可能小的索引位置，以保证array的排序。
   //  * @param array
   //  * @param value
-  //  * @return {number}
+  //  * @return {number|*}
   //  */
   // function sortedIndex(array, value) {
-  //   let low = 0, high = array.length - 1;
-  //   while (low <= high) {
-  //     let mid = (low + high) >>> 1;
-  //     if (array[mid] === value) {
-  //       return mid;
-  //     } else if (array[mid] > value) {
-  //       high = mid - 1;
-  //     } else {
-  //       low = mid + 1;
+  //   for (let i = 0; i < array.length; i++) {
+  //     if (array[i] >= value) {
+  //       return i;
   //     }
   //   }
-  //   return low;
+  //   return array.length;
   // }
 
 
   /**
-   * 采取暴力破解
-   * 将 value 值插入到有序数组中 尽可能小的索引位置，以保证array的排序。
+   * This method is like _.sortedIndex except that it accepts iteratee which is invoked for value and each element of
+   * array to compute their sort ranking. The iteratee is invoked with one argument: (value).
    * @param array
    * @param value
-   * @return {number|*}
+   * @param iteratee
+   * @return {number}
    */
-  function sortedIndex(array, value) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i] >= value) {
-        return i;
+  function sortedIndexBy(array, value, iteratee) {
+    iteratee = transform(iteratee);
+    const arrayCopy = array.map(val => iteratee(val));
+    const valueCopy = iteratee(value);
+    return sortedIndex(arrayCopy, valueCopy);
+  }
+
+
+  /**
+   * This method is like _.indexOf except that it performs a binary search on a sorted array(有序数组).
+   * @param array
+   * @param value
+   * @return {number}
+   */
+  function sortedIndexOf(array, value) {
+    let low = 0, high = array.length - 1;
+    while (low < high) {
+      let mid = (low + high) >>> 1;
+      // 小于value的位置一定不是解
+      if (array[mid] < value) {
+        low = mid + 1;
+      } else {
+        high = mid;
       }
     }
-    return array.length;
+    return low;
   }
 
 
@@ -1685,3 +1725,5 @@ var hemingqiao = (function () {
 // // The `_.property` iteratee shorthand.
 // console.log(hemingqiao.map(users, 'user'));
 // // => ['barney', 'fred']
+console.log(hemingqiao.sortedIndexOf([4, 5, 5, 5, 6], 5));
+// => 1
