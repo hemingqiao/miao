@@ -61,7 +61,7 @@ var hemingqiao = (function () {
     if (typeUtils.isFunction(iteratee)) {
       return iteratee;
     }
-    if (typeUtils.isNull(iteratee)) {
+    if (typeUtils.isNull(iteratee) || typeUtils.isUndefined(iteratee)) {
       return val => val;
     }
 
@@ -183,6 +183,11 @@ var hemingqiao = (function () {
     pullAll,
     pullAllBy,
     pullAllWith,
+    tail,
+    take,
+    takeRight,
+    takeRightWhile,
+    takeWhile,
     union,
     unionBy,
     unionWith,
@@ -912,6 +917,100 @@ var hemingqiao = (function () {
         ret.push(e);
         i++;
         uniqVal = uniqArray[i];
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * Gets all but the first element of array.
+   * @param array
+   * @return {*}
+   */
+  function tail(array) {
+    const [first, ...tails] = array;
+    return tails;
+  }
+
+
+  /**
+   * Creates a slice of array with n elements taken from the beginning.
+   * @param array
+   * @param n
+   * @return {[]}
+   */
+  function take(array, n = 1) {
+    const len = array.length;
+    const ret = [];
+    if (!len || n <= 0) return ret;
+    for (let i = 1; i <= n; i++) {
+      if (i > len) break;
+      ret.push(array[i - 1]);
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates a slice of array with n elements taken from the end.
+   * @param array
+   * @param n
+   * @return {[]}
+   */
+  function takeRight(array, n = 1) {
+    const len = array.length;
+    const ret = [];
+    if (!len || n <= 0) return ret;
+    if (n > len) n = len;
+    for (let i = len - 1; i >= 0; i--) {
+      if (n-- > 0) {
+        ret.unshift(array[i]);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates a slice of array with elements taken from the end. Elements are taken until predicate returns falsey.
+   * The predicate is invoked with three arguments: (value, index, array).
+   * @param array
+   * @param predicate
+   * @return {[]}
+   */
+  function takeRightWhile(array, predicate) {
+    predicate = transform(predicate);
+    const ret = [];
+    const len = array.length;
+    for (let i = len - 1; i >= 0; i--) {
+      // predicate接三个参数
+      if (predicate(array[i], i, array)) {
+        ret.unshift(array[i]);
+      } else {
+        break;
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates a slice of array with elements taken from the beginning. Elements are taken until predicate returns falsey.
+   * The predicate is invoked with three arguments: (value, index, array).
+   * @param array
+   * @param predicate
+   * @return {[]}
+   */
+  function takeWhile(array, predicate) {
+    predicate = transform(predicate);
+    const ret = [];
+    const len = array.length;
+    for (let i = 0; i < len; i++) {
+      if (predicate(array[i], i, array)) {
+        ret.push(array[i]);
+      } else {
+        break;
       }
     }
     return ret;
@@ -1888,3 +1987,26 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
+
+// var users = [
+//   { 'user': 'barney',  'active': false },
+//   { 'user': 'fred',    'active': false },
+//   { 'user': 'pebbles', 'active': true }
+// ];
+//
+// console.log(hemingqiao.takeWhile(users, function (o) {
+//   return !o.active;
+// }));
+// // => objects for ['barney', 'fred']
+//
+// // The `_.matches` iteratee shorthand.
+// console.log(hemingqiao.takeWhile(users, {'user': 'barney', 'active': false}));
+// // => objects for ['barney']
+//
+// // The `_.matchesProperty` iteratee shorthand.
+// console.log(hemingqiao.takeWhile(users, ['active', false]));
+// // => objects for ['barney', 'fred']
+//
+// // The `_.property` iteratee shorthand.
+// console.log(hemingqiao.takeWhile(users, 'active'));
+// // => []
