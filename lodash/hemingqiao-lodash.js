@@ -1871,20 +1871,20 @@ var hemingqiao = (function () {
 
 })();
 
-var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
-
-console.log(hemingqiao.uniqWith(objects, (a, b) => {
-  const keysA = Object.keys(a);
-  const keysB = Object.keys(b);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-  for (let key of keysA) {
-    if (a[key] !== b[key]) {
-      return false;
-    }
-  }
-  return true;
-}));
+// var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
+//
+// console.log(hemingqiao.uniqWith(objects, (a, b) => {
+//   const keysA = Object.keys(a);
+//   const keysB = Object.keys(b);
+//
+//   if (keysA.length !== keysB.length) {
+//     return false;
+//   }
+//   for (let key of keysA) {
+//     if (a[key] !== b[key]) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
