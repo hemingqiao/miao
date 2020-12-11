@@ -162,7 +162,7 @@ var hemingqiao = (function () {
     sortedLastIndexOf,
     uniq,
     uniqBy,
-    uniqWith,
+    /*uniqWith,*/
     sortedUniq,
     sortedUniqBy,
     every,
@@ -841,33 +841,33 @@ var hemingqiao = (function () {
   }
 
 
-  /**
-   * This method is like _.uniq except that it accepts comparator which is invoked to compare elements of array. The
-   * order of result values is determined by the order they occur in the array.The comparator is invoked with two
-   * arguments: (arrVal, othVal).
-   * @param array
-   * @param comparator
-   * @return {[]}
-   */
-  function uniqWith(array, comparator) {
-    const len = array.length;
-    const ret = [];
-    if (!len) {
-      return ret;
-    }
-    ret.push(array[0]);
-    outer:
-    for (let i = 1; i < len; i++) {
-      let val = array[i];
-      for (let e of ret) {
-        if (comparator(e, val)) {
-          break outer;
-        }
-      }
-      ret.push(val);
-    }
-    return ret;
-  }
+  // /**
+  //  * This method is like _.uniq except that it accepts comparator which is invoked to compare elements of array. The
+  //  * order of result values is determined by the order they occur in the array.The comparator is invoked with two
+  //  * arguments: (arrVal, othVal).
+  //  * @param array
+  //  * @param comparator
+  //  * @return {[]}
+  //  */
+  // function uniqWith(array, comparator) {
+  //   const len = array.length;
+  //   const ret = [];
+  //   if (!len) {
+  //     return ret;
+  //   }
+  //   ret.push(array[0]);
+  //   outer:
+  //   for (let i = 1; i < len; i++) {
+  //     let val = array[i];
+  //     for (let e of ret) {
+  //       if (comparator(e, val)) {
+  //         break outer;
+  //       }
+  //     }
+  //     ret.push(val);
+  //   }
+  //   return ret;
+  // }
 
 
   /**
@@ -1870,3 +1870,21 @@ var hemingqiao = (function () {
   }
 
 })();
+
+var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
+
+console.log(hemingqiao.uniqWith(objects, (a, b) => {
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+  for (let key of keysA) {
+    if (a[key] !== b[key]) {
+      return false;
+    }
+  }
+  return true;
+}));
+// => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
