@@ -160,6 +160,11 @@ var hemingqiao = (function () {
     sortedLastIndex,
     sortedLastIndexBy,
     sortedLastIndexOf,
+    uniq,
+    uniqBy,
+    uniqWith,
+    sortedUniq,
+    sortedUniqBy,
     every,
     filter,
     find,
@@ -724,6 +729,8 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function sortedIndexOf(array, value) {
+    // 与sortedIndex的不同之处在于此处查找上界为len - 1，保证了退出循环时得到的值一定是合法索引
+    // 而sortedIndex的查找上界是len，所以对于某个大于数组中所有的值的value，退出循环时会得到len，此时已经越界，应该返回-1
     let low = 0, high = array.length - 1;
     while (low < high) {
       let mid = (low + high) >>> 1;
@@ -793,6 +800,121 @@ var hemingqiao = (function () {
       return index - 1;
     }
     return -1;
+  }
+
+
+  /**
+   * Creates a duplicate-free version of an array, using SameValueZero for equality comparisons, in which only the first
+   * occurrence of each element is kept. The order of result values is determined by the order they occur in the array.
+   * @param array
+   * @return {any[]}
+   */
+  function uniq(array) {
+    return [...new Set(array)];
+  }
+
+
+  /**
+   * This method is like _.uniq except that it accepts iteratee which is invoked for each element in array to generate
+   * the criterion by which uniqueness is computed. The order of result values is determined by the order they occur
+   * in the array. The iteratee is invoked with one argument: (value).
+   * @param array
+   * @param iteratee
+   * @return {[]}
+   */
+  function uniqBy(array, iteratee) {
+    iteratee = transform(iteratee);
+    const mappedArray = array.map(val => iteratee(val));
+    const uniqArray = uniq(mappedArray);
+
+    const ret = [];
+    let i = 0;
+    let uniqVal = uniqArray[i];
+    for (let e of array) {
+      if (iteratee(e) === uniqVal) {
+        ret.push(e);
+        i++;
+        uniqVal = uniqArray[i];
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.uniq except that it accepts comparator which is invoked to compare elements of array. The
+   * order of result values is determined by the order they occur in the array.The comparator is invoked with two
+   * arguments: (arrVal, othVal).
+   * @param array
+   * @param comparator
+   * @return {[]}
+   */
+  function uniqWith(array, comparator) {
+    const len = array.length;
+    const ret = [];
+    if (!len) {
+      return ret;
+    }
+    ret.push(array[0]);
+    outer:
+    for (let i = 1; i < len; i++) {
+      let val = array[i];
+      for (let e of ret) {
+        if (comparator(e, val)) {
+          break outer;
+        }
+      }
+      ret.push(val);
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.uniq except that it's designed and optimized for sorted arrays.
+   * @param array
+   * @return {[]}
+   */
+  function sortedUniq(array) {
+    const ret = [];
+    const len = array.length;
+    if (!len) {
+      return ret;
+    }
+    ret.push(array[0]);
+    for (let i = 1; i < len; i++) {
+      if (array[i] !== array[i - 1]) {
+        ret.push(array[i]);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.uniqBy except that it's designed and optimized for sorted arrays.
+   * @param array
+   * @param iteratee
+   * @return {[]}
+   */
+  function sortedUniqBy(array, iteratee) {
+    const len = array.length;
+    const ret = [];
+    if (!len) return ret;
+
+    iteratee = transform(iteratee);
+    const mappedArray = array.map(val => iteratee(val));
+    const uniqArray = sortedUniq(mappedArray);
+    let i = 0;
+    let uniqVal = uniqArray[i];
+    for (let e of array) {
+      if (iteratee(e) === uniqVal) {
+        ret.push(e);
+        i++;
+        uniqVal = uniqArray[i];
+      }
+    }
+    return ret;
   }
 
 
@@ -1748,41 +1870,3 @@ var hemingqiao = (function () {
   }
 
 })();
-
-// var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
-// var others = [{ 'x': 1, 'y': 1 }, { 'x': 1, 'y': 2 }];
-//
-// console.log(hemingqiao.unionWith(objects, others, (a, b) => {
-//   const keysA = Object.keys(a);
-//   const keysB = Object.keys(b);
-//
-//   if (keysA.length !== keysB.length) {
-//     return false;
-//   }
-//   for (let key of keysA) {
-//     if (a[key] !== b[key]) {
-//       return false;
-//     }
-//   }
-//   return true;
-// }));
-// => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 1 }]
-
-// function square(n) {
-//   return n * n;
-// }
-//
-// console.log(hemingqiao.map([4, 8], square));
-// // => [16, 64]
-//
-// console.log(hemingqiao.map({'a': 4, 'b': 8}, square));
-// // => [16, 64] (iteration order is not guaranteed)
-//
-// var users = [
-//   { 'user': 'barney' },
-//   { 'user': 'fred' }
-// ];
-//
-// // The `_.property` iteratee shorthand.
-// console.log(hemingqiao.map(users, 'user'));
-// // => ['barney', 'fred']
