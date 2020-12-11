@@ -157,6 +157,9 @@ var hemingqiao = (function () {
     sortedIndex,
     sortedIndexBy,
     sortedIndexOf,
+    sortedLastIndex,
+    sortedLastIndexBy,
+    sortedLastIndexOf,
     every,
     filter,
     find,
@@ -731,7 +734,65 @@ var hemingqiao = (function () {
         high = mid;
       }
     }
+    // 如果low处对应的值不等于目标值value，返回-1
+    if (array[low] === value) {
+      return low;
+    }
+    return -1;
+  }
+
+
+  /**
+   * This method is like _.sortedIndex except that it returns the highest index at which value should be inserted into
+   * array in order to maintain its sort order.
+   * @param array
+   * @param value
+   * @return {number}
+   */
+  function sortedLastIndex(array, value) {
+    let low = 0, high = array.length;
+    while (low < high) {
+      let mid = (low + high) >>> 1;
+      // 寻找最大的插入位置，即寻找到值等于value的位置后仍需向右边移动
+      // 与sortedIndex的不同之处就在于此处判断条件多了等于
+      if (array[mid] <= value) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
+    }
     return low;
+  }
+
+
+  /**
+   * This method is like _.sortedLastIndex except that it accepts iteratee which is invoked for value and each element
+   * of array to compute their sort ranking. The iteratee is invoked with one argument: (value).
+   * @param array
+   * @param value
+   * @param iteratee
+   * @return {number}
+   */
+  function sortedLastIndexBy(array, value, iteratee) {
+    iteratee = transform(iteratee);
+    const arrayCopy = array.map(val => iteratee(val));
+    const valueCopy = iteratee(value);
+    return sortedLastIndex(arrayCopy, valueCopy);
+  }
+
+
+  /**
+   * This method is like _.lastIndexOf except that it performs a binary search on a sorted array.
+   * @param array
+   * @param value
+   * @return {number}
+   */
+  function sortedLastIndexOf(array, value) {
+    let index = sortedLastIndex(array, value);
+    if (array[index - 1] === value) {
+      return index - 1;
+    }
+    return -1;
   }
 
 
@@ -1725,5 +1786,3 @@ var hemingqiao = (function () {
 // // The `_.property` iteratee shorthand.
 // console.log(hemingqiao.map(users, 'user'));
 // // => ['barney', 'fred']
-console.log(hemingqiao.sortedIndexOf([4, 5, 5, 5, 6], 5));
-// => 1
