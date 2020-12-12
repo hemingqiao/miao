@@ -166,6 +166,8 @@ var hemingqiao = (function () {
     zip,
     zipObject,
     zipObjectDeep,
+    zipWith,
+    countBy,
     sortedUniq,
     sortedUniqBy,
     every,
@@ -957,6 +959,53 @@ var hemingqiao = (function () {
         }
       }
       temp = ret;
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.zip except that it accepts iteratee to specify how grouped values should be combined. The
+   * iteratee is invoked with the elements of each group: (...group).
+   * @param args
+   * @return {[]}
+   */
+  function zipWith(...args) {
+    let iteratee = args.pop();
+    iteratee = transform(iteratee);
+    let maxLen = Math.max(...args.map(arg => arg.length));
+    let invoked = [];
+    let ret = [];
+    for (let i = 0; i < maxLen; i++) {
+      for (let arr of args) {
+        invoked.push(arr[i]);
+      }
+      ret.push(iteratee(...invoked));
+      invoked = [];
+    }
+    return ret;
+  }
+
+
+  /**
+   * （只支持处理collection为数组的情况，collection为对象暂时不支持）
+   * Creates an object composed of keys generated from the results of running each element of collection thru iteratee.
+   * The corresponding value of each key is the number of times the key was returned by iteratee. The iteratee is
+   * invoked with one argument: (value).
+   * @param collection
+   * @param iteratee
+   * @return {{}}
+   */
+  function countBy(collection, iteratee) {
+    iteratee = transform(iteratee);
+    const ret = {};
+    collection = collection.map(val => iteratee(val));
+    for (let e of collection) {
+      if (ret[e] !== undefined) {
+        ret[e]++;
+      } else {
+        ret[e] = 1;
+      }
     }
     return ret;
   }
@@ -2075,29 +2124,3 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-// var users = [
-//   { 'user': 'barney',  'active': false },
-//   { 'user': 'fred',    'active': false },
-//   { 'user': 'pebbles', 'active': true }
-// ];
-//
-// console.log(hemingqiao.takeWhile(users, function (o) {
-//   return !o.active;
-// }));
-// // => objects for ['barney', 'fred']
-//
-// // The `_.matches` iteratee shorthand.
-// console.log(hemingqiao.takeWhile(users, {'user': 'barney', 'active': false}));
-// // => objects for ['barney']
-//
-// // The `_.matchesProperty` iteratee shorthand.
-// console.log(hemingqiao.takeWhile(users, ['active', false]));
-// // => objects for ['barney', 'fred']
-//
-// // The `_.property` iteratee shorthand.
-// console.log(hemingqiao.takeWhile(users, 'active'));
-// // => []
-
-let res = hemingqiao.zipObjectDeep(['a.b[0].c', 'a.b[1].d'], [1, 2])
-console.log(res);
-// => { 'a': { 'b': [{ 'c': 1 }, { 'd': 2 }] } }
