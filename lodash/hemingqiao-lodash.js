@@ -887,7 +887,7 @@ var hemingqiao = (function () {
     if (!len) return [];
 
     const maxLen = Math.max(...(arrays.map(arr => arr.length)));
-    const ret = Array(len).fill(0).map(_ => []);
+    const ret = Array(maxLen).fill(0).map(_ => []);
     for (let i = 0; i < maxLen; i++) {
       for (let j = 0; j < len; j++) {
         ret[i][j] = arrays[j][i];
