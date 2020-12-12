@@ -162,7 +162,8 @@ var hemingqiao = (function () {
     sortedLastIndexOf,
     uniq,
     uniqBy,
-    /*uniqWith,*/
+    uniqWith,
+    zip,
     sortedUniq,
     sortedUniqBy,
     every,
@@ -846,33 +847,54 @@ var hemingqiao = (function () {
   }
 
 
-  // /**
-  //  * This method is like _.uniq except that it accepts comparator which is invoked to compare elements of array. The
-  //  * order of result values is determined by the order they occur in the array.The comparator is invoked with two
-  //  * arguments: (arrVal, othVal).
-  //  * @param array
-  //  * @param comparator
-  //  * @return {[]}
-  //  */
-  // function uniqWith(array, comparator) {
-  //   const len = array.length;
-  //   const ret = [];
-  //   if (!len) {
-  //     return ret;
-  //   }
-  //   ret.push(array[0]);
-  //   outer:
-  //   for (let i = 1; i < len; i++) {
-  //     let val = array[i];
-  //     for (let e of ret) {
-  //       if (comparator(e, val)) {
-  //         break outer;
-  //       }
-  //     }
-  //     ret.push(val);
-  //   }
-  //   return ret;
-  // }
+  /**
+   * This method is like _.uniq except that it accepts comparator which is invoked to compare elements of array. The
+   * order of result values is determined by the order they occur in the array.The comparator is invoked with two
+   * arguments: (arrVal, othVal).
+   * @param array
+   * @param comparator
+   * @return {[]}
+   */
+  function uniqWith(array, comparator) {
+    const len = array.length;
+    const ret = [];
+    if (!len) {
+      return ret;
+    }
+    ret.push(array[0]);
+    outer:
+    for (let i = 1; i < len; i++) {
+      let val = array[i];
+      for (let e of ret) {
+        if (comparator(e, val)) {
+          break outer;
+        }
+      }
+      ret.push(val);
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates an array of grouped elements, the first of which contains the first elements of the given arrays, the
+   * second of which contains the second elements of the given arrays, and so on.
+   * @param arrays
+   * @return {*[][]|*[]}
+   */
+  function zip(...arrays) {
+    const len = arrays.length;
+    if (!len) return [];
+
+    const maxLen = Math.max(...(arrays.map(arr => arr.length)));
+    const ret = Array(len).fill(0).map(_ => []);
+    for (let i = 0; i < maxLen; i++) {
+      for (let j = 0; j < len; j++) {
+        ret[i][j] = arrays[j][i];
+      }
+    }
+    return ret;
+  }
 
 
   /**
