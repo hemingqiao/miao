@@ -954,21 +954,23 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function xor(...arrays) {
-    const flattened = flattenDeep(arrays);
-    const map = new Map();
-    for (let e of flattened) {
-      let val = map.get(e);
-      map.set(e, val === undefined ? 1 : val + 1);
+    const union = (a, b) => new Set(a.concat(b));
+    const intersection = (a, b) => a.reduce((arr, cur) => {
+      if (b.includes(cur)) {
+        arr.push(cur);
+      }
+      return arr;
+    }, []);
+    const difference = (a, b) => {
+      const ret = [];
+      for (let aVal of a) {
+        if (!b.includes(aVal)) ret.push(aVal);
+      }
+      return ret;
     }
 
-    const ret = [];
-    for (let key of map.keys()) {
-      // 出现次数是奇数次则加入结果
-      if (map.get(key) % 2 === 1) {
-        ret.push(key);
-      }
-    }
-    return ret;
+    // 根据定义，A和B的对称差集可以表达为(A∪B)-(A∩B)
+    return arrays.reduce((ret, cur) => difference(union(ret, cur), intersection(ret, cur)));
   }
 
 
@@ -2300,3 +2302,4 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
+console.log(hemingqiao.xor([1, 2, 3, 4], [2, 3, 4, 5], [2, 4, 5, 6, 7], [5, 6, 7, 8]));
