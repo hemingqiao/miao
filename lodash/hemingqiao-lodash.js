@@ -179,6 +179,10 @@ var hemingqiao = (function () {
     every,
     filter,
     find,
+    findLast,
+    flatMap,
+    flatMapDeep,
+    flatMapDepth,
     toArray,
     intersection,
     intersectionBy,
@@ -1393,7 +1397,6 @@ var hemingqiao = (function () {
         }
       }
     } else if (typeUtils.isObject(collection)) {
-      res = {};
       if (!Object.keys(collection).length) {
         return null;
       } else {
@@ -1404,6 +1407,93 @@ var hemingqiao = (function () {
         }
       }
     }
+    return undefined;
+  }
+
+
+  /**
+   * This method is like _.find except that it iterates over elements of collection from right to left.
+   * @param collection
+   * @param predicate
+   * @param fromIndex
+   * @return {undefined|*}
+   */
+  function findLast(collection, predicate, fromIndex = collection.length - 1) {
+    predicate = transform(predicate);
+    if (typeUtils.isArray(collection)) {
+      if (!collection.length) {
+        return undefined;
+      } else {
+        for (let i = fromIndex; i >= 0; i--) {
+          if (predicate(collection[i])) {
+            return collection[i];
+          }
+        }
+      }
+    } else if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      if (!keys) {
+        return undefined;
+      } else {
+        for (let key of keys) {
+          if (predicate(collection[key])) {
+            return collection[key];
+          }
+        }
+      }
+    }
+    return undefined;
+  }
+
+
+  function baseFlatMap(collection, iteratee, depth = 1) {
+    iteratee = transform(iteratee);
+    if (typeUtils.isArray(collection)) {
+      if (!collection.length) {
+        return [];
+      }
+      collection = collection.map((value, idx, array) => iteratee(value, idx, array));
+      return depth === Infinity ? flattenDeep(collection) : flattenDepth(collection, depth);
+    } else if (typeUtils.isObject(collection)){
+      const ret = [];
+      let keys = Object.keys(collection);
+      if (!keys.length) {
+        return ret;
+      }
+      for (let key of keys) {
+        ret.push(iteratee(collection[key], key, collection));
+      }
+      return depth === Infinity ? flattenDeep(ret) : flattenDepth(ret, depth);
+    }
+    return [];
+  }
+
+
+  /**
+   * Creates a flattened array of values by running each element in collection thru iteratee and flattening the mapped
+   * results. The iteratee is invoked with three arguments: (value, index|key, collection).
+   * @param collection
+   * @param iteratee
+   * @return {[]|*[]|*}
+   */
+  function flatMap(collection, iteratee) {
+    return baseFlatMap(collection, iteratee);
+  }
+
+
+  /**
+   * This method is like _.flatMap except that it recursively flattens the mapped results.
+   * @param collection
+   * @param iteratee
+   * @return {*[]|*[]|*}
+   */
+  function flatMapDeep(collection, iteratee) {
+    return baseFlatMap(collection, iteratee, Infinity);
+  }
+
+
+  function flatMapDepth(collection, iteratee, depth = 1) {
+    return baseFlatMap(collection, iteratee, depth);
   }
 
 
@@ -2302,4 +2392,3 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.xor([1, 2, 3, 4], [2, 3, 4, 5], [2, 4, 5, 6, 7], [5, 6, 7, 8]));
