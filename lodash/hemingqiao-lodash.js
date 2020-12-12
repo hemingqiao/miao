@@ -164,6 +164,8 @@ var hemingqiao = (function () {
     uniqBy,
     uniqWith,
     zip,
+    zipObject,
+    zipObjectDeep,
     sortedUniq,
     sortedUniqBy,
     every,
@@ -863,15 +865,15 @@ var hemingqiao = (function () {
     }
     ret.push(array[0]);
     outer:
-    for (let i = 1; i < len; i++) {
-      let val = array[i];
-      for (let e of ret) {
-        if (comparator(e, val)) {
-          break outer;
+      for (let i = 1; i < len; i++) {
+        let val = array[i];
+        for (let e of ret) {
+          if (comparator(e, val)) {
+            break outer;
+          }
         }
+        ret.push(val);
       }
-      ret.push(val);
-    }
     return ret;
   }
 
@@ -892,6 +894,69 @@ var hemingqiao = (function () {
       for (let j = 0; j < len; j++) {
         ret[i][j] = arrays[j][i];
       }
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.fromPairs except that it accepts two arrays, one of property identifiers and one of corresponding values.
+   * @param props
+   * @param values
+   * @return {{}}
+   */
+  function zipObject(props = [], values = []) {
+    const ret = {};
+    // 以属性数组的长度为准
+    for (let i = 0; i < props.length; i++) {
+      ret[props[i]] = values[i];
+    }
+    return ret;
+  }
+
+
+  /**
+   * 待完善
+   * This method is like _.zipObject except that it supports property paths.
+   * @param props
+   * @param values
+   * @return {{}}
+   */
+  function zipObjectDeep(props = [], values = []) {
+    const regexp = /^([a-zA-Z_$])+\[([\w$])+\]$/;
+    const ret = {};
+    let temp = ret;
+    for (let i = 0; i < props.length; i++) {
+      let propValue = props[i];
+      let splitedProp = propValue.split(".");
+      for (let j = 0; j < splitedProp.length; j++) {
+        let p = splitedProp[j];
+        if (j === splitedProp.length - 1) {
+          temp[p] = values[i];
+          break;
+        }
+        if (!regexp.test(p)) { // 是字符串属性，没有[]
+          if (temp[p] === undefined) {
+            temp[p] = {}; // 对应属性值为undefined就新创建一个对象
+          }
+          temp = temp[p];
+        } else if (regexp.test(p)) { // 需要创建数组
+          let matches = p.match(regexp);
+          let arrName = matches[1]; // 要创建的数组名字
+          let order = matches[2]; // 数组中的索引
+          if (temp[arrName] === undefined) {
+            temp[arrName] = [];
+            temp[arrName][order] = {};
+            temp = temp[arrName][order];
+          } else {
+            if (temp[arrName][order] === undefined) {
+              temp[arrName][order] = {};
+            }
+            temp = temp[arrName][order];
+          }
+        }
+      }
+      temp = ret;
     }
     return ret;
   }
@@ -2032,3 +2097,7 @@ var hemingqiao = (function () {
 // // The `_.property` iteratee shorthand.
 // console.log(hemingqiao.takeWhile(users, 'active'));
 // // => []
+
+let res = hemingqiao.zipObjectDeep(['a.b[0].c', 'a.b[1].d'], [1, 2])
+console.log(res);
+// => { 'a': { 'b': [{ 'c': 1 }, { 'd': 2 }] } }
