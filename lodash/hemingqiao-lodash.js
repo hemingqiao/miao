@@ -183,6 +183,7 @@ var hemingqiao = (function () {
     flatMap,
     flatMapDeep,
     flatMapDepth,
+    forEach,
     toArray,
     intersection,
     intersectionBy,
@@ -1492,8 +1493,46 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * This method is like _.flatMap except that it recursively flattens the mapped results up to depth times.
+   * @param collection
+   * @param iteratee
+   * @param depth
+   * @return {[]|*|*[]}
+   */
   function flatMapDepth(collection, iteratee, depth = 1) {
     return baseFlatMap(collection, iteratee, depth);
+  }
+
+
+  /**
+   * Iterates over elements of collection and invokes iteratee for each element. The iteratee is invoked with three
+   * arguments: (value, index|key, collection). Iteratee functions may exit iteration early by explicitly returning false.
+   * @param collection
+   * @param iteratee
+   * @return {*}
+   */
+  function forEach(collection, iteratee) {
+    iteratee = transform(iteratee);
+    let flag = true;
+    if (typeUtils.isArray(collection)) {
+      if (!collection.length) {
+        return collection;
+      }
+      for (let i = 0; i < collection.length; i++) {
+        flag = iteratee(collection[i], i, collection);
+        if (flag === false) break;
+      }
+    } else if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      if (!keys.length) {
+        return collection;
+      }
+      for (let i = 0; i < keys.length; i++) {
+        flag = iteratee(collection[keys[i]], keys[i], collection);
+        if (flag === false) break;
+      }
+    }
   }
 
 
@@ -2391,4 +2430,3 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
-
