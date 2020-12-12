@@ -163,6 +163,12 @@ var hemingqiao = (function () {
     uniq,
     uniqBy,
     uniqWith,
+    unzip,
+    unzipWith,
+    without,
+    xor,
+    xorBy,
+    xorWith,
     zip,
     zipObject,
     zipObjectDeep,
@@ -881,6 +887,158 @@ var hemingqiao = (function () {
 
 
   /**
+   * This method is like _.zip except that it accepts an array of grouped elements and creates an array regrouping the
+   * elements to their pre-zip configuration.
+   * @param arrays
+   * @return {*[][]|*[]}
+   */
+  function unzip(arrays) {
+    let len = arrays.length;
+    if (!len) return [];
+    const ret = Array(arrays[0].length).fill(0).map(_ => []);
+    for (let j = 0; j < len; j++) {
+      let array = arrays[j];
+      for (let i = 0; i < array.length; i++) {
+        ret[i][j] = array[i];
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.unzip except that it accepts iteratee to specify how regrouped values should be combined.
+   * The iteratee is invoked with the elements of each group: (...group).
+   * @param array
+   * @param iteratee
+   * @return {[]|*[]}
+   */
+  function unzipWith(array, iteratee) {
+    iteratee = transform(iteratee);
+    if (!array.length) return [];
+    let ret = [];
+    let invoked = [];
+    for (let i = 0; i < array[0].length; i++) {
+      for (let e of array) {
+        invoked.push(e[i]);
+      }
+      ret.push(iteratee(...invoked));
+      invoked = [];
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates an array excluding all given values using SameValueZero for equality comparisons.
+   * Note: Unlike _.pull, this method returns a new array.
+   * @param array
+   * @param values
+   * @return {[]}
+   */
+  function without(array, ...values) {
+    const ret = [];
+    for (let v of array) {
+      if (!values.includes(v)) ret.push(v);
+    }
+    return ret;
+  }
+
+
+  // 一般地，记A和B是两个集合，集合A与集合B的对称差集定义为集合A与集合B中所有不属于A∩B的元素的集合，记为A Δ B，
+  // 也就是说A Δ B = {x|x∈A∪B,x∉A∩B}，即A Δ B=(A∪B)-(A∩B)。也就是A Δ B=(A-B)∪(B-A)
+  /**
+   * Creates an array of unique values that is the symmetric difference of the given arrays. The order of result values
+   * is determined by the order they occur in the arrays.
+   * @param arrays
+   * @return {*}
+   */
+  function xor(...arrays) {
+    const union = (a, b) => new Set(a.concat(b));
+    const intersection = (a, b) => a.reduce((arr, cur) => {
+      if (b.includes(cur)) {
+        arr.push(cur);
+      }
+      return arr;
+    }, []);
+    const difference = (a, b) => {
+      const ret = [];
+      for (let aVal of a) {
+        if (!b.includes(aVal)) ret.push(aVal);
+      }
+      return ret;
+    }
+
+    // 根据定义，A和B的对称差集可以表达为(A∪B)-(A∩B)
+    return arrays.reduce((ret, cur) => difference(union(ret, cur), intersection(ret, cur)));
+  }
+
+
+  /**
+   * This method is like _.xor except that it accepts iteratee which is invoked for each element of each arrays to
+   * generate the criterion by which by which they're compared. The order of result values is determined by the order
+   * they occur in the arrays. The iteratee is invoked with one argument: (value).
+   * @param args
+   * @return {[]}
+   */
+  function xorBy(...args) {
+    let iteratee = args.pop();
+    iteratee = transform(iteratee);
+    let argsCopy = args.map(value => value.slice().map(v => iteratee(v)));
+    argsCopy = xor(...argsCopy);
+    const map = new Map();
+    for (let e of argsCopy) {
+      map.set(e, true);
+    }
+
+    const ret = [];
+    for (let arg of args) {
+      for (let val of arg) {
+        if (map.get(iteratee(val))) {
+          ret.push(val);
+          map.set(iteratee(val), false);
+        }
+        if (ret.length === argsCopy.length) {
+          return ret;
+        }
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.xor except that it accepts comparator which is invoked to compare elements of arrays. The
+   * order of result values is determined by the order they occur in the arrays. The comparator is invoked with
+   * two arguments: (arrVal, othVal).
+   * @param args
+   * @return {[]}
+   */
+  function xorWith(...args) {
+    let comparator = args.pop();
+    comparator = transform(comparator);
+
+    args.push(comparator);
+    const itersec = intersectionWith(...args);
+    args.pop();
+    const ret = [];
+    for (let e of args) {
+      for (let v of e) {
+        let flag = true;
+        for (let i of itersec) {
+          if (comparator(v, i)) {
+            flag = false;
+            break
+          }
+        }
+        if (flag) ret.push(v);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
    * Creates an array of grouped elements, the first of which contains the first elements of the given arrays, the
    * second of which contains the second elements of the given arrays, and so on.
    * @param arrays
@@ -1291,6 +1449,26 @@ var hemingqiao = (function () {
     }
     return source;
   }
+
+
+  // /**
+  //  * 返回两个或更多数组的交集
+  //  * @param source
+  //  * @param args
+  //  * @return {any[]}
+  //  */
+  // function intersection(source, ...args) {
+  //   const intersectionSet = new Set(source);
+  //   for (const aVal of intersectionSet) {
+  //     for (const b of args) {
+  //       if (!b.includes(aVal)) {
+  //         intersectionSet.delete(aVal);
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   return [...intersectionSet];
+  // }
 
 
   /**
@@ -2123,4 +2301,3 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
-
