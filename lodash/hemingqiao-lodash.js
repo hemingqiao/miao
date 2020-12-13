@@ -1697,26 +1697,13 @@ var hemingqiao = (function () {
    */
   function keyBy(collection, iteratee) {
     iteratee = transform(iteratee);
-    const map = new Map();
-    let keys;
+    const map = {};
     if (typeUtils.isObject(collection)) {
-      keys = Object.keys(collection).map(key => {
-        let v = iteratee(collection[key]);
-        map.set(v, collection[key]);
-        return v;
-      });
+      Object.keys(collection).forEach(key => map[iteratee(collection[key])] = collection[key]);
     } else {
-      keys = collection.map(val => {
-        let v = iteratee(val);
-        map.set(v, val);
-        return v;
-      });
+      collection.forEach(val => map[iteratee(val)] = val);
     }
-    const ret = {};
-    for (let key of keys) {
-      ret[key] = map.get(key);
-    }
-    return ret;
+    return map;
   }
 
 
@@ -2614,10 +2601,3 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
-
-let res = hemingqiao.invokeMap([[5, 1, 7], [3, 2, 1]], 'sort')
-console.log(res);
-// => [[1, 5, 7], [1, 2, 3]]
-
-console.log(hemingqiao.invokeMap([123, 456], String.prototype.split, ''));
-// => [['1', '2', '3'], ['4', '5', '6']]
