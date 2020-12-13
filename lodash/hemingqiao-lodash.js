@@ -184,6 +184,7 @@ var hemingqiao = (function () {
     flatMapDeep,
     flatMapDepth,
     forEach,
+    forEachRight,
     toArray,
     intersection,
     intersectionBy,
@@ -1505,6 +1506,45 @@ var hemingqiao = (function () {
   }
 
 
+  function baseForEach(collection, iteratee, direction) {
+    iteratee = transform(iteratee);
+    let flag = true;
+    if (typeUtils.isArray(collection)) {
+      if (!collection.length) {
+        return collection;
+      }
+      if (direction) { // direction为true，表明迭代方向是正常的从左到右
+        for (let i = 0; i < collection.length; i++) {
+          flag = iteratee(collection[i], i, collection);
+          if (flag === false) break;
+        }
+      } else { // 否则，迭代方向是从右到左
+        for (let i = collection.length - 1; i >= 0; i--) {
+          flag = iteratee(collection[i], i, collection);
+          if (flag === false) break;
+        }
+      }
+    } else if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      if (!keys.length) {
+        return collection;
+      }
+      if (direction) {
+        for (let i = 0; i < keys.length; i++) {
+          flag = iteratee(collection[keys[i]], keys[i], collection);
+          if (flag === false) break;
+        }
+      } else {
+        for (let i = keys.length - 1; i >= 0; i--) {
+          flag = iteratee(collection[keys[i]], keys[i], collection);
+          if (flag === false) break;
+        }
+      }
+    }
+    return collection;
+  }
+
+
   /**
    * Iterates over elements of collection and invokes iteratee for each element. The iteratee is invoked with three
    * arguments: (value, index|key, collection). Iteratee functions may exit iteration early by explicitly returning false.
@@ -1513,27 +1553,12 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function forEach(collection, iteratee) {
-    iteratee = transform(iteratee);
-    let flag = true;
-    if (typeUtils.isArray(collection)) {
-      if (!collection.length) {
-        return collection;
-      }
-      for (let i = 0; i < collection.length; i++) {
-        flag = iteratee(collection[i], i, collection);
-        if (flag === false) break;
-      }
-    } else if (typeUtils.isObject(collection)) {
-      let keys = Object.keys(collection);
-      if (!keys.length) {
-        return collection;
-      }
-      for (let i = 0; i < keys.length; i++) {
-        flag = iteratee(collection[keys[i]], keys[i], collection);
-        if (flag === false) break;
-      }
-    }
-    return collection;
+    return baseForEach(collection, iteratee, true);
+  }
+
+
+  function forEachRight(collection, iteratee) {
+    return baseForEach(collection, iteratee, false);
   }
 
 
