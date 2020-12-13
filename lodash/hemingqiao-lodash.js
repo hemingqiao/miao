@@ -187,6 +187,7 @@ var hemingqiao = (function () {
     forEachRight,
     groupBy,
     includes,
+    keyBy,
     toArray,
     intersection,
     intersectionBy,
@@ -1660,6 +1661,31 @@ var hemingqiao = (function () {
   }
 
 
+  function keyBy(collection, iteratee) {
+    iteratee = transform(iteratee);
+    const map = new Map();
+    let keys;
+    if (typeUtils.isObject(collection)) {
+      keys = Object.keys(collection).map(key => {
+        let v = iteratee(collection[key]);
+        map.set(v, collection[key]);
+        return v;
+      });
+    } else {
+      keys = collection.map(val => {
+        let v = iteratee(val);
+        map.set(v, val);
+        return v;
+      });
+    }
+    const ret = {};
+    for (let key of keys) {
+      ret[key] = map.get(key);
+    }
+    return ret;
+  }
+
+
   /**
    * 转换 value 为一个数组。
    * @param value
@@ -2555,14 +2581,15 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.includes([1, 2, 3], 1));
-// => true
+var array = [
+  { 'dir': 'left', 'code': 97 },
+  { 'dir': 'right', 'code': 100 }
+];
 
-console.log(hemingqiao.includes([1, 2, 3], 1, 2));
-// => false
+console.log(hemingqiao.keyBy(array, function (o) {
+  return String.fromCharCode(o.code);
+}));
+// => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
 
-console.log(hemingqiao.includes({'a': 1, 'b': 2}, 1));
-// => true
-
-console.log(hemingqiao.includes('abcd', 'bc'));
-// => true
+console.log(hemingqiao.keyBy(array, 'dir'));
+// => { 'left': { 'dir': 'left', 'code': 97 }, 'right': { 'dir': 'right', 'code': 100 } }
