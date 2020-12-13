@@ -1533,6 +1533,7 @@ var hemingqiao = (function () {
         if (flag === false) break;
       }
     }
+    return collection;
   }
 
 
