@@ -185,6 +185,8 @@ var hemingqiao = (function () {
     flatMapDepth,
     forEach,
     forEachRight,
+    groupBy,
+    includes,
     toArray,
     intersection,
     intersectionBy,
@@ -1557,8 +1559,104 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * This method is like _.forEach except that it iterates over elements of collection from right to left.
+   * @param collection
+   * @param iteratee
+   * @return {*}
+   */
   function forEachRight(collection, iteratee) {
     return baseForEach(collection, iteratee, false);
+  }
+
+
+  /**
+   * Creates an object composed of keys generated from the results of running each element of collection thru iteratee.
+   * The order of grouped values is determined by the order they occur in collection. The corresponding value of each
+   * key is an array of elements responsible for generating the key. The iteratee is invoked with one argument: (value).
+   * @param collection
+   * @param iteratee
+   * @return {{}}
+   */
+  function groupBy(collection, iteratee) {
+    iteratee = transform(iteratee);
+    if (typeUtils.isObject(collection)) {
+      collection = Object.keys(collection).map(key => collection[key]);
+    }
+    const ret = {};
+    for (let val of collection) {
+      const key = iteratee(val);
+      if (ret[key] === undefined) {
+        ret[key] = [val];
+      } else {
+        ret[key].push(val);
+      }
+    }
+    return ret;
+  }
+
+
+  // /**
+  //  * Checks if value is in collection. If collection is a string, it's checked for a substring of value, otherwise
+  //  * SameValueZero is used for equality comparisons. If fromIndex is negative, it's used as the offset from the end
+  //  * of collection.
+  //  * @param collection
+  //  * @param value
+  //  * @param fromIndex
+  //  * @return {number|*}
+  //  */
+  // function includes(collection, value, fromIndex = 0) {
+  //   if (typeUtils.isObject(collection)) {
+  //     collection = Object.keys(collection).map(key => collection[key]);
+  //   }
+  //   return collection.indexOf(value, fromIndex) !== -1;
+  // }
+
+
+  /**
+   * 查找字符串needle是否存在于字符串haystack中，存在返回索引，否则返回-1。
+   * 参见：https://leetcode-cn.com/problems/implement-strstr/submissions/
+   * @param haystack
+   * @param needle
+   * @param fromIndex
+   * @return {number}
+   */
+  function strStr(haystack, needle, fromIndex = 0) {
+    let M = haystack.length, N = needle.length;
+    if (N === 0) return 0;
+    if (N > M) return -1;
+    for (let i = fromIndex; i <= M - N; i++) {
+      for (let j = 0; j < N; j++) {
+        if (haystack.charAt(i + j) !== needle.charAt(j)) break;
+        if (j === N - 1) return i;
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * Checks if value is in collection. If collection is a string, it's checked for a substring of value, otherwise
+   * SameValueZero is used for equality comparisons. If fromIndex is negative, it's used as the offset from the end
+   * of collection.
+   * @param collection
+   * @param value
+   * @param fromIndex
+   * @return {boolean}
+   */
+  function includes(collection, value, fromIndex = 0) {
+    // 不使用indexOf方法
+    if (typeUtils.isString(value)) {
+      if (fromIndex < 0) fromIndex += collection.length;
+      return strStr(collection, value, fromIndex) !== -1;
+    }
+    if (typeUtils.isObject(collection)) {
+      collection = Object.keys(collection).map(key => collection[key]);
+    }
+    if (fromIndex < 0) fromIndex += collection.length;
+    for (let i = fromIndex; i < collection.length; i++) {
+      if (sameValueZero(value, collection[i])) return true;
+    }
+    return false;
   }
 
 
@@ -2456,3 +2554,15 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
+
+console.log(hemingqiao.includes([1, 2, 3], 1));
+// => true
+
+console.log(hemingqiao.includes([1, 2, 3], 1, 2));
+// => false
+
+console.log(hemingqiao.includes({'a': 1, 'b': 2}, 1));
+// => true
+
+console.log(hemingqiao.includes('abcd', 'bc'));
+// => true
