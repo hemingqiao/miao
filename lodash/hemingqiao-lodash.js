@@ -187,6 +187,7 @@ var hemingqiao = (function () {
     forEachRight,
     groupBy,
     includes,
+    invokeMap,
     keyBy,
     toArray,
     intersection,
@@ -1661,6 +1662,39 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * Invokes the method at path of each element in collection, returning an array of the results of each invoked method.
+   * Any additional arguments are provided to each invoked method. If path is a function, it's invoked for, and this
+   * bound to, each element in collection.
+   * @param collection
+   * @param path
+   * @param args
+   * @return {[]}
+   */
+  function invokeMap(collection, path, ...args) {
+    // 暂时就这样吧，整的花里胡哨的
+    if (typeUtils.isString(path)) {
+      path = collection[path];
+    }
+    if (typeUtils.isObject(collection)) {
+      collection = Object.keys(collection).map(key => collection[key]);
+    }
+    const ret = [];
+    for (let e of collection) {
+      ret.push(path.call(e, ...args));
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates an object composed of keys generated from the results of running each element of collection thru iteratee.
+   * The corresponding value of each key is the last element responsible for generating the key. The iteratee is
+   * invoked with one argument: (value).
+   * @param collection
+   * @param iteratee
+   * @return {{}}
+   */
   function keyBy(collection, iteratee) {
     iteratee = transform(iteratee);
     const map = new Map();
@@ -2581,15 +2615,9 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-var array = [
-  { 'dir': 'left', 'code': 97 },
-  { 'dir': 'right', 'code': 100 }
-];
+let res = hemingqiao.invokeMap([[5, 1, 7], [3, 2, 1]], 'sort')
+console.log(res);
+// => [[1, 5, 7], [1, 2, 3]]
 
-console.log(hemingqiao.keyBy(array, function (o) {
-  return String.fromCharCode(o.code);
-}));
-// => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
-
-console.log(hemingqiao.keyBy(array, 'dir'));
-// => { 'left': { 'dir': 'left', 'code': 97 }, 'right': { 'dir': 'right', 'code': 100 } }
+console.log(hemingqiao.invokeMap([123, 456], String.prototype.split, ''));
+// => [['1', '2', '3'], ['4', '5', '6']]
