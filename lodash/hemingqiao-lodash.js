@@ -220,6 +220,10 @@ var hemingqiao = (function () {
     reject,
     sample,
     sampleSize,
+    size,
+    some,
+    sortBy,
+    castArray,
     isEqual,
     isArguments,
     isArray,
@@ -2297,6 +2301,75 @@ var hemingqiao = (function () {
 
 
   /**
+   * Gets the size of collection by returning its length for array-like values or the number of own enumerable string
+   * keyed properties for objects.
+   * @param collection
+   * @return {number|*}
+   */
+  function size(collection) {
+    if (typeUtils.isString(collection) || typeUtils.isArray(collection)) {
+      return collection.length;
+    } else if (typeUtils.isObject(collection)) {
+      return Object.keys(collection).length;
+    }
+  }
+
+
+  /**
+   * Checks if predicate returns truthy for any element of collection. Iteration is stopped once predicate returns truthy.
+   * The predicate is invoked with three arguments: (value, index|key, collection).
+   * @param collection
+   * @param predicate
+   * @return {boolean}
+   */
+  function some(collection, predicate) {
+    predicate = transform(predicate);
+    if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      for (let key of keys) {
+        if (predicate(collection[key])) {
+          return true;
+        }
+      }
+    } else if (typeUtils.isArray(collection)) {
+      for (let e of collection) {
+        if (predicate(e)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+  /**
+   * Creates an array of elements, sorted in ascending order by the results of running each element in a collection thru
+   * each iteratee. This method performs a stable sort, that is, it preserves the original sort order of equal elements.
+   * The iteratees are invoked with one argument: (value).
+   * @param collection
+   * @param iteratee
+   * @return {*}
+   */
+  function sortBy(collection, iteratee) {
+    return orderBy(collection, iteratee, []);
+  }
+
+
+  function castArray(value) {
+    if (typeUtils.isArray(value)) {
+      return value;
+    }
+    const ret = [];
+    if (arguments.length > 0) {
+      for (let i = 0; i < arguments.length; i++) {
+        ret.push(arguments[i]);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
    * 深比较（不支持循环引用）
    * @param obj1
    * @param obj2
@@ -2826,3 +2899,4 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
+console.log(hemingqiao.castArray());
