@@ -29,6 +29,11 @@ var hemingqiao = (function () {
     "RegExp", "Object", "Error", "BigInt", "ArrayBuffer",
     "Map", "Set", "WeakMap", "WeakSet",
   ];
+  const TypedArrays = [
+    "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array",
+    "Uint16Array", "Int32Array", "Uint32Array", "Float32Array",
+    "Float64Array",
+  ];
 
   types.forEach(type => {
     typeUtils["is" + type] = function (obj) {
@@ -190,6 +195,7 @@ var hemingqiao = (function () {
     invokeMap,
     keyBy,
     toArray,
+    toFinite,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -231,6 +237,8 @@ var hemingqiao = (function () {
     eq,
     gt,
     gte,
+    lt,
+    lte,
     isEqual,
     isArguments,
     isArray,
@@ -261,6 +269,7 @@ var hemingqiao = (function () {
     isSet,
     isString,
     isSymbol,
+    isTypedArray,
     isUndefined,
     isWeakMap,
     isWeakSet,
@@ -1749,6 +1758,27 @@ var hemingqiao = (function () {
 
 
   /**
+   * Converts value to a finite number.
+   * @param value
+   * @return {*|number|number}
+   */
+  function toFinite(value) {
+    if (!typeUtils.isNumber(value)) {
+      value = +value;
+    }
+    if (value !== value) return 0;
+    switch (value) {
+      case Infinity:
+        return Number.MAX_VALUE;
+      case -Infinity:
+        return -Number.MAX_VALUE;
+      default:
+        return value;
+    }
+  }
+
+
+  /**
    * 求交集
    * @param source
    * @param args
@@ -2495,6 +2525,27 @@ var hemingqiao = (function () {
 
 
   /**
+   * Checks if value is less than other.
+   * @param value
+   * @param other
+   * @return {boolean}
+   */
+  function lt(value, other) {
+    return value < other;
+  }
+
+
+  /**
+   * Checks if value is less than or equal to other.
+   * @param value
+   * @param other
+   * @return {boolean}
+   */
+  function lte(value, other) {
+    return value <= other;
+  }
+
+  /**
    * 深比较（不支持循环引用）
    * @param obj1
    * @param obj2
@@ -2888,6 +2939,18 @@ var hemingqiao = (function () {
 
 
   /**
+   * Checks if value is classified as a typed array.
+   * @param value
+   * @return {boolean}
+   */
+  function isTypedArray(value) {
+    const {toString} = Object.prototype;
+    const regexp = /\b(\w+)\]/;
+    return TypedArrays.includes(toString.call(value).match(regexp)[1]);
+  }
+
+
+  /**
    * Checks if value is undefined.
    * @param value
    * @return {boolean|*}
@@ -3024,18 +3087,14 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-var object = {'a': 1, 'b': 2};
+console.log(hemingqiao.toFinite(3.2));
+// => 3.2
 
-console.log(hemingqiao.conformsTo(object, {
-  'b': function (n) {
-    return n > 1;
-  }
-}));
-// => true
+console.log(hemingqiao.toFinite(Number.MIN_VALUE));
+// => 5e-324
 
-console.log(hemingqiao.conformsTo(object, {
-  'b': function (n) {
-    return n > 2;
-  }
-}));
-// => false
+console.log(hemingqiao.toFinite(Infinity));
+// => 1.7976931348623157e+308
+
+console.log(hemingqiao.toFinite('3.2'));
+// => 3.2
