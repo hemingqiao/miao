@@ -2393,6 +2393,10 @@ var hemingqiao = (function () {
         return null;
       }
 
+      if (typeUtils.isRegExp(obj)) {
+        return obj;
+      }
+
       if (typeof obj === "object") {
         if (map.has(obj)) {
           return map.get(obj);
