@@ -1809,7 +1809,7 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function toLength(value) {
-    const threshold = Math.pow(2, 32) - 1;
+    const threshold = 4294967295; // Math.pow(2, 32) - 1
     if (value > threshold) return threshold;
     return toInteger(value);
   }
