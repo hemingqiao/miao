@@ -213,6 +213,7 @@ var hemingqiao = (function () {
     unionBy,
     unionWith,
     map,
+    orderBy,
     isEqual,
     isArguments,
     isArray,
@@ -2071,6 +2072,53 @@ var hemingqiao = (function () {
     return res;
   }
 
+  /*
+  // old version
+  function orderBy(collection, iteratees, orders) {
+    const sortAsc = (o1, o2) => o1 < o2 ? -1 : o1 > o2 ? 1 : 0;
+    const sortDesc = (o1, o2) => o1 < o2 ? 1 : o1 > o2 ? -1 : 0;
+
+    iteratees = iteratees
+      .map(val => transform(val))
+      .map((fn, index) => (o1, o2) => orders[index] === "desc"
+        ? sortDesc(fn(o1), fn(o2))
+        : sortAsc(fn(o1), fn(o2)));
+    collection.sort((o1, o2) => {
+      for (let fn of iteratees) {
+        let res = fn(o1, o2);
+        if (res !== 0) return res;
+      }
+    });
+    return collection;
+  }
+  */
+
+
+  /**
+   * This method is like _.sortBy except that it allows specifying the sort orders of the iteratees to sort by. If
+   * orders is unspecified, all values are sorted in ascending order. Otherwise, specify an order of "desc" for
+   * descending or "asc" for ascending sort order of corresponding values.
+   * @param collection
+   * @param iteratees
+   * @param orders
+   * @return {*}
+   */
+  function orderBy(collection, iteratees, orders) {
+    // 暂时只支持collection为数组
+    iteratees = iteratees
+      .map(val => transform(val))
+      .map((fn, index) => (o1, o2) => orders[index] === "desc"
+        ? fn(o1) < fn(o2) ? 1 : fn(o1) > fn(o2) ? -1 : 0
+        : fn(o1) < fn(o2) ? -1 : fn(o1) > fn(o2) ? 1 : 0);
+    collection.sort((o1, o2) => {
+      for (let fn of iteratees) {
+        let res = fn(o1, o2);
+        if (res !== 0) return res;
+      }
+    });
+    return collection;
+  }
+
 
   /**
    * 深比较（不支持循环引用）
@@ -2601,3 +2649,15 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
+
+var users = [
+  { 'user': 'fred',   'age': 48 },
+  { 'user': 'barney', 'age': 34 },
+  { 'user': 'fred',   'age': 40 },
+  { 'user': 'barney', 'age': 36 }
+];
+
+// Sort by `user` in ascending order and by `age` in descending order.
+let res = hemingqiao.orderBy(users, ['user', 'age'], ['asc', 'desc']);
+console.log(res);
+// => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
