@@ -2371,7 +2371,7 @@ var hemingqiao = (function () {
    */
   function defer(func, ...args) {
     let id = setTimeout(func, 0, ...args);
-    return id;
+    return id - 1;
   }
 
 
@@ -2384,7 +2384,7 @@ var hemingqiao = (function () {
    */
   function delay(func, wait, ...args) {
     let id = setTimeout(func, wait, ...args);
-    return id;
+    return id - 1;
   }
 
 
