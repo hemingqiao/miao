@@ -216,6 +216,10 @@ var hemingqiao = (function () {
     orderBy,
     partition,
     reduce,
+    reduceRight,
+    reject,
+    sample,
+    sampleSize,
     isEqual,
     isArguments,
     isArray,
@@ -2185,6 +2189,114 @@ var hemingqiao = (function () {
 
 
   /**
+   * This method is like _.reduce except that it iterates over elements of collection from right to left.
+   * @param collection
+   * @param iteratee
+   * @param accumulator
+   * @return {*[]|*}
+   */
+  function reduceRight(collection, iteratee, accumulator) {
+    let startIdx;
+    if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      startIdx = keys.length - 1;
+
+      if (accumulator === undefined) {
+        accumulator = collection[keys[startIdx]];
+        startIdx--;
+      }
+      for (let i = startIdx; i >= 0; i--) {
+        accumulator = iteratee(accumulator, collection[keys[i]], keys[i], collection);
+      }
+      return accumulator;
+    } else if (typeUtils.isArray(collection)) {
+      startIdx = collection.length - 1;
+      if (accumulator === undefined) {
+        accumulator = collection[startIdx];
+        startIdx--;
+      }
+      for (let i = startIdx; i >= 0; i--) {
+        accumulator = iteratee(accumulator, collection[i], i, collection);
+      }
+      return accumulator;
+    }
+    return [];
+  }
+
+
+  /**
+   * The opposite of _.filter; this method returns the elements of collection that predicate does not return truthy for.
+   * @param collection
+   * @param predicate
+   * @return {[]}
+   */
+  function reject(collection, predicate) {
+    predicate = transform(predicate);
+    const ret = [];
+    if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      for (let key of keys) {
+        if (!predicate(collection[key])) {
+          ret.push(collection[key]);
+        }
+      }
+    } else if (typeUtils.isArray(collection)) {
+      for (let e of collection) {
+        if (!predicate(e)) {
+          ret.push(e);
+        }
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * Gets a random element from collection.
+   * @param collection
+   * @return {*}
+   */
+  function sample(collection) {
+    let random;
+    if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+      random = Math.random() * (keys.length) | 0;
+      return collection[keys[random]];
+    } else if (typeUtils.isArray(collection)) {
+      random = Math.random() * (collection.length) | 0;
+      return collection[random];
+    }
+  }
+
+
+  /**
+   * Gets n random elements at unique keys from collection up to the size of collection.
+   * @param collection
+   * @param n
+   * @return {[]}
+   */
+  function sampleSize(collection, n = 1) {
+    const ret = [];
+    let random;
+    if (typeUtils.isObject(collection)) {
+      if (n > Object.keys(collection).length) n = Object.keys(collection.length);
+      while (n-- > 0) {
+        let keys = Object.keys(collection);
+        random = Math.random() * (keys.length) | 0;
+        ret.push(collection[keys.splice(random, 1)[0]]);
+      }
+    } else if (typeUtils.isArray(collection)) {
+      if (n > collection.length) n = collection.length;
+      while (n-- > 0) {
+        random = Math.random() * (collection.length) | 0;
+        ret.push(collection.splice(random, 1)[0]);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
    * 深比较（不支持循环引用）
    * @param obj1
    * @param obj2
@@ -2714,12 +2826,3 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.reduce([1, 2], function (sum, n) {
-  return sum + n;
-}, 0));
-// => 3
-
-console.log(hemingqiao.reduce({'a': 1, 'b': 2, 'c': 1}, function (result, value, key) {
-  (result[value] || (result[value] = [])).push(key);
-  return result;
-}, {}));
