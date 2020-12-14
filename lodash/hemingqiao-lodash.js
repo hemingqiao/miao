@@ -214,6 +214,8 @@ var hemingqiao = (function () {
     unionWith,
     map,
     orderBy,
+    partition,
+    reduce,
     isEqual,
     isArguments,
     isArray,
@@ -2113,10 +2115,72 @@ var hemingqiao = (function () {
     collection.sort((o1, o2) => {
       for (let fn of iteratees) {
         let res = fn(o1, o2);
-        if (res !== 0) return res;
+        if (res !== 0) return res; // res === 0，在此基础上继续调用后续函数进行比较，否则，退出并返回比较结果
       }
     });
     return collection;
+  }
+
+
+  /**
+   * Creates an array of elements split into two groups, the first of which contains elements predicate returns truthy
+   * for, the second of which contains elements predicate returns falsey for. The predicate is invoked with one
+   * argument: (value).
+   * @param collection
+   * @param predicate
+   * @return {[][]}
+   */
+  function partition(collection, predicate) {
+    predicate = transform(predicate);
+    const ret = [[], []];
+    if (typeUtils.isObject(collection)) {
+      collection = Object.keys(collection).map(key => collection[key]);
+    }
+    for (let e of collection) {
+      if (predicate(e)) {
+        ret[0].push(e);
+      } else {
+        ret[1].push(e);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * Reduces collection to a value which is the accumulated result of running each element in collection thru iteratee,
+   * where each successive invocation is supplied the return value of the previous. If accumulator is not given, the
+   * first element of collection is used as the initial value. The iteratee is invoked with four arguments:
+   * (accumulator, value, index|key, collection).
+   * @param collection
+   * @param iteratee
+   * @param accumulator
+   * @return {*[]|*}
+   */
+  function reduce(collection, iteratee, accumulator) {
+    let startIdx = 0;
+    if (typeUtils.isObject(collection)) {
+      let keys = Object.keys(collection);
+
+      if (accumulator === undefined) {
+        accumulator = collection[keys[0]];
+        startIdx = 1;
+      }
+      for (let i = startIdx; i < keys.length; i++) {
+        accumulator = iteratee(accumulator, collection[keys[i]], keys[i], collection);
+      }
+      return accumulator;
+    } else if (typeUtils.isArray(collection)) {
+      if (accumulator === undefined) {
+        accumulator = collection[0];
+        startIdx = 1;
+      }
+      for (let i = startIdx; i < collection.length; i++) {
+        accumulator = iteratee(accumulator, collection[i], i, collection);
+      }
+      return accumulator;
+    }
+    return [];
   }
 
 
@@ -2650,14 +2714,12 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-var users = [
-  { 'user': 'fred',   'age': 48 },
-  { 'user': 'barney', 'age': 34 },
-  { 'user': 'fred',   'age': 40 },
-  { 'user': 'barney', 'age': 36 }
-];
+console.log(hemingqiao.reduce([1, 2], function (sum, n) {
+  return sum + n;
+}, 0));
+// => 3
 
-// Sort by `user` in ascending order and by `age` in descending order.
-let res = hemingqiao.orderBy(users, ['user', 'age'], ['asc', 'desc']);
-console.log(res);
-// => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
+console.log(hemingqiao.reduce({'a': 1, 'b': 2, 'c': 1}, function (result, value, key) {
+  (result[value] || (result[value] = [])).push(key);
+  return result;
+}, {}));
