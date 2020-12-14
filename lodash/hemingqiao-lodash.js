@@ -226,6 +226,9 @@ var hemingqiao = (function () {
     castArray,
     cloneDeep,
     conformsTo,
+    eq,
+    gt,
+    gte,
     isEqual,
     isArguments,
     isArray,
@@ -2423,6 +2426,39 @@ var hemingqiao = (function () {
       }
     }
     return true;
+  }
+
+
+  /**
+   * Performs a SameValueZero comparison between two values to determine if they are equivalent.
+   * @param value
+   * @param other
+   * @return {boolean}
+   */
+  function eq(value, other) {
+    return sameValueZero(value, other);
+  }
+
+
+  /**
+   * Checks if value is greater than other.
+   * @param value
+   * @param other
+   * @return {boolean}
+   */
+  function gt(value, other) {
+    return value > other;
+  }
+
+
+  /**
+   * Checks if value is greater than or equal to other.
+   * @param value
+   * @param other
+   * @return {boolean}
+   */
+  function gte(value, other) {
+    return value >= other;
   }
 
 
