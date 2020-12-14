@@ -223,6 +223,8 @@ var hemingqiao = (function () {
     size,
     some,
     sortBy,
+    defer,
+    delay,
     castArray,
     cloneDeep,
     conformsTo,
@@ -1476,7 +1478,7 @@ var hemingqiao = (function () {
       }
       collection = collection.map((value, idx, array) => iteratee(value, idx, array));
       return depth === Infinity ? flattenDeep(collection) : flattenDepth(collection, depth);
-    } else if (typeUtils.isObject(collection)){
+    } else if (typeUtils.isObject(collection)) {
       const ret = [];
       let keys = Object.keys(collection);
       if (!keys.length) {
@@ -2361,6 +2363,32 @@ var hemingqiao = (function () {
 
 
   /**
+   * Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func
+   * when it's invoked.
+   * @param func
+   * @param args
+   * @return {number}
+   */
+  function defer(func, ...args) {
+    let id = setTimeout(func, 0, ...args);
+    return id;
+  }
+
+
+  /**
+   * Invokes func after wait milliseconds. Any additional arguments are provided to func when it's invoked.
+   * @param func
+   * @param wait
+   * @param args
+   * @return {number}
+   */
+  function delay(func, wait, ...args) {
+    let id = setTimeout(func, wait, ...args);
+    return id;
+  }
+
+
+  /**
    * Casts value as an array if it's not one.
    * @param value
    * @return {[]|*}
@@ -2996,7 +3024,7 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-var object = { 'a': 1, 'b': 2 };
+var object = {'a': 1, 'b': 2};
 
 console.log(hemingqiao.conformsTo(object, {
   'b': function (n) {
