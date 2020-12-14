@@ -196,6 +196,9 @@ var hemingqiao = (function () {
     keyBy,
     toArray,
     toFinite,
+    toInteger,
+    toLength,
+    toNumber,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -1779,6 +1782,50 @@ var hemingqiao = (function () {
 
 
   /**
+   * Converts value to an integer.
+   * @param value
+   * @return {number}
+   */
+  function toInteger(value) {
+    if (!typeUtils.isNumber(value)) {
+      value = +value;
+    }
+    if (value !== value) return 0;
+    if (Math.abs(value) <= Number.MIN_VALUE) return 0;
+    switch (value) {
+      case Infinity:
+        return Number.MAX_VALUE;
+      case -Infinity:
+        return -Number.MAX_VALUE;
+      default:
+        return value | 0;
+    }
+  }
+
+
+  /**
+   * Converts value to an integer suitable for use as the length of an array-like object.
+   * @param value
+   * @return {number}
+   */
+  function toLength(value) {
+    const threshold = Math.pow(2, 32) - 1;
+    if (value > threshold) return threshold;
+    return toInteger(value);
+  }
+
+
+  /**
+   * Converts value to a number.
+   * @param value
+   * @return {number}
+   */
+  function toNumber(value) {
+    return +value;
+  }
+
+
+  /**
    * 求交集
    * @param source
    * @param args
@@ -3087,14 +3134,3 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.toFinite(3.2));
-// => 3.2
-
-console.log(hemingqiao.toFinite(Number.MIN_VALUE));
-// => 5e-324
-
-console.log(hemingqiao.toFinite(Infinity));
-// => 1.7976931348623157e+308
-
-console.log(hemingqiao.toFinite('3.2'));
-// => 3.2
