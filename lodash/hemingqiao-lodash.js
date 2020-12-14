@@ -224,6 +224,8 @@ var hemingqiao = (function () {
     some,
     sortBy,
     castArray,
+    cloneDeep,
+    conformsTo,
     isEqual,
     isArguments,
     isArray,
@@ -2355,6 +2357,11 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * Casts value as an array if it's not one.
+   * @param value
+   * @return {[]|*}
+   */
   function castArray(value) {
     if (typeUtils.isArray(value)) {
       return value;
@@ -2366,6 +2373,56 @@ var hemingqiao = (function () {
       }
     }
     return ret;
+  }
+
+
+  /**
+   * This method is like _.clone except that it recursively clones value.
+   * @param value
+   * @return {any|*[]}
+   */
+  function cloneDeep(value) {
+    const map = new Map(); // 解决循环引用
+    return _cloneDeep(value);
+
+    function _cloneDeep(obj) {
+      if (obj === null) {
+        return null;
+      }
+
+      if (typeof obj === "object") {
+        if (map.has(obj)) {
+          return map.get(obj);
+        }
+        let newObj = Array.isArray(obj) ? [] : {};
+        let keys = Object.keys(obj);
+        keys.forEach(key => {
+          newObj[key] = _cloneDeep(obj[key]);
+        });
+        return newObj;
+      } else {
+        return obj;
+      }
+    }
+  }
+
+
+  /**
+   * Checks if object conforms to source by invoking the predicate properties of source with the corresponding property
+   * values of object.
+   * Note: This method is equivalent to _.conforms when source is partially applied.
+   * @param object
+   * @param source
+   * @return {boolean}
+   */
+  function conformsTo(object, source) {
+    let keysS = Object.keys(source);
+    for (let key of keysS) {
+      if (!source[key].call(null, object[key])) {
+        return false;
+      }
+    }
+    return true;
   }
 
 
@@ -2899,4 +2956,18 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.castArray());
+var object = { 'a': 1, 'b': 2 };
+
+console.log(hemingqiao.conformsTo(object, {
+  'b': function (n) {
+    return n > 1;
+  }
+}));
+// => true
+
+console.log(hemingqiao.conformsTo(object, {
+  'b': function (n) {
+    return n > 2;
+  }
+}));
+// => false
