@@ -199,6 +199,13 @@ var hemingqiao = (function () {
     toInteger,
     toLength,
     toNumber,
+    toSafeInteger,
+    add,
+    ceil,
+    divide,
+    floor,
+    assign,
+    assignIn,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -1826,6 +1833,117 @@ var hemingqiao = (function () {
 
 
   /**
+   * Converts value to a safe integer. A safe integer can be compared and represented correctly.
+   * @param value
+   * @return {number}
+   */
+  function toSafeInteger(value) {
+    if (!typeUtils.isNumber(value)) {
+      value = +value;
+    }
+    if (value !== value) return 0;
+    if (Math.abs(value) >= Number.MAX_SAFE_INTEGER) {
+      return Number.MAX_SAFE_INTEGER;
+    }
+    if (Math.abs(value) <= Number.MIN_SAFE_INTEGER) {
+      return 0;
+    }
+    return value | 0;
+  }
+
+
+  /**
+   * Adds two numbers.
+   * @param a
+   * @param b
+   * @return {*}
+   */
+  function add(a, b) {
+    return a + b;
+  }
+
+
+  function basePrecision(value, precision, action) {
+    let mul = Math.pow(10, Math.abs(precision));
+    if (precision < 0) {
+      value /= mul;
+      return action(value) * mul;
+    } else {
+      value *= mul;
+      return action(value) / mul;
+    }
+  }
+
+  /**
+   * Computes number rounded up to precision.
+   * @param value
+   * @param precision
+   * @return {number}
+   */
+  function ceil(value, precision = 0) {
+    return basePrecision(value, precision, Math.ceil);
+  }
+
+
+  /**
+   * Divide two numbers.
+   * @param dividend
+   * @param divisor
+   * @return {number}
+   */
+  function divide(dividend, divisor) {
+    return dividend / divisor;
+  }
+
+
+  /**
+   * Computes number rounded down to precision.
+   * @param value
+   * @param precision
+   * @return {*}
+   */
+  function floor(value, precision = 0) {
+    return basePrecision(value, precision, Math.floor);
+  }
+
+
+  /**
+   * Assigns own enumerable string keyed properties of source objects to the destination object. Source objects are
+   * applied from left to right. Subsequent sources overwrite property assignments of previous sources.
+   * @see Object.assign
+   * @param object
+   * @param sources
+   * @return {*}
+   */
+  function assign(object, ...sources) {
+    sources.forEach(val => {
+      for (let key of Object.keys(val)) {
+        object[key] = val[key];
+      }
+    });
+    return object;
+  }
+
+
+  /**
+   * This method is like _.assign except that it iterates over own and inherited source properties.
+   * Note: This method mutates object.
+   * @param object
+   * @param sources
+   * @return {*}
+   */
+  function assignIn(object, ...sources) {
+    sources.forEach(val => {
+      while (val !== null) {
+        assign(object, val);
+        val = Reflect.getPrototypeOf(val);
+      }
+    });
+    return object;
+  }
+
+
+  /**
    * 求交集
    * @param source
    * @param args
@@ -3134,3 +3252,11 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
+console.log(hemingqiao.floor(4.006));
+// => 4
+
+console.log(hemingqiao.floor(0.046, 2));
+// => 0.04
+
+console.log(hemingqiao.floor(4060, -2));
+// => 4000
