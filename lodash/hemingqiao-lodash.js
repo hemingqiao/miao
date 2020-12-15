@@ -206,6 +206,8 @@ var hemingqiao = (function () {
     floor,
     assign,
     assignIn,
+    at,
+    get,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -1944,6 +1946,54 @@ var hemingqiao = (function () {
       }
     });
     return object;
+  }
+
+
+  /**
+   * Creates an array of values corresponding to paths of object.
+   * @param object
+   * @param paths
+   * @param defaultValue
+   * @return {[]}
+   */
+  function at(object, paths, defaultValue = "defaultValue") {
+    const ret = [];
+    const regexp = /^([a-zA-Z_$])+\[([\w$])+\]$/;
+    let temp = object;
+    outer:
+    for (let path of paths) {
+      const props = path.split(".");
+      for (let prop of props) {
+        // 这里不进行判空（不判断属性值是否为undefined或者为null，默认属性值存在且不为这两个值）
+        if (regexp.test(prop)) {
+          let matches = prop.match(regexp);
+          let n = matches[1]; // 匹配到的属性名
+          let idx = matches[2]; // 匹配到的索引
+          if (temp[n] === undefined || temp[n][+idx] === undefined) {
+            ret.push(defaultValue);
+            break outer;
+          }
+          temp = temp[n][+idx];
+        } else {
+          if (temp[prop] === undefined) {
+            ret.push(defaultValue);
+            break outer;
+          }
+          temp = temp[prop];
+        }
+      }
+      ret.push(temp);
+      temp = object;
+    }
+    return ret;
+  }
+
+
+  function get(object, path, defaultValue) {
+    if (Array.isArray(path)) {
+      path = path.join(".");
+    }
+    return at(object, [path], defaultValue)[0];
   }
 
 
