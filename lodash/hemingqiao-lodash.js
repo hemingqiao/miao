@@ -1864,14 +1864,9 @@ var hemingqiao = (function () {
 
 
   function basePrecision(value, precision, action) {
-    let mul = Math.pow(10, Math.abs(precision));
-    if (precision < 0) {
-      value /= mul;
-      return action(value) * mul;
-    } else {
-      value *= mul;
-      return action(value) / mul;
-    }
+    let mul = Math.pow(10, precision);
+    value *= mul;
+    return action(value) / mul;
   }
 
   /**
