@@ -211,10 +211,18 @@ var hemingqiao = (function () {
     intersectionWith,
     max,
     maxBy,
+    mean,
+    meanBy,
     min,
     minBy,
+    multiply,
+    round,
+    subtract,
     sum,
     sumBy,
+    clamp,
+    inRange,
+    random,
     nth,
     pull,
     pullAll,
@@ -1130,8 +1138,9 @@ var hemingqiao = (function () {
    * @return {{}}
    */
   function zipObjectDeep(props = [], values = []) {
+    console.log(props); // debug
     const regexp = /^([a-zA-Z_$])+\[([\w$])+\]$/;
-    const ret = {};
+    const ret =  {};
     let temp = ret;
     for (let i = 0; i < props.length; i++) {
       let propValue = props[i];
@@ -2055,6 +2064,30 @@ var hemingqiao = (function () {
 
 
   /**
+   * Computes the mean of the values in array.
+   * @param array
+   * @return {number}
+   */
+  function mean(array) {
+    return array.reduce((prev, cur) => prev + cur) / array.length;
+  }
+
+
+  /**
+   * This method is like _.mean except that it accepts iteratee which is invoked for each element in array to generate
+   * the value to be averaged. The iteratee is invoked with one argument: (value).
+   * @param array
+   * @param iteratee
+   * @return {number}
+   */
+  function meanBy(array, iteratee) {
+    iteratee = transform(iteratee);
+    array = array.map(val => iteratee(val));
+    return mean(array);
+  }
+
+
+  /**
    * 计算 array 中的最小值。 如果 array 是 空的或者假值将会返回 undefined。
    * @param array
    * @return {undefined|*}
@@ -2079,6 +2112,39 @@ var hemingqiao = (function () {
 
 
   /**
+   * Multiply two numbers.
+   * @param a
+   * @param b
+   * @return {number}
+   */
+  function multiply(a, b) {
+    return a * b;
+  }
+
+
+  /**
+   * Computes number rounded to precision.
+   * @param number
+   * @param precision
+   * @return {*}
+   */
+  function round(number, precision = 0) {
+    return basePrecision(number, precision, Math.round);
+  }
+
+
+  /**
+   * Subtract two numbers.
+   * @param a
+   * @param b
+   * @return {number}
+   */
+  function subtract(a, b) {
+    return a - b;
+  }
+
+
+  /**
    * 计算 array 中值的总和
    * @param array
    * @return {*}
@@ -2098,6 +2164,78 @@ var hemingqiao = (function () {
     iteratee = transform(iteratee);
     const mapped = array.map(value => iteratee(value));
     return sum(mapped);
+  }
+
+
+  /**
+   * Clamps number within the inclusive lower and upper bounds.
+   * @param number
+   * @param lower
+   * @param upper
+   * @return {*}
+   */
+  function clamp(number, lower, upper) {
+    if (number <= lower) return lower;
+    if (number >= upper) return upper;
+    return number;
+  }
+
+
+  /**
+   * Checks if n is between start and up to, but not including, end. If end is not specified, it's set to start with
+   * start then set to 0. If start is greater than end the params are swapped to support negative ranges.
+   * @param number
+   * @param start
+   * @param end
+   * @return {boolean}
+   */
+  function inRange(number, start = 0, end) {
+    if (end === undefined) {
+      end = start;
+      start = 0;
+    } else if (start > end) {
+      [start, end] = [end, start];
+    }
+    return !(number < start || number >= end);
+  }
+
+
+  function isFloatNumber(value) {
+    return (value | 0) === value;
+  }
+
+
+  /**
+   * Produces a random number between the inclusive lower and upper bounds. If only one argument is provided a number
+   * between 0 and the given number is returned. If floating is true, or either lower or upper are floats, a
+   * floating-point number is returned instead of an integer.
+   * @param lower
+   * @param upper
+   * @param floating
+   * @return {number}
+   */
+  function random(lower, upper, floating) {
+    if (isFloatNumber(lower) || isFloatNumber(upper) || floating) {
+      if (arguments.length === 1) {
+        if (upper <= 0) {
+          return 0;
+        } else {
+          upper = lower;
+          lower = 0;
+        }
+      }
+      return lower + Math.random() * (upper - lower + 1);
+    } else {
+      if (arguments.length === 1) {
+        if (upper <= 0) {
+          return 0;
+        } else {
+          upper = lower;
+          lower = 0;
+        }
+      }
+      return lower + Math.random() * (upper - lower + 1) | 0;
+    }
   }
 
 
@@ -3247,11 +3385,3 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.floor(4.006));
-// => 4
-
-console.log(hemingqiao.floor(0.046, 2));
-// => 0.04
-
-console.log(hemingqiao.floor(4060, -2));
-// => 4000
