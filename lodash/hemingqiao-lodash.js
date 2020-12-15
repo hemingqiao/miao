@@ -1964,7 +1964,6 @@ var hemingqiao = (function () {
     for (let path of paths) {
       const props = path.split(".");
       for (let prop of props) {
-        // 这里不进行判空（不判断属性值是否为undefined或者为null，默认属性值存在且不为这两个值）
         if (regexp.test(prop)) {
           let matches = prop.match(regexp);
           let n = matches[1]; // 匹配到的属性名
