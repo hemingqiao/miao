@@ -1958,21 +1958,31 @@ var hemingqiao = (function () {
    */
   function at(object, paths, defaultValue = "defaultValue") {
     const ret = [];
-    const regexp = /^([a-zA-Z_$])+\[([\w$])+\]$/;
+    const regexp = /^([a-zA-Z_$])+\[([\w\W])+\]$/;
     let temp = object;
     outer:
     for (let path of paths) {
       const props = path.split(".");
       for (let prop of props) {
         if (regexp.test(prop)) {
-          let matches = prop.match(regexp);
-          let n = matches[1]; // 匹配到的属性名
-          let idx = matches[2]; // 匹配到的索引
-          if (temp[n] === undefined || temp[n][+idx] === undefined) {
+          let matches = prop.match(/\w+/g);
+          let n = matches[0]; // 匹配到的属性名
+          if (temp[n] === undefined) {
             ret.push(defaultValue);
             break outer;
           }
-          temp = temp[n][+idx];
+          temp = temp[n];
+          let j = 1;
+          let idx;
+          while (j < matches.length) {
+            idx = +matches[j];
+            if (temp[idx] === undefined) {
+              ret.push(defaultValue);
+              break outer;
+            }
+            temp = temp[idx];
+            j++;
+          }
         } else {
           if (temp[prop] === undefined) {
             ret.push(defaultValue);
@@ -3433,4 +3443,3 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
-
