@@ -2201,7 +2201,7 @@ var hemingqiao = (function () {
 
 
   function isFloatNumber(value) {
-    return (value | 0) === value;
+    return (value | 0) !== value;
   }
 
 
@@ -2215,26 +2215,26 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function random(lower, upper, floating) {
-    if (isFloatNumber(lower) || isFloatNumber(upper) || floating) {
+    if (!isFloatNumber(lower) && !isFloatNumber(upper === undefined ? 0 : upper) && !floating) {
       if (arguments.length === 1) {
-        if (upper <= 0) {
+        if (lower <= 0) {
           return 0;
         } else {
           upper = lower;
           lower = 0;
         }
       }
-      return lower + Math.random() * (upper - lower + 1);
+      return lower + ((Math.random() * (upper - lower)) | 0);
     } else {
       if (arguments.length === 1) {
-        if (upper <= 0) {
+        if (lower <= 0) {
           return 0;
         } else {
           upper = lower;
           lower = 0;
         }
       }
-      return lower + Math.random() * (upper - lower + 1) | 0;
+      return lower + Math.random() * (upper - lower);
     }
   }
 
