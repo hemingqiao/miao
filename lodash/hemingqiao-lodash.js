@@ -210,6 +210,8 @@ var hemingqiao = (function () {
     get,
     defaults,
     defaultsDeep,
+    findKey,
+    findLastKey,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -2068,6 +2070,39 @@ var hemingqiao = (function () {
     return object;
   }
 
+
+  /**
+   * This method is like _.find except that it returns the key of the first element predicate returns truthy for instead
+   * of the element itself.
+   * @param object
+   * @param predicate
+   * @return {string|null}
+   */
+  function findKey(object, predicate) {
+    predicate = transform(predicate);
+    for (let key of Object.keys(object)) {
+      if (predicate(object[key])) return key;
+    }
+    return null;
+  }
+
+
+  /**
+   * This method is like _.findKey except that it iterates over elements of a collection in the opposite order.
+   * @param object
+   * @param predicate
+   * @return {string|null}
+   */
+  function findLastKey(object, predicate) {
+    predicate = transform(predicate);
+    let keys = Object.keys(object), len = keys.length;
+    for (let i = len - 1; i >= 0; i--) {
+      if (predicate(object[keys[i]])) return keys[i];
+    }
+    return null;
+  }
+
+
   /**
    * 求交集
    * @param source
@@ -3506,6 +3541,3 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-let res = hemingqiao.defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 }, 'd': 1024});
-console.log(res);
-// => { 'a': { 'b': 2, 'c': 3 } }
