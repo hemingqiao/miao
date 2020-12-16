@@ -210,6 +210,8 @@ var hemingqiao = (function () {
     get,
     has,
     hasIn,
+    invert,
+    invertBy,
     defaults,
     defaultsDeep,
     findKey,
@@ -2084,6 +2086,45 @@ var hemingqiao = (function () {
 
 
   /**
+   * Creates an object composed of the inverted keys and values of object. If object contains duplicate values,
+   * subsequent values overwrite property assignments of previous values.
+   * @param object
+   * @return {{}}
+   */
+  function invert(object) {
+    const ret = {};
+    let keys = Object.keys(object);
+    for (let key of keys) {
+      ret[object[key]] = key;
+    }
+    return ret;
+  }
+
+
+  /**
+   * This method is like _.invert except that the inverted object is generated from the results of running each element
+   * of object thru iteratee. The corresponding inverted value of each inverted key is an array of keys responsible for
+   * generating the inverted value. The iteratee is invoked with one argument: (value).
+   * @param object
+   * @param iteratee
+   * @return {{}}
+   */
+  function invertBy(object, iteratee = identity) {
+    iteratee = transform(iteratee);
+    Object.keys(object).forEach(key => object[key] = iteratee(object[key]));
+    const ret = {};
+    for (let key of Object.keys(object)) {
+      let p = object[key]
+      if (ret[p] === undefined) {
+        ret[p] = [];
+      }
+      ret[p].push(key);
+    }
+    return ret;
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -3730,3 +3771,12 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
+var object = { 'a': 1, 'b': 2, 'c': 1 };
+
+console.log(hemingqiao.invertBy(object));
+// => { '1': ['a', 'c'], '2': ['b'] }
+
+console.log(hemingqiao.invertBy(object, function (value) {
+  return 'group' + value;
+}));
+// => { 'group1': ['a', 'c'], 'group2': ['b'] }
