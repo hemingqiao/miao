@@ -219,6 +219,10 @@ var hemingqiao = (function () {
     mapValues,
     merge,
     mergeWith,
+    omit,
+    omitBy,
+    pick,
+    pickBy,
     defaults,
     defaultsDeep,
     findKey,
@@ -1981,6 +1985,55 @@ var hemingqiao = (function () {
   }
 
 
+  // /**
+  //  * Creates an array of values corresponding to paths of object.
+  //  * @param object
+  //  * @param paths
+  //  * @param defaultValue
+  //  * @return {[]}
+  //  */
+  // function at(object, paths, defaultValue = "defaultValue") {
+  //   const ret = [];
+  //   const regexp = /^([a-zA-Z_$])+\[([\w\W])+\]$/;
+  //   let temp = object;
+  //   outer:
+  //   for (let path of paths) {
+  //     const props = path.split(".");
+  //     for (let prop of props) {
+  //       if (regexp.test(prop)) {
+  //         let matches = prop.match(/\w+/g);
+  //         let n = matches[0]; // 匹配到的属性名
+  //         if (temp[n] === undefined) {
+  //           ret.push(defaultValue);
+  //           break outer;
+  //         }
+  //         temp = temp[n];
+  //         let j = 1;
+  //         let idx;
+  //         while (j < matches.length) {
+  //           idx = +matches[j];
+  //           if (temp[idx] === undefined) {
+  //             ret.push(defaultValue);
+  //             break outer;
+  //           }
+  //           temp = temp[idx];
+  //           j++;
+  //         }
+  //       } else {
+  //         if (temp[prop] === undefined) {
+  //           ret.push(defaultValue);
+  //           break outer;
+  //         }
+  //         temp = temp[prop];
+  //       }
+  //     }
+  //     ret.push(temp);
+  //     temp = object;
+  //   }
+  //   return ret;
+  // }
+
+
   /**
    * Creates an array of values corresponding to paths of object.
    * @param object
@@ -1990,42 +2043,20 @@ var hemingqiao = (function () {
    */
   function at(object, paths, defaultValue = "defaultValue") {
     const ret = [];
-    const regexp = /^([a-zA-Z_$])+\[([\w\W])+\]$/;
-    let temp = object;
-    outer:
-      for (let path of paths) {
-        const props = path.split(".");
-        for (let prop of props) {
-          if (regexp.test(prop)) {
-            let matches = prop.match(/\w+/g);
-            let n = matches[0]; // 匹配到的属性名
-            if (temp[n] === undefined) {
-              ret.push(defaultValue);
-              break outer;
-            }
-            temp = temp[n];
-            let j = 1;
-            let idx;
-            while (j < matches.length) {
-              idx = +matches[j];
-              if (temp[idx] === undefined) {
-                ret.push(defaultValue);
-                break outer;
-              }
-              temp = temp[idx];
-              j++;
-            }
-          } else {
-            if (temp[prop] === undefined) {
-              ret.push(defaultValue);
-              break outer;
-            }
-            temp = temp[prop];
-          }
+    const regexp = /[\w$]+/g;
+    paths = paths.map(path => path.match(regexp));
+    let temp;
+    for (let path of paths) {
+      temp = object;
+      for (let prop of path) {
+        if (temp[prop] === undefined) {
+          ret.push(defaultValue);
+          break;
         }
-        ret.push(temp);
-        temp = object;
+        temp = temp[prop];
       }
+      ret.push(temp);
+    }
     return ret;
   }
 
@@ -2278,6 +2309,81 @@ var hemingqiao = (function () {
     }
     return object;
   }
+
+
+  function baseOmit(object, isPick, paths) {
+    // 只考虑了最简单的情形
+    const ret = {};
+    Object.keys(object).forEach(key => {
+      if (paths.includes(key) === (!!isPick)) {
+        ret[key] = object[key];
+      }
+    });
+    return ret;
+  }
+
+
+  function baseOmitBy(object, isPick, predicate = identity) {
+    // 只考虑了最简单的情形
+    const ret = {};
+    predicate = transform(predicate);
+    Object.keys(object).forEach(key => {
+      if (predicate(object[key], key) === (!!isPick)) {
+        ret[key] = object[key];
+      }
+    });
+    return ret;
+  }
+
+
+  /**
+   * The opposite of _.pick; this method creates an object composed of the own and inherited enumerable property paths
+   * of object that are not omitted.
+   * @param object
+   * @param paths
+   * @return {{}}
+   */
+  function omit(object, paths) {
+    return baseOmit(object, false, paths);
+  }
+
+
+  /**
+   * The opposite of _.pickBy; this method creates an object composed of the own and inherited enumerable string keyed
+   * properties of object that predicate doesn't return truthy for. The predicate is invoked with two arguments: (value, key).
+   * @param object
+   * @param predicate
+   * @return {{}}
+   */
+  function omitBy(object, predicate = identity) {
+    return baseOmitBy(object, false, predicate);
+  }
+
+
+  /**
+   * Creates an object composed of the picked object properties.
+   * @param object
+   * @param paths
+   * @return {{}}
+   */
+  function pick(object, paths) {
+    return baseOmit(object, true, paths);
+  }
+
+
+  /**
+   * Creates an object composed of the object properties predicate returns truthy for. The predicate is invoked with two
+   * arguments: (value, key).
+   * @param object
+   * @param predicate
+   * @return {{}}
+   */
+  function pickBy(object, predicate = identity) {
+    return baseOmitBy(object, true, predicate);
+  }
+
+
+
 
 
   /**
@@ -3927,3 +4033,13 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
+var object = { 'a': [{ 'b': { 'c': 3 } }] };
+
+console.log(hemingqiao.get(object, 'a[0].b.c'));
+// => 3
+
+console.log(hemingqiao.get(object, ['a', '0', 'b', 'c']));
+// => 3
+
+console.log(hemingqiao.get(object, 'a.b.c', 'default'));
+// => 'default'
