@@ -209,6 +209,7 @@ var hemingqiao = (function () {
     at,
     get,
     defaults,
+    defaultsDeep,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -674,7 +675,7 @@ var hemingqiao = (function () {
    */
   function flattenDepth(array, depth = 1) {
     let res = array.slice();
-    while (depth--) {
+    while (depth-- > 0) {
       res = [].concat(...res);
     }
     return res;
@@ -2039,6 +2040,31 @@ var hemingqiao = (function () {
         source = Reflect.getPrototypeOf(source); // 沿原型链向上继续查找，直到查找到null
       }
     });
+    return object;
+  }
+
+
+  /**
+   * This method is like _.defaults except that it recursively assigns default properties.
+   * Note: This method mutates object.
+   * @param object
+   * @param sources
+   * @return {*}
+   */
+  function defaultsDeep(object, ...sources) {
+    (function _defaultDeep(object, sources) {
+      for (let source of sources) {
+        for (let key of Object.keys(source)) {
+          if (typeUtils.isObject(source[key])) {
+            _defaultDeep(object[key], [source[key]])
+          } else {
+            if (object[key] === undefined) {
+              object[key] = source[key];
+            }
+          }
+        }
+      }
+    })(object, sources);
     return object;
   }
 
@@ -3480,5 +3506,6 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.defaults({'a': 1}, {'b': 2}, {'a': 3}));
-// => { 'a': 1, 'b': 2 }
+let res = hemingqiao.defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 }, 'd': 1024});
+console.log(res);
+// => { 'a': { 'b': 2, 'c': 3 } }
