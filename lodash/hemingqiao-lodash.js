@@ -2432,7 +2432,7 @@ var hemingqiao = (function () {
       if (index === array.length - 1) {
         temp[prop] = value;
       } else {
-        let t = typeof (+prop) === "number" ? [] : {};
+        let t = Object.is(+prop, NaN) ? {} : [];
         if (temp[prop] === undefined) {
           temp[prop] = t;
         }
@@ -4090,12 +4090,4 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-var object = { 'a': [{ 'b': { 'c': 3 } }] };
-
-hemingqiao.set(object, 'a[0].b.c', 4);
-console.log(object.a[0].b.c);
-// => 4
-
-hemingqiao.set(object, ['x', '0', 'y', 'z'], 5);
-console.log(object.x[0].y.z);
-// => 5
+console.log(hemingqiao.set({"a": [{"b": {"c": 3}}]}, ["x", "0", "y", "z"], 5));
