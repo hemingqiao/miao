@@ -208,6 +208,8 @@ var hemingqiao = (function () {
     assignIn,
     at,
     get,
+    has,
+    hasIn,
     defaults,
     defaultsDeep,
     findKey,
@@ -2035,6 +2037,53 @@ var hemingqiao = (function () {
 
 
   /**
+   * Checks if path is a direct property of object.
+   * @param object
+   * @param path
+   * @return {boolean}
+   */
+  function has(object, path) {
+    const regexp = /[\w$]+/g; // 不考虑存在非法标识符
+    const {hasOwnProperty} = Object.prototype;
+    if (typeof path === "string") {
+      path = path.match(regexp);
+    }
+    let temp = object;
+    for (let prop of path) {
+      if (hasOwnProperty.call(temp, prop)) {
+        temp = temp[prop];
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  /**
+   * Checks if path is a direct or inherited property of object.
+   * @param object
+   * @param path
+   * @return {boolean}
+   */
+  function hasIn(object, path) {
+    const regexp = /[\w$]+/g;
+    if (typeof path === "string") {
+      path = path.match(regexp);
+    }
+    let temp = object;
+    for (let prop of path) {
+      if (prop in temp) {
+        temp = temp[prop];
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -3680,3 +3729,4 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
+
