@@ -223,6 +223,8 @@ var hemingqiao = (function () {
     omitBy,
     pick,
     pickBy,
+    result,
+    set,
     defaults,
     defaultsDeep,
     findKey,
@@ -2383,7 +2385,62 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * This method is like _.get except that if the resolved value is a function it's invoked with the this binding of its
+   * parent object and its result is returned.
+   * @param object
+   * @param path
+   * @param defaultValue
+   * @return {*}
+   */
+  function result(object, path, defaultValue) {
+    const regexp = /[\w$]+/g;
+    path = path.match(regexp);
+    let prev, cur = object;
+    for (let prop of path) {
+      if (cur[prop] === undefined) {
+        cur = defaultValue;
+        break;
+      }
+      prev = cur;
+      cur = cur[prop];
+    }
+    if (typeUtils.isFunction(cur)) {
+      return cur.call(prev)
+    }
+    return cur;
+  }
 
+
+  /**
+   * Sets the value at path of object. If a portion of path doesn't exist, it's created. Arrays are created for missing
+   * index properties while objects are created for all other missing properties. Use _.setWith to customize path
+   * creation.
+   * Note: This method mutates object.
+   * @param object
+   * @param path
+   * @param value
+   * @return {*}
+   */
+  function set(object, path, value) {
+    const regexp = /[\w$]+/g;
+    if (typeof path === "string") {
+      path = path.match(regexp);
+    }
+    let temp = object;
+    path.forEach((prop, index, array) => {
+      if (index === array.length - 1) {
+        temp[prop] = value;
+      } else {
+        let t = typeof (+prop) === "number" ? [] : {};
+        if (temp[prop] === undefined) {
+          temp[prop] = t;
+        }
+        temp = temp[prop];
+      }
+    });
+    return object;
+  }
 
 
   /**
@@ -4035,11 +4092,10 @@ var hemingqiao = (function () {
 
 var object = { 'a': [{ 'b': { 'c': 3 } }] };
 
-console.log(hemingqiao.get(object, 'a[0].b.c'));
-// => 3
+hemingqiao.set(object, 'a[0].b.c', 4);
+console.log(object.a[0].b.c);
+// => 4
 
-console.log(hemingqiao.get(object, ['a', '0', 'b', 'c']));
-// => 3
-
-console.log(hemingqiao.get(object, 'a.b.c', 'default'));
-// => 'default'
+hemingqiao.set(object, ['x', '0', 'y', 'z'], 5);
+console.log(object.x[0].y.z);
+// => 5
