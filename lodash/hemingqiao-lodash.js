@@ -208,6 +208,7 @@ var hemingqiao = (function () {
     assignIn,
     at,
     get,
+    defaults,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -1913,6 +1914,21 @@ var hemingqiao = (function () {
   }
 
 
+  function baseAssign(object, cover, ...sources) {
+    sources.forEach(val => {
+      for (let key of Object.keys(val)) {
+        if (cover) {
+          object[key] = val[key];
+        } else {
+          if (object[key] !== undefined) continue;
+          object[key] = val[key];
+        }
+      }
+    });
+    return object;
+  }
+
+
   /**
    * Assigns own enumerable string keyed properties of source objects to the destination object. Source objects are
    * applied from left to right. Subsequent sources overwrite property assignments of previous sources.
@@ -1922,12 +1938,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function assign(object, ...sources) {
-    sources.forEach(val => {
-      for (let key of Object.keys(val)) {
-        object[key] = val[key];
-      }
-    });
-    return object;
+    return baseAssign(object, true, ...sources);
   }
 
 
@@ -1998,6 +2009,13 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * Gets the value at path of object. If the resolved value is undefined, the defaultValue is returned in its place.
+   * @param object
+   * @param path
+   * @param defaultValue
+   * @return {*}
+   */
   function get(object, path, defaultValue) {
     if (Array.isArray(path)) {
       path = path.join(".");
@@ -2005,6 +2023,24 @@ var hemingqiao = (function () {
     return at(object, [path], defaultValue)[0];
   }
 
+
+  /**
+   * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
+   * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
+   * is set, additional values of the same property are ignored.
+   * @param object
+   * @param sources
+   * @return {*}
+   */
+  function defaults(object, ...sources) {
+    sources.forEach(source => {
+      while (source !== null) {
+        baseAssign(object, false, source); // 不覆盖已有属性
+        source = Reflect.getPrototypeOf(source); // 沿原型链向上继续查找，直到查找到null
+      }
+    });
+    return object;
+  }
 
   /**
    * 求交集
@@ -3443,3 +3479,6 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
+
+console.log(hemingqiao.defaults({'a': 1}, {'b': 2}, {'a': 3}));
+// => { 'a': 1, 'b': 2 }
