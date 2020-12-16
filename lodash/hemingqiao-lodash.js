@@ -212,6 +212,9 @@ var hemingqiao = (function () {
     hasIn,
     invert,
     invertBy,
+    invoke,
+    keys,
+    keysIn,
     defaults,
     defaultsDeep,
     findKey,
@@ -2125,6 +2128,58 @@ var hemingqiao = (function () {
 
 
   /**
+   * Invokes the method at path of object.
+   * @param object
+   * @param path
+   * @param args
+   * @return {*}
+   */
+  function invoke(object, path, ...args) {
+    const regexp = /[\w$]+/g;
+    const {hasOwnProperty} = Object.prototype;
+    if (typeof path === "string") {
+      path = path.match(regexp);
+    }
+    let fnStr = path.pop();
+    let temp = object;
+    for (let prop of path) {
+      if (hasOwnProperty.call(temp, prop)) {
+        temp = temp[prop];
+      } else {
+        throw new Error("no such path exit");
+      }
+    }
+    return temp[fnStr].call(temp, ...args);
+  }
+
+
+  /**
+   * Creates an array of the own enumerable property names of object.
+   * @param object
+   * @return {string[]|*[]}
+   */
+  function keys(object) {
+    if (object == null || typeof object === "boolean" || typeof object === "number") {
+      return [];
+    } else if (typeof object === "string") {
+      object = Object(object);
+    }
+    return Object.keys(object);
+  }
+
+
+  function keysIn(object) {
+    let ret = [];
+    let temp = object;
+    while (temp !== null) {
+      ret = ret.concat(keys(temp));
+      temp = Reflect.getPrototypeOf(temp);
+    }
+    return ret;
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -3771,12 +3826,12 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-var object = { 'a': 1, 'b': 2, 'c': 1 };
+function Foo() {
+  this.a = 1;
+  this.b = 2;
+}
 
-console.log(hemingqiao.invertBy(object));
-// => { '1': ['a', 'c'], '2': ['b'] }
+Foo.prototype.c = 3;
 
-console.log(hemingqiao.invertBy(object, function (value) {
-  return 'group' + value;
-}));
-// => { 'group1': ['a', 'c'], 'group2': ['b'] }
+console.log(hemingqiao.keysIn(new Foo));
+// => ['a', 'b', 'c'] (iteration order is not guaranteed)
