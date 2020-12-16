@@ -214,6 +214,10 @@ var hemingqiao = (function () {
     findLastKey,
     forIn,
     forInRight,
+    forOwn,
+    forOwnRight,
+    functions,
+    functionsIn,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -2143,12 +2147,89 @@ var hemingqiao = (function () {
       let keys = Object.keys(temp);
       let len = keys.length;
       for (let i = len - 1; i >= 0; i--) {
-        if (iteratee(temp[key], key, temp) === false) {
+        if (iteratee(temp[keys[i]], keys[i], temp) === false) {
           return object;
         }
       }
       temp = Reflect.getPrototypeOf(temp);
     }
+    return object;
+  }
+
+
+  /**
+   * Iterates over own enumerable string keyed properties of an object and invokes iteratee for each property. The
+   * iteratee is invoked with three arguments: (value, key, object). Iteratee functions may exit iteration early by
+   * explicitly returning false.
+   * @param object
+   * @param iteratee
+   * @return {*}
+   */
+  function forOwn(object, iteratee = identity) {
+    for (let key of Object.keys(object)) {
+      if (iteratee(object[key], key, object) === false) {
+        return object; // exit iteration
+      }
+    }
+    return object;
+  }
+
+
+  /**
+   * This method is like _.forOwn except that it iterates over properties of object in the opposite order.
+   * @param object
+   * @param iteratee
+   * @return {*}
+   */
+  function forOwnRight(object, iteratee = identity) {
+    let keys = Object.keys(object);
+    let len = keys.length;
+    for (let i = len - 1; i >= 0; i--) {
+      if (iteratee(object[keys[i]], keys[i], object) === false) {
+        return object; // exit iteration
+      }
+    }
+    return object;
+  }
+
+
+  /**
+   * Creates an array of function property names from own enumerable properties of object.
+   * @param object
+   * @return {[]}
+   */
+  function functions(object) {
+    const keys = Object.keys(object);
+    const ret = [];
+    for (let key of keys) {
+      if (typeUtils.isFunction(object[key])) {
+        ret.push(key);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates an array of function property names from own and inherited enumerable properties of object.
+   * @param object
+   * @return {[]}
+   */
+  function functionsIn(object) {
+    const ret = [];
+    let temp = object;
+    let keys;
+    while (temp !== null) {
+      // 可以通过调用functions方法，但没必要
+      keys = Object.keys(temp);
+      for (let key of keys) {
+        if (typeUtils.isFunction(object[key])) {
+          ret.push(key);
+        }
+      }
+      temp = Reflect.getPrototypeOf(temp);
+    }
+    return ret;
   }
 
 
@@ -3599,15 +3680,3 @@ var hemingqiao = (function () {
 //   return true;
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
-
-function Foo() {
-  this.a = 1;
-  this.b = 2;
-}
-
-Foo.prototype.c = 3;
-
-console.log(hemingqiao.forIn(new Foo, function (value, key) {
-  console.log(key);
-}));
-// => Logs 'a', 'b', then 'c' (iteration order is not guaranteed).
