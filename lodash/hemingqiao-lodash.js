@@ -212,6 +212,8 @@ var hemingqiao = (function () {
     defaultsDeep,
     findKey,
     findLastKey,
+    forIn,
+    forInRight,
     intersection,
     intersectionBy,
     intersectionWith,
@@ -298,6 +300,7 @@ var hemingqiao = (function () {
     isWeakMap,
     isWeakSet,
     curry,
+    identity,
 
   };
 
@@ -2104,6 +2107,52 @@ var hemingqiao = (function () {
 
 
   /**
+   * Iterates over own and inherited enumerable string keyed properties of an object and invokes iteratee for each
+   * property. The iteratee is invoked with three arguments: (value, key, object). Iteratee functions may exit
+   * iteration early by explicitly returning false.
+   * @param object
+   * @param iteratee
+   * @return {*}
+   */
+  function forIn(object, iteratee = identity) {
+    iteratee = transform(iteratee);
+    let temp = object;
+    while (temp !== null) {
+      let keys = Object.keys(temp);
+      for (let key of keys) {
+        if (iteratee(temp[key], key, temp) === false) {
+          return object;
+        }
+      }
+      temp = Reflect.getPrototypeOf(temp);
+    }
+    return object;
+  }
+
+
+  /**
+   * This method is like _.forIn except that it iterates over properties of object in the opposite order.
+   * @param object
+   * @param iteratee
+   * @return {*}
+   */
+  function forInRight(object, iteratee = identity) {
+    iteratee = transform(iteratee);
+    let temp = object;
+    while (temp !== null) {
+      let keys = Object.keys(temp);
+      let len = keys.length;
+      for (let i = len - 1; i >= 0; i--) {
+        if (iteratee(temp[key], key, temp) === false) {
+          return object;
+        }
+      }
+      temp = Reflect.getPrototypeOf(temp);
+    }
+  }
+
+
+  /**
    * 求交集
    * @param source
    * @param args
@@ -3521,6 +3570,16 @@ var hemingqiao = (function () {
     return true;
   }
 
+
+  /**
+   * This method returns the first argument it receives.
+   * @param value
+   * @return {*}
+   */
+  function identity(value) {
+    return value;
+  }
+
 })();
 
 // var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
@@ -3541,3 +3600,14 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
+function Foo() {
+  this.a = 1;
+  this.b = 2;
+}
+
+Foo.prototype.c = 3;
+
+console.log(hemingqiao.forIn(new Foo, function (value, key) {
+  console.log(key);
+}));
+// => Logs 'a', 'b', then 'c' (iteration order is not guaranteed).
