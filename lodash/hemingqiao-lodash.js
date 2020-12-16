@@ -47,7 +47,7 @@ var hemingqiao = (function () {
    * @param iteratee
    * @return {(function(*): *)|*}
    */
-  function transform(iteratee) {
+  function transformType(iteratee) {
     if (typeUtils.isString(iteratee)) {
       let splited = iteratee.split(".");
       if (splited.length === 1) {
@@ -439,7 +439,7 @@ var hemingqiao = (function () {
     }
 
     iteratee = args.pop();
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let copy = array.slice();
     let mapped = array.map(value => iteratee(value));
     args = args.map(value => value.map(value1 => iteratee(value1)));
@@ -566,7 +566,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function dropRightWhile(array, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     const ret = array.slice();
     for (let i = array.length - 1; i >= 0; i--) {
       if (predicate(array[i])) ret.pop();
@@ -584,7 +584,7 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function dropWhile(array, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     let i;
     for (i = 0; i < array.length; i++) {
       if (!predicate(array[i])) break;
@@ -645,7 +645,7 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function findIndex(arr, predicate, fromIdx = 0) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     for (let i = fromIdx; i < arr.length; i++) {
       if (predicate(arr[i])) {
         return i;
@@ -663,7 +663,7 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function findLastIndex(arr, predicate, fromIdx = arr.length - 1) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     for (let i = fromIdx; i >= 0; i--) {
       if (predicate(arr[i])) {
         return i;
@@ -816,7 +816,7 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function sortedIndexBy(array, value, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const arrayCopy = array.map(val => iteratee(val));
     const valueCopy = iteratee(value);
     return sortedIndex(arrayCopy, valueCopy);
@@ -882,7 +882,7 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function sortedLastIndexBy(array, value, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const arrayCopy = array.map(val => iteratee(val));
     const valueCopy = iteratee(value);
     return sortedLastIndex(arrayCopy, valueCopy);
@@ -924,7 +924,7 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function uniqBy(array, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const mappedArray = array.map(val => iteratee(val));
     const uniqArray = uniq(mappedArray);
 
@@ -999,7 +999,7 @@ var hemingqiao = (function () {
    * @return {[]|*[]}
    */
   function unzipWith(array, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     if (!array.length) return [];
     let ret = [];
     let invoked = [];
@@ -1068,7 +1068,7 @@ var hemingqiao = (function () {
    */
   function xorBy(...args) {
     let iteratee = args.pop();
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let argsCopy = args.map(value => value.slice().map(v => iteratee(v)));
     argsCopy = xor(...argsCopy);
     const map = new Map();
@@ -1101,7 +1101,7 @@ var hemingqiao = (function () {
    */
   function xorWith(...args) {
     let comparator = args.pop();
-    comparator = transform(comparator);
+    comparator = transformType(comparator);
 
     args.push(comparator);
     const itersec = intersectionWith(...args);
@@ -1216,7 +1216,7 @@ var hemingqiao = (function () {
    */
   function zipWith(...args) {
     let iteratee = args.pop();
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let maxLen = Math.max(...args.map(arg => arg.length));
     let invoked = [];
     let ret = [];
@@ -1241,7 +1241,7 @@ var hemingqiao = (function () {
    * @return {{}}
    */
   function countBy(collection, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const ret = {};
     collection = collection.map(val => iteratee(val));
     for (let e of collection) {
@@ -1287,7 +1287,7 @@ var hemingqiao = (function () {
     const ret = [];
     if (!len) return ret;
 
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const mappedArray = array.map(val => iteratee(val));
     const uniqArray = sortedUniq(mappedArray);
     let i = 0;
@@ -1360,7 +1360,7 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function takeRightWhile(array, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     const ret = [];
     const len = array.length;
     for (let i = len - 1; i >= 0; i--) {
@@ -1383,7 +1383,7 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function takeWhile(array, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     const ret = [];
     const len = array.length;
     for (let i = 0; i < len; i++) {
@@ -1405,7 +1405,7 @@ var hemingqiao = (function () {
    * @return {boolean}
    */
   function every(collection, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     if (Array.isArray(collection)) {
       if (!collection.length) {
         return true;
@@ -1435,7 +1435,7 @@ var hemingqiao = (function () {
    */
   function filter(collection, predicate) {
     let res;
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     if (Array.isArray(collection)) {
       res = [];
       if (!collection.length) {
@@ -1467,7 +1467,7 @@ var hemingqiao = (function () {
    * @return {null|*}
    */
   function find(collection, predicate, fromIdx = 0) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     if (Array.isArray(collection)) {
       if (!collection.length) {
         return null;
@@ -1501,7 +1501,7 @@ var hemingqiao = (function () {
    * @return {undefined|*}
    */
   function findLast(collection, predicate, fromIndex = collection.length - 1) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     if (typeUtils.isArray(collection)) {
       if (!collection.length) {
         return undefined;
@@ -1529,7 +1529,7 @@ var hemingqiao = (function () {
 
 
   function baseFlatMap(collection, iteratee, depth = 1) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     if (typeUtils.isArray(collection)) {
       if (!collection.length) {
         return [];
@@ -1587,7 +1587,7 @@ var hemingqiao = (function () {
 
 
   function baseForEach(collection, iteratee, direction) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let flag = true;
     if (typeUtils.isArray(collection)) {
       if (!collection.length) {
@@ -1657,7 +1657,7 @@ var hemingqiao = (function () {
    * @return {{}}
    */
   function groupBy(collection, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     if (typeUtils.isObject(collection)) {
       collection = Object.keys(collection).map(key => collection[key]);
     }
@@ -1772,7 +1772,7 @@ var hemingqiao = (function () {
    * @return {{}}
    */
   function keyBy(collection, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const map = {};
     if (typeUtils.isObject(collection)) {
       Object.keys(collection).forEach(key => map[iteratee(collection[key])] = collection[key]);
@@ -2150,7 +2150,7 @@ var hemingqiao = (function () {
    * @return {{}}
    */
   function invertBy(object, iteratee = identity) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     Object.keys(object).forEach(key => object[key] = iteratee(object[key]));
     const ret = {};
     for (let key of Object.keys(object)) {
@@ -2230,7 +2230,7 @@ var hemingqiao = (function () {
    * @return {{}}
    */
   function mapKeys(object, iteratee = identity) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const ret = {};
     Object.keys(object).forEach(key => {
       ret[iteratee(object[key], key, object)] = object[key];
@@ -2247,7 +2247,7 @@ var hemingqiao = (function () {
    * @return {{}}
    */
   function mapValues(object, iteratee = identity) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const ret = {};
     Object.keys(object).forEach(key => {
       ret[key] = iteratee(object[key], key, object);
@@ -2302,7 +2302,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function mergeWith(object, ...sources) {
-    let customizer = transform(sources.pop());
+    let customizer = transformType(sources.pop());
     for (let source of sources) {
       let keys = Object.keys(source);
       keys.forEach(key => {
@@ -2328,7 +2328,7 @@ var hemingqiao = (function () {
   function baseOmitBy(object, isPick, predicate = identity) {
     // 只考虑了最简单的情形
     const ret = {};
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     Object.keys(object).forEach(key => {
       if (predicate(object[key], key) === (!!isPick)) {
         ret[key] = object[key];
@@ -2428,17 +2428,29 @@ var hemingqiao = (function () {
       path = path.match(regexp);
     }
     let temp = object;
-    path.forEach((prop, index, array) => {
-      if (index === array.length - 1) {
-        temp[prop] = value;
+    let len = path.length;
+    for (let i = 0; i < len; i++) {
+      if (i === len - 1) {
+        temp[path[i]] = value;
       } else {
-        let t = Object.is(+prop, NaN) ? {} : [];
-        if (temp[prop] === undefined) {
-          temp[prop] = t;
+        let next = path[i + 1];
+        if (!Object.is(+next, NaN)) { // next是一个数字
+          if (temp[path[i]] === undefined) {
+            temp[path[i]] = [];
+            temp[path[i]][+next] = {}; // 先赋值为一个对象
+            temp = temp[path[i]][+next];
+          } else {
+            temp = temp[path[i]][+next];
+          }
+          i++; // 跳过下一个数字位
+        } else {
+          if (temp[path[i]] === undefined) {
+            temp[path[i]] = {};
+          }
+          temp = temp[path[i]];
         }
-        temp = temp[prop];
       }
-    });
+    }
     return object;
   }
 
@@ -2495,7 +2507,7 @@ var hemingqiao = (function () {
    * @return {string|null}
    */
   function findKey(object, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     for (let key of Object.keys(object)) {
       if (predicate(object[key])) return key;
     }
@@ -2510,7 +2522,7 @@ var hemingqiao = (function () {
    * @return {string|null}
    */
   function findLastKey(object, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     let keys = Object.keys(object), len = keys.length;
     for (let i = len - 1; i >= 0; i--) {
       if (predicate(object[keys[i]])) return keys[i];
@@ -2528,7 +2540,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function forIn(object, iteratee = identity) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let temp = object;
     while (temp !== null) {
       let keys = Object.keys(temp);
@@ -2550,7 +2562,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function forInRight(object, iteratee = identity) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let temp = object;
     while (temp !== null) {
       let keys = Object.keys(temp);
@@ -2696,7 +2708,7 @@ var hemingqiao = (function () {
     }
 
     const ret = [];
-    last = transform(last);
+    last = transformType(last);
     args.pop();
     args = args.map(arg => arg.map(value => last(value)));
     let copy = first.slice().map(value => last(value));
@@ -2718,7 +2730,7 @@ var hemingqiao = (function () {
   function intersectionWith(...args) {
     let last = args.pop();
     let first = args[0];
-    last = transform(last);
+    last = transformType(last);
     const ret = [];
 
     for (let i = 1; i < args.length; i++) {
@@ -2752,7 +2764,7 @@ var hemingqiao = (function () {
    * @return {undefined|*}
    */
   function maxBy(array, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     array.sort((a, b) => iteratee(a) - iteratee(b));
     return array[array.length - 1];
   }
@@ -2776,7 +2788,7 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function meanBy(array, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     array = array.map(val => iteratee(val));
     return mean(array);
   }
@@ -2800,7 +2812,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function minBy(array, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     array.sort((a, b) => iteratee(a) - iteratee(b));
     return array[0];
   }
@@ -2856,7 +2868,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function sumBy(array, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     const mapped = array.map(value => iteratee(value));
     return sum(mapped);
   }
@@ -2987,7 +2999,7 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function pullAllBy(array, values, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let copy = array;
     for (let val of values) {
       copy = filter(copy, res => iteratee(res) !== iteratee(val));
@@ -3049,7 +3061,7 @@ var hemingqiao = (function () {
       return union(...values);
     }
 
-    last = transform(last);
+    last = transformType(last);
     values.pop();
     let first = values.shift();
     const ret = [...first];
@@ -3089,7 +3101,7 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function map(collection, iteratee) {
-    iteratee = transform(iteratee);
+    iteratee = transformType(iteratee);
     let res = [];
     if (Array.isArray(collection)) {
       if (!collection.length) {
@@ -3119,7 +3131,7 @@ var hemingqiao = (function () {
     const sortDesc = (o1, o2) => o1 < o2 ? 1 : o1 > o2 ? -1 : 0;
 
     iteratees = iteratees
-      .map(val => transform(val))
+      .map(val => transformType(val))
       .map((fn, index) => (o1, o2) => orders[index] === "desc"
         ? sortDesc(fn(o1), fn(o2))
         : sortAsc(fn(o1), fn(o2)));
@@ -3146,7 +3158,7 @@ var hemingqiao = (function () {
   function orderBy(collection, iteratees, orders) {
     // 暂时只支持collection为数组
     iteratees = iteratees
-      .map(val => transform(val))
+      .map(val => transformType(val))
       .map((fn, index) => (o1, o2) => orders[index] === "desc"
         ? fn(o1) < fn(o2) ? 1 : fn(o1) > fn(o2) ? -1 : 0
         : fn(o1) < fn(o2) ? -1 : fn(o1) > fn(o2) ? 1 : 0);
@@ -3169,7 +3181,7 @@ var hemingqiao = (function () {
    * @return {[][]}
    */
   function partition(collection, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     const ret = [[], []];
     if (typeUtils.isObject(collection)) {
       collection = Object.keys(collection).map(key => collection[key]);
@@ -3265,7 +3277,7 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function reject(collection, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     const ret = [];
     if (typeUtils.isObject(collection)) {
       let keys = Object.keys(collection);
@@ -3353,7 +3365,7 @@ var hemingqiao = (function () {
    * @return {boolean}
    */
   function some(collection, predicate) {
-    predicate = transform(predicate);
+    predicate = transformType(predicate);
     if (typeUtils.isObject(collection)) {
       let keys = Object.keys(collection);
       for (let key of keys) {
@@ -4090,4 +4102,5 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.set({"a": [{"b": {"c": 3}}]}, ["x", "0", "y", "z"], 5));
+let res = hemingqiao.set({"a": [{"b": {"c": 3}}]}, ["x", "0", "y", "z"], 5)
+console.log(res);
