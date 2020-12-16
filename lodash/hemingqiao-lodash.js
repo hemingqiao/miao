@@ -225,6 +225,7 @@ var hemingqiao = (function () {
     pickBy,
     result,
     set,
+    setWith,
     defaults,
     defaultsDeep,
     findKey,
@@ -2434,7 +2435,7 @@ var hemingqiao = (function () {
         temp[path[i]] = value;
       } else {
         let next = path[i + 1];
-        if (!Object.is(+next, NaN)) { // next是一个数字
+        if (Object.is(+path[i], NaN) && !Object.is(+next, NaN)) { // 只有在当前位置不是数字，而next是一个数字时才创建数组
           if (temp[path[i]] === undefined) {
             temp[path[i]] = [];
             temp[path[i]][+next] = {}; // 先赋值为一个对象
@@ -2452,6 +2453,24 @@ var hemingqiao = (function () {
       }
     }
     return object;
+  }
+
+
+  /**
+   * This method is like _.set except that it accepts customizer which is invoked to produce the objects of path. If
+   * customizer returns undefined path creation is handled by the method instead. The customizer is invoked with three
+   * arguments: (nsValue, key, nsObject).
+   * Note: This method mutates object.
+   * @param object
+   * @param path
+   * @param value
+   * @param customizer
+   * @return {*}
+   */
+  function setWith(object, path, value, customizer) {
+    customizer = transformType(customizer);
+    value = customizer(value);
+    return set(object, path, value);
   }
 
 
@@ -4102,5 +4121,7 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-let res = hemingqiao.set({"a": [{"b": {"c": 3}}]}, ["x", "0", "y", "z"], 5)
-console.log(res);
+var object = {};
+
+console.log(hemingqiao.setWith(object, '[0][1]', 'a', Object));
+// => { '0': { '1': 'a' } }
