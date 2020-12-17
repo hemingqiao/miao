@@ -226,6 +226,12 @@ var hemingqiao = (function () {
     result,
     set,
     setWith,
+    toPairs,
+    toPairsIn,
+    transform,
+    unset,
+    update,
+    updateWith,
     defaults,
     defaultsDeep,
     findKey,
@@ -2421,9 +2427,13 @@ var hemingqiao = (function () {
    * @param object
    * @param path
    * @param value
+   * @param updater: 适配update方法
+   * @see update
+   * @param customizer: 用以适配updateWith方法
+   * @see updateWith
    * @return {*}
    */
-  function set(object, path, value) {
+  function set(object, path, value, updater, customizer) {
     const regexp = /[\w$]+/g;
     if (typeof path === "string") {
       path = path.match(regexp);
@@ -2432,6 +2442,12 @@ var hemingqiao = (function () {
     let len = path.length;
     for (let i = 0; i < len; i++) {
       if (i === len - 1) {
+        if (updater !== undefined) {
+          value = updater(temp[path[i]]);
+          if (customizer !== undefined) {
+            value = customizer(value, path[i], object);
+          }
+        }
         temp[path[i]] = value;
       } else {
         let next = path[i + 1];
@@ -2471,6 +2487,121 @@ var hemingqiao = (function () {
     customizer = transformType(customizer);
     value = customizer(value);
     return set(object, path, value);
+  }
+
+
+  /**
+   * Creates an array of own enumerable string keyed-value pairs for object which can be consumed by _.fromPairs. If
+   * object is a map or set, its entries are returned.
+   * @param object
+   * @return {[string, *][]}
+   */
+  function toPairs(object) {
+    if (typeUtils.isSet(object) || typeUtils.isMap(object)) {
+      return object.entries();
+    }
+    return Object.keys(object).map(key => [key, object[key]]);
+  }
+
+
+  /**
+   * Creates an array of own and inherited enumerable string keyed-value pairs for object which can be consumed by
+   * _.fromPairs. If object is a map or set, its entries are returned.
+   * @param object
+   * @return {[]|*}
+   */
+  function toPairsIn(object) {
+    if (typeUtils.isSet(object) || typeUtils.isMap(object)) {
+      return object.entries();
+    }
+    let ret = [];
+    for (let key in object) {
+      ret.push([key, object[key]]);
+    }
+    return ret;
+  }
+
+
+  /**
+   * An alternative to _.reduce; this method transforms object to a new accumulator object which is the result of
+   * running each of its own enumerable string keyed properties thru iteratee, with each invocation potentially
+   * mutating the accumulator object. If accumulator is not provided, a new object with the same [[Prototype]] will
+   * be used. The iteratee is invoked with four arguments: (accumulator, value, key, object). Iteratee functions may
+   * exit iteration early by explicitly returning false.
+   * @param object
+   * @param iteratee
+   * @param accumulator
+   * @return {*}
+   */
+  function transform(object, iteratee = identity, accumulator) {
+    iteratee = transformType(iteratee);
+    let initVal = arguments.length === 2 ? {} : accumulator;
+    let keys = Object.keys(object);
+    for (let i = 0; i < keys.length; i++) {
+      if (iteratee(initVal, object[keys[i]], keys[i], object) === false) {
+        break;
+      }
+    }
+    return initVal;
+  }
+
+
+  /**
+   * Removes the property at path of object.
+   * Note: This method mutates object.
+   * @param object
+   * @param path
+   * @return {boolean}
+   */
+  function unset(object, path) {
+    const regexp = /[\w$]+/g;
+    if (typeUtils.isString(path)) {
+      path = path.match(regexp);
+    }
+    let temp = object;
+    for (let i = 0; i < path.length; i++) {
+      let prop = path[i];
+      if (i === path.length - 1) {
+        return delete temp[prop];
+      } else {
+        if (temp[prop] === undefined) {
+          throw new Error("the property to be deleted is not exist");
+        } else {
+          temp = temp[prop];
+        }
+      }
+    }
+    return false;
+  }
+
+
+  /**
+   * This method is like _.set except that accepts updater to produce the value to set. Use _.updateWith to customize
+   * path creation. The updater is invoked with one argument: (value).
+   * Note: This method mutates object.
+   * @param object
+   * @param path
+   * @param updater
+   * @return {*}
+   */
+  function update(object, path, updater) {
+    return set(object, path, undefined, updater);
+  }
+
+
+  /**
+   * This method is like _.update except that it accepts customizer which is invoked to produce the objects of path.
+   * If customizer returns undefined path creation is handled by the method instead. The customizer is invoked with
+   * three arguments: (nsValue, key, nsObject).
+   * Note: This method mutates object.
+   * @param object
+   * @param path
+   * @param updater
+   * @param customizer
+   * @return {*}
+   */
+  function updateWith(object, path, updater, customizer) {
+    return set(object, path, undefined, updater, customizer)
   }
 
 
@@ -4124,5 +4255,5 @@ var hemingqiao = (function () {
 
 var object = {};
 
-console.log(hemingqiao.setWith(object, '[0][1]', 'a', Object));
+console.log(hemingqiao.updateWith(object, '[0][1]', _ => 'a', Object));
 // => { '0': { '1': 'a' } }
