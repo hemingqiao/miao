@@ -243,6 +243,8 @@ var hemingqiao = (function () {
     pad,
     padEnd,
     padStart,
+    repeat,
+    replace,
     defaults,
     defaultsDeep,
     findKey,
@@ -2791,6 +2793,34 @@ var hemingqiao = (function () {
 
 
   /**
+   * Repeats the given string n times.
+   * @param string
+   * @param n
+   * @return {string}
+   */
+  function repeat(string = "", n = 1) {
+    let ret = "";
+    if (n <= 0) return ret;
+    for (let i = 0; i < n; i++) {
+      ret += string;
+    }
+    return ret;
+  }
+
+
+  /**
+   * Replaces matches for pattern in string with replacement.
+   * @param string
+   * @param pattern
+   * @param replacement
+   * @return {string}
+   */
+  function replace(string = "", pattern, replacement) {
+    return string.replace(pattern, replacement);
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4438,11 +4468,5 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.padStart('abc', 6));
-// => '   abc'
-
-console.log(hemingqiao.padStart('abc', 6, '_-'));
-// => '_-_abc'
-
-console.log(hemingqiao.padStart('abc', 3));
-// => 'abc'
+console.log(hemingqiao.replace('Hi Fred', 'Fred', 'Barney'));
+// => 'Hi Barney'
