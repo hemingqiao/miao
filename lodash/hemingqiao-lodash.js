@@ -236,6 +236,9 @@ var hemingqiao = (function () {
     valuesIn,
     camelCase,
     capitalize,
+    endsWith,
+    escape,
+    escapeRegExp,
     defaults,
     defaultsDeep,
     findKey,
@@ -2663,6 +2666,56 @@ var hemingqiao = (function () {
 
 
   /**
+   * Checks if string ends with the given target string.
+   * @param string
+   * @param target
+   * @param position
+   * @return {boolean}
+   */
+  function endsWith(string = "", target, position = string.length) {
+    string = String(string);
+    target = String(target);
+    return target === string.slice(position - target.length, position);
+  }
+
+
+  /**
+   * Converts the characters "&", "<", ">", '"', and "'" in string to their corresponding HTML entities.
+   * @param string
+   * @return {string}
+   */
+  function escape(string = "") {
+    return string.replace(/[\&\>\<\"\']/g, match => {
+      switch (match) {
+        case "&":
+          return '&amp;'
+        case '"':
+          return '&quot';
+        case "'":
+          return '&apos;';
+        case '<':
+          return '&lt;';
+        case '>':
+          return '&gt';
+        default:
+          return match;
+      }
+    });
+  }
+
+
+  /**
+   * Escapes the RegExp special characters "^", "$", "", ".", "*", "+", "?", "(", ")", "[", "]", "{", "}", and "|" in string.
+   * @param string
+   * @return {string}
+   */
+  function escapeRegExp(string = "") {
+    const regexp = /[\^\$\.\*\+\?\(\)\[\]\{\}\|]/g;
+    return string.replace(regexp, match => `\\${match}`);
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4310,5 +4363,11 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.capitalize('FRED'));
-// => 'Fred'
+console.log(hemingqiao.endsWith('abc', 'c'));
+// => true
+
+console.log(hemingqiao.endsWith('abc', 'b'));
+// => false
+
+console.log(hemingqiao.endsWith('abc', 'b', 2));
+// => true
