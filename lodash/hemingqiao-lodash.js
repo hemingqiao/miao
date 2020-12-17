@@ -232,6 +232,10 @@ var hemingqiao = (function () {
     unset,
     update,
     updateWith,
+    values,
+    valuesIn,
+    camelCase,
+    capitalize,
     defaults,
     defaultsDeep,
     findKey,
@@ -2606,6 +2610,59 @@ var hemingqiao = (function () {
 
 
   /**
+   * Creates an array of the own enumerable string keyed property values of object.
+   * Note: Non-object values are coerced to objects.
+   * @param object
+   * @return {*[]}
+   */
+  function values(object) {
+    return Object.keys(Object(object)).reduce((mappedArr, cur) => {
+      mappedArr.push(object[cur]);
+      return mappedArr;
+    }, []);
+  }
+
+
+  /**
+   * Creates an array of the own and inherited enumerable string keyed property values of object.
+   * Note: Non-object values are coerced to objects.
+   * @param object
+   * @return {[]}
+   */
+  function valuesIn(object) {
+    object = Object(object);
+    const ret = [];
+    for (let key in object) {
+      ret.push(object[key]);
+    }
+    return ret;
+  }
+
+
+  /**
+   * Converts string to camel case.
+   * @param string
+   * @return {string}
+   */
+  function camelCase(string = "") {
+    return string.toLowerCase()
+      .replace(/(?:^|[\s\W_])[a-zA-Z$]/g, match => match.toUpperCase())
+      .replace(/[^a-zA-Z$]/g, "")
+      .replace(/^\w/, match => match.toLowerCase());
+  }
+
+
+  /**
+   * Converts the first character of string to upper case and the remaining to lower case.
+   * @param string
+   * @return {string}
+   */
+  function capitalize(string = "") {
+    return string.toLowerCase().replace(/(?:^|\s)\w/g, match => match.toUpperCase());
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4253,7 +4310,5 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-var object = {};
-
-console.log(hemingqiao.updateWith(object, '[0][1]', _ => 'a', Object));
-// => { '0': { '1': 'a' } }
+console.log(hemingqiao.capitalize('FRED'));
+// => 'Fred'
