@@ -239,6 +239,10 @@ var hemingqiao = (function () {
     endsWith,
     escape,
     escapeRegExp,
+    lowerFirst,
+    pad,
+    padEnd,
+    padStart,
     defaults,
     defaultsDeep,
     findKey,
@@ -2716,6 +2720,77 @@ var hemingqiao = (function () {
 
 
   /**
+   * Converts the first character of string to lower case.
+   * @param string
+   * @return {string}
+   */
+  function lowerFirst(string = "") {
+    return string.replace(/^\w/, match => match.toLowerCase());
+  }
+
+
+  /**
+   * Pads string on the left and right sides if it's shorter than length. Padding characters are truncated if they can't
+   * be evenly divided by length.
+   * @param string
+   * @param length
+   * @param chars
+   * @return {string}
+   */
+  function pad(string = "", length = 0, chars = " ") {
+    let len = string.length;
+    if (len >= length) return string;
+    let left = (length - len) >> 1;
+    let right = length - len - left;
+    let l = chars.length;
+    let leftTimes = (left - left % l) / l, rightTimes = (right - right % l) / l;
+    return chars
+      .repeat(leftTimes)
+      .concat(chars.slice(0, left % l), string, chars.repeat(rightTimes), chars.slice(0, right % l));
+  }
+
+
+  function padSide(string = "", length = 0, chars = " ", isLeft) {
+    let len = string.length;
+    if (len >= length) return string;
+    let left = length - len;
+    let l = chars.length;
+    let repeatTimes = (left - left % l) / l;
+    let ret;
+    if (isLeft) {
+      ret = chars.repeat(repeatTimes).concat(chars.slice(0, left % l), string);
+    } else {
+      ret = string.concat(chars.repeat(repeatTimes), chars.slice(0, left % l));
+    }
+    return ret;
+  }
+
+
+  /**
+   * Pads string on the right side if it's shorter than length. Padding characters are truncated if they exceed length.
+   * @param string
+   * @param length
+   * @param chars
+   * @return {string}
+   */
+  function padEnd(string = "", length = 0, chars = " ") {
+    return padSide(string, length, chars, false);
+  }
+
+
+  /**
+   * Pads string on the left side if it's shorter than length. Padding characters are truncated if they exceed length.
+   * @param string
+   * @param length
+   * @param chars
+   * @return {string|string}
+   */
+  function padStart(string = "", length = 0, chars = " ") {
+    return padSide(string, length, chars, true);
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4363,11 +4438,11 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.endsWith('abc', 'c'));
-// => true
+console.log(hemingqiao.padStart('abc', 6));
+// => '   abc'
 
-console.log(hemingqiao.endsWith('abc', 'b'));
-// => false
+console.log(hemingqiao.padStart('abc', 6, '_-'));
+// => '_-_abc'
 
-console.log(hemingqiao.endsWith('abc', 'b', 2));
-// => true
+console.log(hemingqiao.padStart('abc', 3));
+// => 'abc'
