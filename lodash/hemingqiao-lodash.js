@@ -2435,7 +2435,7 @@ var hemingqiao = (function () {
         temp[path[i]] = value;
       } else {
         let next = path[i + 1];
-        if (Object.is(+path[i], NaN) && !Object.is(+next, NaN)) { // 只有在当前位置不是数字，而next是一个数字时才创建数组
+        if (Object.is(+path[i], NaN) && !Object.is(+next, NaN)) { // 只有当前索引处不是数字，而下一个索引处的值next是一个数字时才创建数组
           if (temp[path[i]] === undefined) {
             temp[path[i]] = [];
             temp[path[i]][+next] = {}; // 先赋值为一个对象
@@ -3484,6 +3484,7 @@ var hemingqiao = (function () {
           return map.get(obj);
         }
         let newObj = Array.isArray(obj) ? [] : {};
+        map.set(obj, newObj);
         let keys = Object.keys(obj);
         keys.forEach(key => {
           newObj[key] = _cloneDeep(obj[key]);
