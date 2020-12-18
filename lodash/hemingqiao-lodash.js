@@ -255,6 +255,10 @@ var hemingqiao = (function () {
     unescape,
     upperFirst,
     words,
+    bindAll,
+    defaultTo,
+    range,
+    times,
     defaults,
     defaultsDeep,
     findKey,
@@ -2985,6 +2989,91 @@ var hemingqiao = (function () {
 
 
   /**
+   * Binds methods of an object to the object itself, overwriting the existing method.
+   * @param object
+   * @param methodNames
+   * @return {*}
+   */
+  function bindAll(object, methodNames) {
+    methodNames.forEach(method => object[method] = object[method].bind(this));
+    return object;
+  }
+
+
+  /**
+   * Checks value to determine whether a default value should be returned in its place. The defaultValue is returned if
+   * value is NaN, null, or undefined.
+   * @param value
+   * @param defaultValue
+   * @return {*}
+   */
+  function defaultTo(value, defaultValue) {
+    if (sameValueZero(value, null) || sameValueZero(value, undefined) || sameValueZero(value, NaN)) {
+      return defaultValue;
+    }
+    return value;
+  }
+
+
+  /**
+   * Creates an array of numbers (positive and/or negative) progressing from start up to, but not including, end. A step
+   * of -1 is used if a negative start is specified without an end or step. If end is not specified, it's set to start
+   * with start then set to 0.
+   * @param start
+   * @param end
+   * @param step
+   * @return {[]|*[]}
+   */
+  function range(start = 0, end, step = 1) {
+    if (arguments.length === 0) {
+      return [];
+    } else if (arguments.length === 1) {
+      end = start;
+      start = 0;
+    }
+    const ret = [];
+    if (step === 0) {
+      if (end < 0) return ret;
+      while (--end) {
+        ret.push(start);
+      }
+      return ret;
+    }
+    if (end < 0) {
+      if (step > 0) step = -step;
+      for (let i = start; i > end; i += step) {
+        ret.push(i);
+      }
+      return ret;
+    } else {
+      if (step <= 0) return [];
+      for (let i = start; i < end; i += step) {
+        ret.push(i);
+      }
+      return ret;
+    }
+    return [];
+  }
+
+
+  /**
+   * Invokes the iteratee n times, returning an array of the results of each invocation. The iteratee is invoked with
+   * one argument; (index).
+   * @param n
+   * @param iteratee
+   * @return {[]}
+   */
+  function times(n, iteratee = identity) {
+    const ret = [];
+    let i = 0;
+    while (i++ < n) {
+      ret.push(iteratee(i))
+    }
+    return ret;
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4636,9 +4725,3 @@ var hemingqiao = (function () {
 // let res = hemingqiao.trim("  abc  ")
 // console.log(res);
 // console.log(res.length);
-
-console.log(hemingqiao.upperFirst('fred'));
-// => 'Fred'
-
-console.log(hemingqiao.upperFirst('FRED'));
-// => 'FRED'
