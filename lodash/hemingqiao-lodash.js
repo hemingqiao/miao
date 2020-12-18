@@ -252,6 +252,9 @@ var hemingqiao = (function () {
     trim,
     trimEnd,
     trimStart,
+    unescape,
+    upperFirst,
+    words,
     defaults,
     defaultsDeep,
     findKey,
@@ -2893,7 +2896,7 @@ var hemingqiao = (function () {
       regStr = "^" + regStr;
     }
     let regexp = new RegExp(regStr, "g");
-    console.log(regexp);
+    console.log(regexp); // debug
     return string.replace(regexp, "");
   }
 
@@ -2927,6 +2930,57 @@ var hemingqiao = (function () {
    */
   function trimStart(string = "", chars = " ") {
     return baseTrim(string, chars, 1);
+  }
+
+
+  /**
+   * The inverse of _.escape; this method converts the HTML entities &amp;, &lt;, &gt;, &quot;, and &#39; in string to
+   * their corresponding characters.
+   * @param string
+   * @return {string}
+   */
+  function unescape(string = "") {
+    const regexp = /(&amp;)|(&lt;)|(&gt;)|(&quot;)|(&#39;)/g;
+    return string.replace(regexp, match => {
+      switch (match) {
+        case "&amp;":
+          return "&";
+        case "&lt;":
+          return "<";
+        case "&gt;":
+          return ">";
+        case "&quot;":
+          return '"';
+        case "&#39;":
+          return "'";
+        default:
+          return match;
+      }
+    });
+  }
+
+
+  /**
+   * Converts the first character of string to upper case.
+   * @param string
+   * @return {string}
+   */
+  function upperFirst(string = "") {
+    return string.replace(/^\w/, match => match.toUpperCase());
+  }
+
+
+  /**
+   * Splits string into an array of its words.
+   * @param string
+   * @param pattern
+   * @return {RegExpMatchArray}
+   */
+  function words(string = "", pattern) {
+    if (pattern === undefined) {
+      pattern = /\w+/g;
+    }
+    return string.match(pattern);
   }
 
 
@@ -4578,8 +4632,13 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.trimStart('  abc  '));
-// => 'abc  '
+// debugger;
+// let res = hemingqiao.trim("  abc  ")
+// console.log(res);
+// console.log(res.length);
 
-console.log(hemingqiao.trimStart('-_-abc-_-', '_-'));
-// => 'abc-_-'
+console.log(hemingqiao.upperFirst('fred'));
+// => 'Fred'
+
+console.log(hemingqiao.upperFirst('FRED'));
+// => 'FRED'
