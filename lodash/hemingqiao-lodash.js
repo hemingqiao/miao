@@ -249,6 +249,9 @@ var hemingqiao = (function () {
     startsWith,
     toLower,
     toUpper,
+    trim,
+    trimEnd,
+    trimStart,
     defaults,
     defaultsDeep,
     findKey,
@@ -2872,6 +2875,62 @@ var hemingqiao = (function () {
 
 
   /**
+   * base trim
+   * @param string
+   * @param chars
+   * @param side side默认为0，即两边均去除，如果side = 1，去除左侧，如果side = -1，去除右侧
+   * @return {string}
+   */
+  function baseTrim(string = "", chars = " ", side = 0) {
+    let regStr = "";
+    for (let i = 0; i < chars.length; i++) {
+      regStr = regStr + "\\" + chars.charAt(i);
+    }
+    regStr = "[" + regStr + "]+"
+    if (side === -1) {
+      regStr += "$";
+    } else if (side === 1) {
+      regStr = "^" + regStr;
+    }
+    let regexp = new RegExp(regStr, "g");
+    console.log(regexp);
+    return string.replace(regexp, "");
+  }
+
+  /**
+   * Removes leading and trailing whitespace or specified characters from string.
+   * @param string
+   * @param chars
+   * @return {string}
+   */
+  function trim(string = "", chars = " ") {
+    return baseTrim(string, chars);
+  }
+
+
+  /**
+   * Removes trailing whitespace or specified characters from string.
+   * @param string
+   * @param chars
+   * @return {string}
+   */
+  function trimEnd(string = "", chars = " ") {
+    return baseTrim(string, chars, -1);
+  }
+
+
+  /**
+   * Removes leading whitespace or specified characters from string.
+   * @param string
+   * @param chars
+   * @return {string}
+   */
+  function trimStart(string = "", chars = " ") {
+    return baseTrim(string, chars, 1);
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4519,11 +4578,8 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.startsWith('abc', 'a'));
-// => true
+console.log(hemingqiao.trimStart('  abc  '));
+// => 'abc  '
 
-console.log(hemingqiao.startsWith('abc', 'b'));
-// => false
-
-console.log(hemingqiao.startsWith('abc', 'b', 1));
-// => true
+console.log(hemingqiao.trimStart('-_-abc-_-', '_-'));
+// => 'abc-_-'
