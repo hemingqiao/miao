@@ -245,6 +245,10 @@ var hemingqiao = (function () {
     padStart,
     repeat,
     replace,
+    split,
+    startsWith,
+    toLower,
+    toUpper,
     defaults,
     defaultsDeep,
     findKey,
@@ -2821,6 +2825,53 @@ var hemingqiao = (function () {
 
 
   /**
+   * Splits string by separator.
+   * @param string
+   * @param separator
+   * @param limit
+   * @return {string[]}
+   */
+  function split(string = "", separator, limit) {
+    return string.split(separator, limit);
+  }
+
+
+  /**
+   * Checks if string starts with the given target string.
+   * @param string
+   * @param target
+   * @param position
+   * @return {boolean}
+   */
+  function startsWith(string = "", target, position = 0) {
+    if (position < 0) {
+      position = 0;
+    }
+    return string.indexOf(target) === position;
+  }
+
+
+  /**
+   * Converts string, as a whole, to lower case just like String#toLowerCase.
+   * @param string
+   * @return {string}
+   */
+  function toLower(string = "") {
+    return string.toLowerCase();
+  }
+
+
+  /**
+   * Converts string, as a whole, to upper case just like String#toUpperCase.
+   * @param string
+   * @return {string}
+   */
+  function toUpper(string = "") {
+    return string.toUpperCase();
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4468,5 +4519,11 @@ var hemingqiao = (function () {
 // }));
 // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
 
-console.log(hemingqiao.replace('Hi Fred', 'Fred', 'Barney'));
-// => 'Hi Barney'
+console.log(hemingqiao.startsWith('abc', 'a'));
+// => true
+
+console.log(hemingqiao.startsWith('abc', 'b'));
+// => false
+
+console.log(hemingqiao.startsWith('abc', 'b', 1));
+// => true
