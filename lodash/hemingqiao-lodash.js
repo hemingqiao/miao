@@ -247,10 +247,13 @@ var hemingqiao = (function () {
     padStart,
     repeat,
     replace,
+    snakeCase,
     split,
+    startCase,
     startsWith,
     toLower,
     toUpper,
+    upperCase,
     trim,
     trimEnd,
     trimStart,
@@ -2908,6 +2911,16 @@ var hemingqiao = (function () {
 
 
   /**
+   * Converts string to snake case.
+   * @param string
+   * @return {string}
+   */
+  function snakeCase(string = "") {
+    return string.match(/[a-z]+|[A-Z][a-z]+|[A-Z]+/g).join("_").toLowerCase();
+  }
+
+
+  /**
    * Splits string by separator.
    * @param string
    * @param separator
@@ -2916,6 +2929,19 @@ var hemingqiao = (function () {
    */
   function split(string = "", separator, limit) {
     return string.split(separator, limit);
+  }
+
+
+  /**
+   * Converts string to start case.
+   * @param string
+   * @return {string}
+   */
+  function startCase(string = "") {
+    return string
+      .match(/[a-z]+|[A-Z][a-z]+|[A-Z]+/g)
+      .map(str => str.replace(/^\w/, match => match.toUpperCase()))
+      .join(" ");
   }
 
 
@@ -2951,6 +2977,16 @@ var hemingqiao = (function () {
    */
   function toUpper(string = "") {
     return string.toUpperCase();
+  }
+
+
+  /**
+   * Converts string, as space separated words, to upper case.
+   * @param string
+   * @return {string}
+   */
+  function upperCase(string = "") {
+    return string.match(/[a-z]+|[A-Z][a-z]+|[A-Z]+/g).join(" ").toUpperCase();
   }
 
 
@@ -5095,3 +5131,11 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
+console.log(hemingqiao.startCase('--foo-bar--'));
+// => 'Foo Bar'
+
+console.log(hemingqiao.startCase('fooBar'));
+// => 'Foo Bar'
+
+console.log(hemingqiao.startCase('__FOO_BAR__'));
+// => 'FOO BAR'
