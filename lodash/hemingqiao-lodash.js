@@ -368,6 +368,7 @@ var hemingqiao = (function () {
     isMatchWith,
     matches,
     isNaN,
+    isNative,
     isNil,
     isNull,
     isNumber,
@@ -3182,6 +3183,7 @@ var hemingqiao = (function () {
   }
 
 
+  // 待完善
   /**
    * Creates an array of numbers (positive and/or negative) progressing from start up to, but not including, end. A step
    * of -1 is used if a negative start is specified without an end or step. If end is not specified, it's set to start
@@ -4987,6 +4989,17 @@ var hemingqiao = (function () {
 
 
   /**
+   * Checks if value is a pristine native function.
+   * @param value
+   * @return {boolean}
+   */
+  function isNative(value) {
+    const {toString} = Function.prototype;
+    return toString.call(value).includes("[native code]");
+  }
+
+
+  /**
    * Checks if value is null or undefined.
    * @param value
    * @return {boolean}
@@ -5255,23 +5268,3 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
-console.log(hemingqiao.rangeRight(4));
-// => [3, 2, 1, 0]
-
-console.log(hemingqiao.rangeRight(-4));
-// => [-3, -2, -1, 0]
-
-console.log(hemingqiao.rangeRight(1, 5));
-// => [4, 3, 2, 1]
-
-console.log(hemingqiao.rangeRight(0, 20, 5));
-// => [15, 10, 5, 0]
-
-console.log(hemingqiao.rangeRight(0, -4, -1));
-// => [-3, -2, -1, 0]
-
-console.log(hemingqiao.rangeRight(1, 4, 0));
-// => [1, 1, 1]
-
-console.log(hemingqiao.rangeRight(0));
-// => []
