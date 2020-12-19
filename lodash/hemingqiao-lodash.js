@@ -263,6 +263,9 @@ var hemingqiao = (function () {
     uniqueId,
     pullAt,
     property,
+    ary,
+    unary,
+    negate,
     defaults,
     defaultsDeep,
     findKey,
@@ -3177,6 +3180,43 @@ var hemingqiao = (function () {
         temp = temp[path[i]];
       }
       return temp;
+    }
+  }
+
+
+  /**
+   * Creates a function that invokes func, with up to n arguments, ignoring any additional arguments.
+   * @param func
+   * @param length
+   * @return {*}
+   */
+  function ary(func, length = func.length) {
+    return function () {
+      return func.apply(null, Array.from(arguments).slice(0, length));
+    }
+  }
+
+
+  /**
+   * Creates a function that accepts up to one argument, ignoring any additional arguments.
+   * @param func
+   * @return {*}
+   */
+  function unary(func) {
+    return ary(func, 1);
+  }
+
+
+  /**
+   * Creates a function that negates the result of the predicate func. The func predicate is invoked with the this
+   * binding and arguments of the created function.
+   * @param predicate
+   * @return {function(): boolean}
+   */
+  function negate(predicate) {
+    const that = this;
+    return function () {
+      return !predicate.apply(that, arguments);
     }
   }
 
