@@ -258,6 +258,7 @@ var hemingqiao = (function () {
     trim,
     trimEnd,
     trimStart,
+    truncate,
     unescape,
     upperFirst,
     words,
@@ -3062,6 +3063,43 @@ var hemingqiao = (function () {
 
 
   /**
+   * Truncates string if it's longer than the given maximum string length. The last characters of the truncated string
+   * are replaced with the omission string which defaults to "...".
+   * @param string
+   * @param options
+   * @return {string}
+   */
+  function truncate(string = "", options = {}) {
+    const DEFAULT_TRUNC_LENGTH = 30;
+    const DEFAULT_TRUNC_OMISSION = "...";
+    const {hasOwnProperty} = Object.prototype;
+    if (arguments.length === 1) {
+      return string.slice(0, DEFAULT_TRUNC_LENGTH).replace(/[\w\W]{3}$/, DEFAULT_TRUNC_OMISSION);
+    } else {
+      let truncLen = options.length ? options.length : DEFAULT_TRUNC_LENGTH;
+      let omission = options.omission ? options.omission : DEFAULT_TRUNC_OMISSION;
+      let omissionLen = omission.length;
+      string = string.slice(0, truncLen);
+      if (hasOwnProperty.call(options, "separator") && options.separator !== undefined) {
+        let sep = options.separator;
+        let end, match;
+        let regexp = new RegExp(sep, "g");
+        while (match = regexp.exec(string)) {
+          end = match.index;
+        }
+        if (end !== undefined) {
+          return string.slice(0, end).concat(omission);
+        } else {
+          return string.slice(0, truncLen - omissionLen).concat(omission);
+        }
+      } else {
+        return string.slice(0, truncLen - omissionLen).concat(omission);
+      }
+    }
+  }
+
+
+  /**
    * The inverse of _.escape; this method converts the HTML entities &amp;, &lt;, &gt;, &quot;, and &#39; in string to
    * their corresponding characters.
    * @param string
@@ -5194,3 +5232,22 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
+console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino'));
+// => 'hi-diddly-ho there, neighbo...'
+
+console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino', {
+  'length': 24,
+  'separator': ' '
+}));
+// => 'hi-diddly-ho there,...'
+
+console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino', {
+  'length': 24,
+  'separator': /,? +/
+}));
+// => 'hi-diddly-ho there...'
+
+console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino', {
+  'omission': ' [...]'
+}));
+// => 'hi-diddly-ho there, neig [...]'
