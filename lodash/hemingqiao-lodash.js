@@ -266,6 +266,10 @@ var hemingqiao = (function () {
     ary,
     unary,
     negate,
+    once,
+    spread,
+    memoize,
+    flip,
     defaults,
     defaultsDeep,
     findKey,
@@ -322,6 +326,8 @@ var hemingqiao = (function () {
     castArray,
     cloneDeep,
     conformsTo,
+    conforms,
+    constant,
     eq,
     gt,
     gte,
@@ -3222,6 +3228,79 @@ var hemingqiao = (function () {
 
 
   /**
+   * Creates a function that is restricted to invoking func once. Repeat calls to the function return the value of the
+   * first invocation. The func is invoked with the this binding and arguments of the created function.
+   * @param func
+   * @return {function(): (*)}
+   */
+  function once(func) {
+    const that = this;
+    let invoked = false;
+    let ret;
+    return function () {
+      if (!invoked) {
+        return ret = func.apply(that, arguments);
+      }
+      return ret;
+    }
+  }
+
+
+  /**
+   * Creates a function that invokes func with the this binding of the create function and an array of arguments much
+   * like Function#apply.
+   * @param func
+   * @param start
+   * @return {function(): *}
+   */
+  function spread(func, start = 0) {
+    const that = this;
+    return function () {
+      return func.apply(that, Array.from(arguments).slice(start));
+    }
+  }
+
+
+  /**
+   * Creates a function that memoizes the result of func. If resolver is provided, it determines the cache key for
+   * storing the result based on the arguments provided to the memoized function. By default, the first argument
+   * provided to the memoized function is used as the map cache key. The func is invoked with the this binding of
+   * the memoized function.
+   * @param func
+   * @param resolver
+   * @return {function(*=): (any | undefined)}
+   */
+  function memoize(func, resolver) {
+    const wm = new WeakMap();
+    const that = this;
+    return function (arg) {
+      if (wm.has(arg)) {
+        return wm.get(arg);
+      } else {
+        let res = func.apply(that, arguments);
+        if (resolver !== undefined) {
+          res = resolver(res);
+        }
+        wm.set(arg, res);
+        return res;
+      }
+    }
+  }
+
+
+  /**
+   * Creates a function that invokes func with arguments reversed.
+   * @param func
+   * @return {function(): *}
+   */
+  function flip(func) {
+    return function () {
+      return func.apply(null, Array.from(arguments).reverse());
+    }
+  }
+
+
+  /**
    * Assigns own and inherited enumerable string keyed properties of source objects to the destination object for all
    * destination properties that resolve to undefined. Source objects are applied from left to right. Once a property
    * is set, additional values of the same property are ignored.
@@ -4260,6 +4339,34 @@ var hemingqiao = (function () {
       }
     }
     return true;
+  }
+
+
+  /**
+   *
+   * @param source
+   * @return {function(*): boolean}
+   */
+  function conforms(source) {
+    return function (obj) {
+      let keys = Object.keys(source);
+      for (let key of keys) {
+        if (!source[key].call(null, obj[key])) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+
+
+  /**
+   * Creates a function that returns value.
+   * @param value
+   * @return {*}
+   */
+  function constant(value) {
+    return value;
   }
 
 
