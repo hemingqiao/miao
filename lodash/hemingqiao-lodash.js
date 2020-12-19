@@ -265,6 +265,7 @@ var hemingqiao = (function () {
     bindAll,
     defaultTo,
     range,
+    rangeRight,
     times,
     toPath,
     uniqueId,
@@ -3070,13 +3071,17 @@ var hemingqiao = (function () {
    * @return {string}
    */
   function truncate(string = "", options = {}) {
-    const DEFAULT_TRUNC_LENGTH = 30;
-    const DEFAULT_TRUNC_OMISSION = "...";
+    const DEFAULT_TRUNC_LENGTH = 30; // 默认长度，常量，可以写在函数外
+    const DEFAULT_TRUNC_OMISSION = "..."; // 默认值，常量，可以写在函数外
     const {hasOwnProperty} = Object.prototype;
     if (arguments.length === 1) {
+      if (string.length < DEFAULT_TRUNC_LENGTH) {
+        return string;
+      }
       return string.slice(0, DEFAULT_TRUNC_LENGTH).replace(/[\w\W]{3}$/, DEFAULT_TRUNC_OMISSION);
     } else {
       let truncLen = options.length ? options.length : DEFAULT_TRUNC_LENGTH;
+
       let omission = options.omission ? options.omission : DEFAULT_TRUNC_OMISSION;
       let omissionLen = omission.length;
       string = string.slice(0, truncLen);
@@ -3087,7 +3092,7 @@ var hemingqiao = (function () {
         while (match = regexp.exec(string)) {
           end = match.index;
         }
-        if (end !== undefined) {
+        if (end !== undefined) { // 如果end等于undefined，表明没有进入上面的循环
           return string.slice(0, end).concat(omission);
         } else {
           return string.slice(0, truncLen - omissionLen).concat(omission);
@@ -3215,6 +3220,24 @@ var hemingqiao = (function () {
       return ret;
     }
     return [];
+  }
+
+
+  /**
+   * This method is like _.range except that it populates values in descending order.
+   * @param start
+   * @param end
+   * @param step
+   * @return {T[]}
+   */
+  function rangeRight(start = 0, end, step = 1) {
+    if (arguments.length === 0) {
+      return [];
+    } else if (arguments.length === 1) {
+      return range(start).reverse();
+    } else {
+      return range(start, end, step).reverse();
+    }
   }
 
 
@@ -5232,22 +5255,23 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
-console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino'));
-// => 'hi-diddly-ho there, neighbo...'
+console.log(hemingqiao.rangeRight(4));
+// => [3, 2, 1, 0]
 
-console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino', {
-  'length': 24,
-  'separator': ' '
-}));
-// => 'hi-diddly-ho there,...'
+console.log(hemingqiao.rangeRight(-4));
+// => [-3, -2, -1, 0]
 
-console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino', {
-  'length': 24,
-  'separator': /,? +/
-}));
-// => 'hi-diddly-ho there...'
+console.log(hemingqiao.rangeRight(1, 5));
+// => [4, 3, 2, 1]
 
-console.log(hemingqiao.truncate('hi-diddly-ho there, neighborino', {
-  'omission': ' [...]'
-}));
-// => 'hi-diddly-ho there, neig [...]'
+console.log(hemingqiao.rangeRight(0, 20, 5));
+// => [15, 10, 5, 0]
+
+console.log(hemingqiao.rangeRight(0, -4, -1));
+// => [-3, -2, -1, 0]
+
+console.log(hemingqiao.rangeRight(1, 4, 0));
+// => [1, 1, 1]
+
+console.log(hemingqiao.rangeRight(0));
+// => []
