@@ -259,6 +259,10 @@ var hemingqiao = (function () {
     defaultTo,
     range,
     times,
+    toPath,
+    uniqueId,
+    pullAt,
+    property,
     defaults,
     defaultsDeep,
     findKey,
@@ -3103,6 +3107,77 @@ var hemingqiao = (function () {
       ret.push(iteratee(i++))
     }
     return ret;
+  }
+
+
+  /**
+   * Converts value to a property path array.
+   * @param value
+   * @return {*}
+   */
+  function toPath(value) {
+    return value.match(/\w+/g);
+  }
+
+
+  /**
+   * Generates a unique ID. If prefix is given, the ID is appended to it.
+   * @param prefix
+   * @return {string}
+   */
+  function uniqueId(prefix = "") {
+    return prefix + (Date.now());
+  }
+
+
+  function swap(arr, i, j) {
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+
+  /**
+   * Removes elements from array corresponding to indexes and returns an array of removed elements.
+   * Note: Unlike _.at, this method mutates array.
+   * @param array
+   * @param indexes
+   * @return {[]}
+   */
+  function pullAt(array, indexes) {
+    let ret = [];
+    for (let index of indexes) {
+      ret.push(array[index]);
+      array[index] = window;
+    }
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] === window) {
+        array.splice(i, 1);
+      }
+    }
+    return ret;
+  }
+
+
+  /**
+   * Creates a function that returns the value at path of a given object.
+   * @param path
+   * @return {function(*): (undefined)}
+   */
+  function property(path) {
+    if (typeUtils.isString(path)) {
+      path = path.match(/\w+/g);
+    }
+
+    return function (object) {
+      let temp = object;
+      for (let i = 0; i < path.length; i++) {
+        if (temp[path[i]] === undefined) {
+          return undefined;
+        }
+        temp = temp[path[i]];
+      }
+      return temp;
+    }
   }
 
 
