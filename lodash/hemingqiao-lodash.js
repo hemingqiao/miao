@@ -345,6 +345,7 @@ var hemingqiao = (function () {
     lt,
     lte,
     isEqual,
+    isEqualWith,
     isArguments,
     isArray,
     isArrayLike,
@@ -362,6 +363,7 @@ var hemingqiao = (function () {
     isLength,
     isMap,
     isMatch,
+    isMatchWith,
     matches,
     isNaN,
     isNil,
@@ -4659,6 +4661,30 @@ var hemingqiao = (function () {
 
 
   /**
+   * This method is like _.isEqual except that it accepts customizer which is invoked to compare values. If customizer
+   * returns undefined, comparisons are handled by the method instead. The customizer is invoked with up to six
+   * arguments: (objValue, othValue [, index|key, object, other, stack]).
+   * @param value
+   * @param other
+   * @param customizer
+   * @return {boolean}
+   */
+  function isEqualWith(value, other, customizer) {
+    if (customizer === undefined) {
+      return isEqual(value, other);
+    }
+    for (let i = 0; i < values.length; i++) {
+      let res = customizer(value[i], other[i], i, value, other);
+      if (res === undefined) {
+        res = isEqual(value[i], other[i]);
+      }
+      if (!res) return false;
+    }
+    return true;
+  }
+
+
+  /**
    * 检查 value 是否是一个类 arguments 对象。
    * @param value
    * @return {boolean|*}
@@ -4856,6 +4882,30 @@ var hemingqiao = (function () {
    */
   function isMatch(object, source) {
     return partialDeepEqual(source, object);
+  }
+
+
+  /**
+   * This method is like _.isMatch except that it accepts customizer which is invoked to compare values. If customizer
+   * returns undefined, comparisons are handled by the method instead. The customizer is invoked with five arguments:
+   * (objValue, srcValue, index|key, object, source).
+   * @param object
+   * @param source
+   * @param customizer
+   * @return {boolean}
+   */
+  function isMatchWith(object, source, customizer) {
+    if (customizer === undefined) {
+      return isMatch(object, source);
+    }
+    for (let key of Object.keys(source)) {
+      let res = customizer(object[key], source[key], key, object, source);
+      if (res === undefined) {
+        res = isMatch(object, source);
+      }
+      if (!res) return false;
+    }
+    return true;
   }
 
 
@@ -5144,11 +5194,3 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
-console.log(hemingqiao.startCase('--foo-bar--'));
-// => 'Foo Bar'
-
-console.log(hemingqiao.startCase('fooBar'));
-// => 'Foo Bar'
-
-console.log(hemingqiao.startCase('__FOO_BAR__'));
-// => 'FOO BAR'
