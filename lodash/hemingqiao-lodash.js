@@ -1194,49 +1194,81 @@ var hemingqiao = (function () {
   }
 
 
+  // /**
+  //  * 待完善
+  //  * This method is like _.zipObject except that it supports property paths.
+  //  * @param props
+  //  * @param values
+  //  * @return {{}}
+  //  */
+  // function zipObjectDeep(props = [], values = []) {
+  //   console.log(props); // debug
+  //   const regexp = /^([a-zA-Z_$])+\[([\w$])+\]$/;
+  //   const ret = {};
+  //   let temp = ret;
+  //   for (let i = 0; i < props.length; i++) {
+  //     let propValue = props[i];
+  //     let splitedProp = propValue.split(".");
+  //     for (let j = 0; j < splitedProp.length; j++) {
+  //       let p = splitedProp[j];
+  //       if (j === splitedProp.length - 1) {
+  //         temp[p] = values[i];
+  //         break;
+  //       }
+  //       if (!regexp.test(p)) { // 是字符串属性，没有[]
+  //         if (temp[p] === undefined) {
+  //           temp[p] = {}; // 对应属性值为undefined就新创建一个对象
+  //         }
+  //         temp = temp[p];
+  //       } else if (regexp.test(p)) { // 需要创建数组
+  //         let matches = p.match(regexp);
+  //         let arrName = matches[1]; // 要创建的数组名字
+  //         let order = matches[2]; // 数组中的索引
+  //         if (temp[arrName] === undefined) {
+  //           temp[arrName] = [];
+  //           temp[arrName][order] = {};
+  //           temp = temp[arrName][order];
+  //         } else {
+  //           if (temp[arrName][order] === undefined) {
+  //             temp[arrName][order] = {};
+  //           }
+  //           temp = temp[arrName][order];
+  //         }
+  //       }
+  //     }
+  //     temp = ret;
+  //   }
+  //   return ret;
+  // }
+
+
   /**
-   * 待完善
    * This method is like _.zipObject except that it supports property paths.
    * @param props
    * @param values
    * @return {{}}
    */
   function zipObjectDeep(props = [], values = []) {
-    console.log(props); // debug
-    const regexp = /^([a-zA-Z_$])+\[([\w$])+\]$/;
-    const ret = {};
-    let temp = ret;
+    let ret = {};
+    let temp;
+    props = props.map(prop => prop.match(/\w+/g));
     for (let i = 0; i < props.length; i++) {
-      let propValue = props[i];
-      let splitedProp = propValue.split(".");
-      for (let j = 0; j < splitedProp.length; j++) {
-        let p = splitedProp[j];
-        if (j === splitedProp.length - 1) {
-          temp[p] = values[i];
-          break;
-        }
-        if (!regexp.test(p)) { // 是字符串属性，没有[]
-          if (temp[p] === undefined) {
-            temp[p] = {}; // 对应属性值为undefined就新创建一个对象
-          }
-          temp = temp[p];
-        } else if (regexp.test(p)) { // 需要创建数组
-          let matches = p.match(regexp);
-          let arrName = matches[1]; // 要创建的数组名字
-          let order = matches[2]; // 数组中的索引
-          if (temp[arrName] === undefined) {
-            temp[arrName] = [];
-            temp[arrName][order] = {};
-            temp = temp[arrName][order];
-          } else {
-            if (temp[arrName][order] === undefined) {
-              temp[arrName][order] = {};
-            }
-            temp = temp[arrName][order];
-          }
-        }
-      }
       temp = ret;
+      let paths = props[i];
+      for (let j = 0; j < paths.length; j++) {
+        if (j === paths.length - 1) {
+          temp[paths[j]] = values[i];
+        }
+        if (temp[paths[j]] === undefined) {
+          // 如果当前位置的下一个位置是数字，需要创建数组
+          if (!Object.is(+paths[j + 1], NaN)) {
+            temp[paths[j]] = [];
+          } else {
+            temp[paths[j]] = {}; // 否则，创建一个对象
+          }
+        }
+        temp = temp[paths[j]];
+      }
     }
     return ret;
   }
@@ -3066,7 +3098,7 @@ var hemingqiao = (function () {
   function times(n, iteratee = identity) {
     const ret = [];
     let i = 0;
-    while (i++ < n) {
+    while (++i <= n) {
       ret.push(iteratee(i))
     }
     return ret;
@@ -4725,3 +4757,5 @@ var hemingqiao = (function () {
 // let res = hemingqiao.trim("  abc  ")
 // console.log(res);
 // console.log(res.length);
+
+console.log(hemingqiao.zipObjectDeep(['a.b[0].c', 'a.b[1].d'], [1, 2]));
