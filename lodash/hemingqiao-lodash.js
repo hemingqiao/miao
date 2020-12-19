@@ -239,6 +239,8 @@ var hemingqiao = (function () {
     endsWith,
     escape,
     escapeRegExp,
+    kebabCase,
+    lowerCase,
     lowerFirst,
     pad,
     padEnd,
@@ -2787,6 +2789,26 @@ var hemingqiao = (function () {
 
 
   /**
+   * Converts string to kebab case.
+   * @param string
+   * @return {string}
+   */
+  function kebabCase(string = "") {
+    return string.match(/[a-z]+|[A-Za-z]+|[A-Z]+/g).join("-").toLowerCase();
+  }
+
+
+  /**
+   *
+   * @param string
+   * @return {string}
+   */
+  function lowerCase(string = "") {
+    return string.match(/[a-z]+|[A-Za-z]+|[A-Z]+/g).join(" ").toLowerCase();
+  }
+
+
+  /**
    * Converts the first character of string to lower case.
    * @param string
    * @return {string}
@@ -3180,6 +3202,9 @@ var hemingqiao = (function () {
   function property(path) {
     if (typeUtils.isString(path)) {
       path = path.match(/\w+/g);
+    }
+    if (typeUtils.isNumber(path)) {
+      path = String(path);
     }
 
     return function (object) {
@@ -5069,15 +5094,4 @@ var hemingqiao = (function () {
 // let res = hemingqiao.trim("  abc  ")
 // console.log(res);
 // console.log(res.length);
-
-function square(n) {
-  return n * n;
-}
-
-function add(a, b) {
-  return a + b;
-}
-
-var addSquare = hemingqiao.flow([add, square]);
-console.log(addSquare(1, 2));
 
