@@ -328,6 +328,7 @@ var hemingqiao = (function () {
     conformsTo,
     conforms,
     constant,
+    flow,
     eq,
     gt,
     gte,
@@ -4372,6 +4373,25 @@ var hemingqiao = (function () {
   }
 
 
+  function flow(...funcs) {
+    const that = this;
+    funcs = flattenDeep(funcs);
+
+    return function (...args) {
+      let res = args;
+      for (let func of funcs) {
+        try {
+          res = [func.apply(that, res)];
+        } catch (err) {
+          console.log("error", err);
+          return undefined;
+        }
+      }
+      return res[0];
+    }
+  }
+
+
   /**
    * Performs a SameValueZero comparison between two values to determine if they are equivalent.
    * @param value
@@ -4982,4 +5002,15 @@ var hemingqiao = (function () {
 // let res = hemingqiao.trim("  abc  ")
 // console.log(res);
 // console.log(res.length);
+
+function square(n) {
+  return n * n;
+}
+
+function add(a, b) {
+  return a + b;
+}
+
+var addSquare = hemingqiao.flow([add, square]);
+console.log(addSquare(1, 2));
 
