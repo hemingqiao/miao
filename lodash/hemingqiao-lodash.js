@@ -245,6 +245,7 @@ var hemingqiao = (function () {
     pad,
     padEnd,
     padStart,
+    parseInt,
     repeat,
     replace,
     snakeCase,
@@ -2879,6 +2880,18 @@ var hemingqiao = (function () {
    */
   function padStart(string = "", length = 0, chars = " ") {
     return padSide(string, length, chars, true);
+  }
+
+
+  /**
+   * Converts string to an integer of the specified radix. If radix is undefined or 0, a radix of 10 is used unless
+   * value is a hexadecimal, in which case a radix of 16 is used.
+   * @param string
+   * @param radix
+   * @return {number}
+   */
+  function parseInt(string, radix = 10) {
+    return window.parseInt(string, radix);
   }
 
 
