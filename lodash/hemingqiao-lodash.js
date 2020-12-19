@@ -3271,7 +3271,7 @@ var hemingqiao = (function () {
    * @return {function(*=): (any | undefined)}
    */
   function memoize(func, resolver) {
-    const wm = new WeakMap();
+    const wm = new Map();
     const that = this;
     return function (arg) {
       if (wm.has(arg)) {
@@ -4366,7 +4366,9 @@ var hemingqiao = (function () {
    * @return {*}
    */
   function constant(value) {
-    return value;
+    return function () {
+      return value;
+    }
   }
 
 
