@@ -1258,6 +1258,7 @@ var hemingqiao = (function () {
       for (let j = 0; j < paths.length; j++) {
         if (j === paths.length - 1) {
           temp[paths[j]] = values[i];
+          break;
         }
         if (temp[paths[j]] === undefined) {
           // 如果当前位置的下一个位置是数字，需要创建数组
