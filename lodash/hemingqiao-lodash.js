@@ -3098,8 +3098,8 @@ var hemingqiao = (function () {
   function times(n, iteratee = identity) {
     const ret = [];
     let i = 0;
-    while (++i <= n) {
-      ret.push(iteratee(i))
+    while (i < n) {
+      ret.push(iteratee(i++))
     }
     return ret;
   }
@@ -4758,4 +4758,3 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
-console.log(hemingqiao.zipObjectDeep(['a.b[0].c', 'a.b[1].d'], [1, 2]));
