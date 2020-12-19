@@ -329,6 +329,10 @@ var hemingqiao = (function () {
     conforms,
     constant,
     flow,
+    method,
+    methodOf,
+    nthArg,
+    propertyOf,
     eq,
     gt,
     gte,
@@ -4373,6 +4377,12 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * Creates a function that returns the result of invoking the given functions with the this binding of the created
+   * function, where each successive invocation is supplied the return value of the previous.
+   * @param funcs
+   * @return {function(...[*]): (undefined)}
+   */
   function flow(...funcs) {
     const that = this;
     funcs = flattenDeep(funcs);
@@ -4388,6 +4398,63 @@ var hemingqiao = (function () {
         }
       }
       return res[0];
+    }
+  }
+
+
+  /**
+   * Creates a function that invokes the method at path of a given object. Any additional arguments are provided to the
+   * invoked method.
+   * @param path
+   * @param args
+   * @return {function(*=): *}
+   */
+  function method(path, ...args) {
+    return function (obj) {
+      let fn = get(obj, path);
+      return fn.apply(null, args);
+    }
+  }
+
+
+  /**
+   * The opposite of _.method; this method creates a function that invokes the method at a given path of object. Any
+   * additional arguments are provided to the invoked method.
+   * @param object
+   * @param args
+   * @return {function(*=): *}
+   */
+  function methodOf(object, ...args) {
+    return function (path) {
+      let func = get(object, path);
+      return func.apply(null, args);
+    }
+  }
+
+
+  /**
+   * Creates a function that gets the argument at index n. If n is negative, the nth argument from the end is returned.
+   * @param n
+   * @return {function(): any}
+   */
+  function nthArg(n = 0) {
+    return function () {
+      if (n < 0) {
+        n = n + arguments.length;
+      }
+      return arguments[n];
+    }
+  }
+
+
+  /**
+   * The opposite of _.property; this method creates a function that returns the value at a given path of object.
+   * @param object
+   * @return {function(*=): *}
+   */
+  function propertyOf(object) {
+    return function (path) {
+      return get(object, path);
     }
   }
 
