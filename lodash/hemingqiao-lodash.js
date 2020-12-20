@@ -5273,7 +5273,7 @@ var hemingqiao = (function () {
         if (v === null) {
           v = "null";
         } else if (typeof v === "object") {
-          v = jsonStringify(v);
+          v = stringifyJson(v);
         } else {
           // 值为数字或者布尔类型时不拼双引号
           if (typeof v === "number" || typeof v === "boolean") {
