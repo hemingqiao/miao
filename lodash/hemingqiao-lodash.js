@@ -385,6 +385,7 @@ var hemingqiao = (function () {
     isWeakSet,
     curry,
     identity,
+    stringifyJson,
 
   };
 
@@ -3082,7 +3083,6 @@ var hemingqiao = (function () {
       return string.slice(0, DEFAULT_TRUNC_LENGTH).replace(/[\w\W]{3}$/, DEFAULT_TRUNC_OMISSION);
     } else {
       let truncLen = options.length ? options.length : DEFAULT_TRUNC_LENGTH;
-
       let omission = options.omission ? options.omission : DEFAULT_TRUNC_OMISSION;
       let omissionLen = omission.length;
       string = string.slice(0, truncLen);
@@ -5241,6 +5241,56 @@ var hemingqiao = (function () {
    */
   function identity(value) {
     return value;
+  }
+
+
+  function stringifyJson(obj) {
+    let regexp = /undefined|function/;
+    // 如果obj为undefined或者function，直接返回undefined
+    if (regexp.test(typeof obj)) {
+      return "undefined";
+    }
+
+    if (obj === null) {
+      return "null";
+    } else if (typeof obj === "object") {
+      let isArray = Array.isArray(obj);
+      let res = [];
+      let keys = Object.keys(obj)
+      for (let key of keys) {
+        let v = obj[key];
+
+        // 特判undefined和function
+        if (regexp.test(typeof v)) {
+          if (isArray) {
+            // 数组中的undefined和function在转为JSON时会被视为null
+            res.push("null");
+          }
+          // 而在对象中，值为null或者function的属性在转JSON时会被直接忽略，所以在此不做处理
+          continue;
+        }
+
+        if (v === null) {
+          v = "null";
+        } else if (typeof v === "object") {
+          v = jsonStringify(v);
+        } else {
+          // 值为数字或者布尔类型时不拼双引号
+          if (typeof v === "number" || typeof v === "boolean") {
+            v = String(v);
+          } else {
+            v = '"' + String(v) + '"';
+          }
+        }
+        // 处理其他非object类型值，同时将上面得到的结果推入数组中
+        res.push((isArray ? "" : '"' + key + '":') + String(v));
+      }
+      // 根据原对象是否为数组拼接[]或者{}
+      return (isArray ? "[" : "{") + String(res) + (isArray ? "]" : "}");
+    } else {
+      // 处理obj为其他非object类型的值的情况
+      return String(obj);
+    }
   }
 
 })();
