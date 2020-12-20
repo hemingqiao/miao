@@ -832,13 +832,14 @@ var hemingqiao = (function () {
 
 
   /**
-   * Uses a binary search to determine the lowest index at which value should be inserted into array in order to maintain its sort order.
+   * Uses a binary search to determine the lowest index at which value should be inserted into array in order to
+   * maintain its sort order.
    * @param array
    * @param value
    * @return {number}
    */
   function sortedIndex(array, value) {
-    let low = 0, high = array.length; // 插入位置可能是数组的末尾，因此将high初始化为length
+    let low = 0, high = array.length;
     while (low < high) {
       let mid = (low + high) >>> 1;
       // 小于value的位置一定不是寻找的解
@@ -895,9 +896,7 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function sortedIndexOf(array, value) {
-    // 与sortedIndex的不同之处在于此处查找上界为len - 1，保证了退出循环时得到的值一定是合法索引
-    // 而sortedIndex的查找上界是len，所以对于某个大于数组中所有的值的value，退出循环时会得到len，此时已经越界，应该返回-1
-    let low = 0, high = array.length - 1;
+    let low = 0, high = array.length;
     while (low < high) {
       let mid = (low + high) >>> 1;
       // 小于value的位置一定不是解
@@ -5300,6 +5299,11 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * 将json字符串转为js中的对象
+   * @param json
+   * @return {any}
+   */
   function parseJson(json) {
     return eval("(" + json + ")");
   }
