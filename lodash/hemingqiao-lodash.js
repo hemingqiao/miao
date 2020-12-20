@@ -386,6 +386,7 @@ var hemingqiao = (function () {
     curry,
     identity,
     stringifyJson,
+    parseJson,
 
   };
 
@@ -5244,6 +5245,11 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * 将js对象转为JSON对象
+   * @param obj
+   * @return {string}
+   */
   function stringifyJson(obj) {
     let regexp = /undefined|function/;
     // 如果obj为undefined或者function，直接返回undefined
@@ -5293,6 +5299,11 @@ var hemingqiao = (function () {
     }
   }
 
+
+  function parseJson(json) {
+    return eval("(" + json + ")");
+  }
+
 })();
 
 // var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
@@ -5317,4 +5328,6 @@ var hemingqiao = (function () {
 // let res = hemingqiao.trim("  abc  ")
 // console.log(res);
 // console.log(res.length);
+
+console.log(hemingqiao.parseJson("{\"a\":{\"b\":3}}"));
 
