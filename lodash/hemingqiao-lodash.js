@@ -2744,7 +2744,7 @@ var hemingqiao = (function () {
    * @return {string}
    */
   function capitalize(string = "") {
-    return string.toLowerCase().replace(/(?:^|\s)\w/g, match => match.toUpperCase());
+    return string.toLowerCase().replace(/(?:^)\w/g, match => match.toUpperCase()); // update: 只需要将首个字符转为大写
   }
 
 
@@ -5305,7 +5305,7 @@ var hemingqiao = (function () {
    * @return {any}
    */
   function parseJson(json) {
-    return eval("(" + json + ")");
+    return eval("(" + json + ")"); // 永远不要使用eval(see: mdn,https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval)
   }
 
 })();
@@ -5333,5 +5333,4 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
-console.log(hemingqiao.parseJson("{\"a\":{\"b\":3}}"));
-
+console.log(hemingqiao.capitalize("--foo bar"));
