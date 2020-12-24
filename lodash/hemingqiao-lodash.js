@@ -3399,8 +3399,8 @@ var hemingqiao = (function () {
    */
   function spread(func, start = 0) {
     const that = this;
-    return function () {
-      return func.apply(that, Array.from(arguments).slice(start));
+    return function (...args) {
+      return func.apply(that, args.slice(start));
     }
   }
 
