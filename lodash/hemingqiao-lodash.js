@@ -395,35 +395,45 @@ var hemingqiao = (function () {
 
 
   /**
-   * Creates an array of elements split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
-   * @param {number[]} arr
+   * Creates an array of elements split into groups the length of size. If array can't be split evenly, the final chunk
+   * will be the remaining elements.
+   * @param array
    * @param size
    * @return {[]}
    */
-  function chunk(arr, size = 1) {
-    let res = [];
-    if (size <= 0 || arr == undefined || arr.length === 0) return res;
-    let len = arr.length;
-    if (size > len) {
-      res.push(arr);
-      return res;
+  function chunk(array, size = 1) {
+    // update
+    if (!Array.isArray(array) || array.length === 0) {
+      return [];
     }
-    // 还可以使用splice
-    let j = 0;
+    const ret = [];
+    let p = 0;
     let temp = [];
-    for (let i = 0; i < len; i++) {
-      if (j++ < size) {
-        temp.push(arr[i]);
+    for (let i = 0; i < array.length; i++) {
+      if (p < size) {
+        temp.push(array[i]);
+        p++;
       } else {
-        res.push(temp);
-        j = 0;
-        temp = [arr[i]];
-        j++;
+        ret.push(temp);
+        temp = [array[i]];
+        p = 1; // 重置p指针
       }
     }
-    res.push(temp);
+    ret.push(temp);
+    return ret;
 
-    return res;
+    /*
+    // API版本
+    if (!Array.isArray(array) || array.length === 0) {
+      return [];
+    }
+    const ret = [];
+    const copy = array.slice(); // 不修改原输入数组
+    while (copy.length > 0) {
+      ret.push(copy.splice(0, size));
+    }
+    return ret;
+    */
   }
 
 
