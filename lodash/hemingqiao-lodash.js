@@ -599,7 +599,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 将 array 中的所有元素转换为由 separator 分隔的字符串。
+   * Converts all elements in array into a string separated by separator.
    * @param arr
    * @param separator
    * @return {string}
@@ -617,7 +617,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 获取array中的最后一个元素。
+   * Gets the last element of array.
    * @param {number[]} arr
    * @return {*}
    */
@@ -650,7 +650,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 这个方法类似 _.indexOf ，区别是它是从右到左遍历array的元素。
+   * This method is like _.indexOf except that it iterates over elements of array from right to left.
    * @param arr
    * @param val
    * @param fromIdx
@@ -4026,7 +4026,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 获取array数组的第n个元素。如果n为负数，则返回从数组结尾开始的第n个元素。
+   * Gets the element at index n of array. If n is negative, the nth element from the end is returned.
    * @param array
    * @param n
    * @return {*}
@@ -4039,8 +4039,8 @@ var hemingqiao = (function () {
 
 
   /**
-   * 移除数组array中所有和给定值相等的元素，使用 SameValueZero 进行全等比较。
-   * 注意： 和 _.without 方法不同，这个方法会改变数组。使用 _.remove 从一个数组中移除元素。
+   * Removes all given values from array using SameValueZero for equality comparisons.
+   * Note: Unlike _.without, this method mutates array. Use _.remove to remove elements from an array by predicate.
    * @param array
    * @param values
    * @return {*}
@@ -4059,8 +4059,8 @@ var hemingqiao = (function () {
 
 
   /**
-   * 这个方法类似 _.pull，区别是这个方法接收一个要移除值的数组。
-   * Note: 不同于 _.difference, 这个方法会改变数组 array。
+   * This method is like _.pull except that it accepts an array of values to remove.
+   * Note: Unlike _.difference, this method mutates array.
    * @param array
    * @param values
    */
@@ -4070,8 +4070,9 @@ var hemingqiao = (function () {
 
 
   /**
-   * 这个方法类似于 _.pullAll ，区别是这个方法接受一个 iteratee（迭代函数） 调用 array 和 values的每个值以产生一个值，通过产生的值进行了比较。iteratee 会传入一个参数： (value)。
-   * Note: 不同于 _.differenceBy, 这个方法会改变数组 array。
+   * This method is like _.pullAll except that it accepts iteratee which is invoked for each element of array and values
+   * to generate the criterion by which they're compared. The iteratee is invoked with one argument: (value).
+   * Note: Unlike _.differenceBy, this method mutates array.
    * @param array
    * @param values
    * @param iteratee
@@ -4092,8 +4093,9 @@ var hemingqiao = (function () {
 
 
   /**
-   * 这个方法类似于 _.pullAll，区别是这个方法接受 comparator 调用array中的元素和values比较。comparator 会传入两个参数：(arrVal, othVal)。
-   * 注意: 和 _.differenceWith 不同, 这个方法会改变数组 array。
+   * This method is like _.pullAll except that it accepts comparator which is invoked to compare elements of array to
+   * values. The comparator is invoked with two arguments: (arrVal, othVal).
+   * Note: Unlike _.differenceWith, this method mutates array.
    * @param array
    * @param values
    * @param comparator
