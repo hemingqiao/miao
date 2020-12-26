@@ -629,7 +629,8 @@ var hemingqiao = (function () {
 
 
   /**
-   * 使用 SameValueZero 等值比较，返回首次 value 在数组array中被找到的 索引值， 如果 fromIndex 为负值，将从数组array尾端索引进行匹配。
+   * Gets the index at which the first occurrence of value is found in array using SameValueZero for equality comparisons.
+   * If fromIndex is negative, it's used as the offset from the end of array.
    * @param {number[]} arr
    * @param {number} val
    * @param {number} fromIdx
@@ -739,8 +740,8 @@ var hemingqiao = (function () {
 
 
   /**
-   * 使用 value 值来填充（替换） array，从start位置开始, 到end位置结束（但不包含end位置）。
-   * Note: 这个方法会改变 array
+   * Fills elements of array with value from start up to, but not including, end.
+   * Note: This method mutates array.
    * @param arr
    * @param val
    * @param start
@@ -765,7 +766,8 @@ var hemingqiao = (function () {
 
 
   /**
-   * 该方法类似 _.find，区别是该方法返回第一个通过 predicate 判断为真值的元素的索引值（index），而不是元素本身。
+   * This method is like _.find except that it returns the index of the first element predicate returns truthy for
+   * instead of the element itself.
    * @param arr
    * @param predicate
    * @param fromIdx
@@ -801,7 +803,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 减少一级array嵌套深度。
+   * Flattens array a single level deep.
    * @param array
    * @return {*[]}
    */
@@ -811,7 +813,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 将array递归为一维数组。
+   * Recursively flattens array.
    * @param array
    * @return {*}
    */
@@ -821,7 +823,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 根据 depth 递归减少 array 的嵌套层级
+   * Recursively flatten array up to depth times.
    * @param array
    * @param depth
    * @return {*[]}
@@ -836,7 +838,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 与 _.toPairs正好相反；这个方法返回一个由键值对pairs构成的对象。
+   * The inverse of _.toPairs; this method returns an object composed from key-value pairs.
    * @param pairs
    * @return {{}}
    */
@@ -851,7 +853,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 获取数组 array 的第一个元素。
+   * Gets the first element of array.
    * @param arr
    * @return {*|undefined}
    */
@@ -861,7 +863,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 获取数组array中除了最后一个元素之外的所有元素（去除数组array中的最后一个元素）。
+   * Gets all but the last element of array.
    * @param array
    * @return {[]}
    */
@@ -3706,12 +3708,13 @@ var hemingqiao = (function () {
 
 
   /**
-   * 求交集
-   * @param source
-   * @param args
+   * Creates an array of unique values that are included in all given arrays using SameValueZero for equality comparisons.
+   * The order and references of result values are determined by the first array.
    * @return {[]}
+   * @param arrays
    */
-  function intersection(source, ...args) {
+  function intersection(arrays) {
+    let [source, ...args] = arrays;
     let ret = [];
     for (let arg of args) {
       for (let e of arg) {
@@ -3746,40 +3749,65 @@ var hemingqiao = (function () {
   // }
 
 
+  // /**
+  //  * 这个方法类似 _.intersection，区别是它接受一个 iteratee 调用每一个arrays的每个值以产生一个值，通过产生的值进行了比较。结果值是从第一数组中选择。iteratee 会传入一个参数：(value)。
+  //  * @param args
+  //  * @return {[]|*[]}
+  //  */
+  // function intersectionBy(...args) {
+  //   let last = args[args.length - 1];
+  //   let first = args.shift();
+  //   if (Array.isArray(last) || last == null) {
+  //     return intersection(first, args);
+  //   }
+  //
+  //   const ret = [];
+  //   last = transformType(last);
+  //   args.pop();
+  //   args = args.map(arg => arg.map(value => last(value)));
+  //   let copy = first.slice().map(value => last(value));
+  //   const res = intersection(copy, ...args);
+  //   for (let e of first) {
+  //     if (res.includes(last(e))) {
+  //       ret.push(e);
+  //     }
+  //   }
+  //   return ret;
+  // }
+
+
   /**
-   * 这个方法类似 _.intersection，区别是它接受一个 iteratee 调用每一个arrays的每个值以产生一个值，通过产生的值进行了比较。结果值是从第一数组中选择。iteratee 会传入一个参数：(value)。
+   * This method is like _.intersection except that it accepts iteratee which is invoked for each element of each arrays
+   * to generate the criterion by which they're compared. The order and references of result values are determined by
+   * the first array. The iteratee is invoked with one argument: (value).
    * @param args
-   * @return {[]|*[]}
+   * @return {[]}
    */
   function intersectionBy(...args) {
+    let iteratee = identity;
     let last = args[args.length - 1];
-    let first = args.shift();
-    if (Array.isArray(last) || last == null) {
-      return intersection(first, args);
+    if (typeof last === "function" || typeof last === "string") {
+      iteratee = transformType(args.pop());
     }
-
-    const ret = [];
-    last = transformType(last);
-    args.pop();
-    args = args.map(arg => arg.map(value => last(value)));
-    let copy = first.slice().map(value => last(value));
-    const res = intersection(copy, ...args);
+    let res = intersection(args.map(arr => arr.map(v => iteratee(v))));
+    let ret = [];
+    let first = args[0];
     for (let e of first) {
-      if (res.includes(last(e))) {
-        ret.push(e);
-      }
+      if (res.includes(iteratee(e))) ret.push(e);
     }
     return ret;
   }
 
 
   /**
-   * 这个方法类似 _.intersection，区别是它接受一个 comparator 调用比较arrays中的元素。结果值是从第一数组中选择。comparator 会传入两个参数：(arrVal, othVal)。
+   * This method is like _.intersection except that it accepts comparator which is invoked to compare elements of arrays.
+   * The order and references of result values are determined by the first array. The comparator is invoked with two
+   * arguments: (arrVal, othVal).
    * @param args
    * @return {[]}
    */
   function intersectionWith(...args) {
-    let last = args.pop();
+    let last = args.pop(); // comparator
     let first = args[0];
     last = transformType(last);
     const ret = [];
