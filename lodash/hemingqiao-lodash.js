@@ -1063,6 +1063,7 @@ var hemingqiao = (function () {
       if (iteratee(e) === uniqVal) {
         ret.push(e);
         i++;
+        if (i >= uniqArray.length) break;
         uniqVal = uniqArray[i];
       }
     }
