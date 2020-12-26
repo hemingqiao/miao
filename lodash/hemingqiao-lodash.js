@@ -877,8 +877,8 @@ var hemingqiao = (function () {
 
 
   /**
-   * 反转array，使得第一个元素变为最后一个元素，第二个元素变为倒数第二个元素，依次类推。
-   * Note: 这个方法会改变原数组 array，基于 Array#reverse.
+   * Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
+   * Note: This method mutates array and is based on Array#reverse.
    * @param array
    * @return {*}
    */
@@ -1559,30 +1559,19 @@ var hemingqiao = (function () {
 
 
   /**
-   * 通过 predicate（断言函数） 检查 collection（集合）中的 所有 元素是否都返回真值。一旦 predicate（断言函数） 返回假值，迭代就马上停止。
-   * predicate（断言函数）调用三个参数： (value, index|key, collection)。
+   Checks if predicate returns truthy for all elements of collection. Iteration is stopped once predicate returns falsey.
+   The predicate is invoked with three arguments: (value, index|key, collection).
+   Note: This method returns true for empty collections because everything is true of elements of empty collections.
    * @param collection
    * @param predicate
    * @return {boolean}
    */
   function every(collection, predicate) {
     predicate = transformType(predicate);
-    if (Array.isArray(collection)) {
-      if (!collection.length) {
-        return true;
-      } else {
-        for (let e of collection) {
-          if (!predicate(e)) return false;
-        }
-      }
-    } else if (typeUtils.isObject(collection)) {
-      if (!Object.keys(collection).length) {
-        return true;
-      } else {
-        for (let key of Object.keys(collection)) {
-          if (!predicate(collection[key])) return false;
-        }
-      }
+    const keys = Object.keys(collection);
+    if (keys.length === 0) return true;
+    for (let key of keys) {
+      if (!predicate(collection[key])) return false;
     }
     return true;
   }
