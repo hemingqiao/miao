@@ -3713,7 +3713,7 @@ var hemingqiao = (function () {
    * @return {[]}
    * @param arrays
    */
-  function intersection(arrays) {
+  function intersection(...arrays) {
     let [source, ...args] = arrays;
     let ret = [];
     for (let arg of args) {
