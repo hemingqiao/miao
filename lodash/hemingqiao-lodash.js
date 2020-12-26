@@ -674,11 +674,10 @@ var hemingqiao = (function () {
    * @return {[]|*}
    */
   function drop(arr, n = 1) {
-    // update
     let len = arr.length;
-    if (len <= 0) return arr.slice(); // 复制一份返回
+    if (len === 0 || n <= 0) return arr.slice();
 
-    const res = [];
+    let res = [];
     for (let i = n; i < len; i++) {
       res.push(arr[i]);
     }
@@ -729,9 +728,9 @@ var hemingqiao = (function () {
    */
   function dropRight(arr, n = 1) {
     let len = arr.length;
-    if (len <= 0) return arr.slice();
+    if (len === 0 || n <= 0) return arr.slice();
 
-    const res = [];
+    let res = [];
     for (let i = 0; i < len - n; i++) {
       res.push(arr[i]);
     }
