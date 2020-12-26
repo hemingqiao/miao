@@ -1593,27 +1593,6 @@ var hemingqiao = (function () {
       if (predicate(collection[key], key, collection)) res.push(collection[key]);
     }
     return res;
-
-    // if (Array.isArray(collection)) {
-    //   res = [];
-    //   if (!collection.length) {
-    //     return null;
-    //   } else {
-    //     for (let e of collection) {
-    //       if (predicate(e)) res.push(e);
-    //     }
-    //   }
-    // } else if (typeUtils.isObject(collection)) {
-    //   res = {};
-    //   if (!Object.keys(collection).length) {
-    //     return null;
-    //   } else {
-    //     for (let key of Object.keys(collection)) {
-    //       if (predicate(collection[key])) res[key] = collection[key];
-    //     }
-    //   }
-    // }
-    // return res;
   }
 
 
@@ -1632,29 +1611,6 @@ var hemingqiao = (function () {
       if (predicate(collection[key], key, collection)) return collection[key];
     }
     return undefined;
-
-    // if (Array.isArray(collection)) {
-    //   if (!collection.length) {
-    //     return null;
-    //   } else {
-    //     for (let i = fromIdx; i < collection.length; i++) {
-    //       if (predicate(collection[i])) {
-    //         return collection[i];
-    //       }
-    //     }
-    //   }
-    // } else if (typeUtils.isObject(collection)) {
-    //   if (!Object.keys(collection).length) {
-    //     return null;
-    //   } else {
-    //     for (let key of Object.keys(collection)) {
-    //       if (predicate(collection[key])) {
-    //         return collection[key];
-    //       }
-    //     }
-    //   }
-    // }
-    // return undefined;
   }
 
 
@@ -1672,30 +1628,6 @@ var hemingqiao = (function () {
       if (predicate(collection[keys[i]], keys[i], collection)) return collection[keys[i]];
     }
     return undefined
-
-    // if (typeUtils.isArray(collection)) {
-    //   if (!collection.length) {
-    //     return undefined;
-    //   } else {
-    //     for (let i = fromIndex; i >= 0; i--) {
-    //       if (predicate(collection[i])) {
-    //         return collection[i];
-    //       }
-    //     }
-    //   }
-    // } else if (typeUtils.isObject(collection)) {
-    //   let keys = Object.keys(collection);
-    //   if (!keys) {
-    //     return undefined;
-    //   } else {
-    //     for (let key of keys) {
-    //       if (predicate(collection[key])) {
-    //         return collection[key];
-    //       }
-    //     }
-    //   }
-    // }
-    // return undefined;
   }
 
 
@@ -4129,46 +4061,64 @@ var hemingqiao = (function () {
 
 
   /**
-   * 创建一个按顺序排列的唯一值的数组。所有给定数组的元素值使用 SameValueZero做等值比较。
-   * @param initArr
+   * Creates an array of unique values, in order, from all given arrays using SameValueZero for equality comparisons.
    * @param arrays
    * @return {any[]}
    */
-  function union(initArr, ...arrays) {
-    const set = new Set(initArr);
-    arrays.forEach(value => value.forEach(v => set.add(v)));
-    return [...set];
+  function union(...arrays) {
+    return [...new Set(arrays.reduce((arr, cur) => arr.concat(cur), []))];
   }
 
 
   /**
-   * 这个方法类似 _.union ，除了它接受一个 iteratee （迭代函数），调用每一个数组（array）的每个元素以产生唯一性计算的标准。iteratee 会传入一个参数：(value)。
+   * This method is like _.union except that it accepts iteratee which is invoked for each element of each arrays to
+   * generate the criterion by which uniqueness is computed. Result values are chosen from the first array in which the
+   * value occurs. The iteratee is invoked with one argument: (value).
    * @param values
    * @return {*[]}
    */
   function unionBy(...values) {
+    let iteratee = identity;
     let last = values[values.length - 1];
-    if (Array.isArray(last) || last == null) {
-      return union(...values);
+    if (typeof last === "function" || typeof last === "string") {
+      iteratee = transformType(values.pop());
     }
-
-    last = transformType(last);
-    values.pop();
-    let first = values.shift();
-    const ret = [...first];
-    values = concat([], ...values);
-    for (let i = 0; i < values.length; i++) {
-      let temp = last(values[i]);
-      if (!ret.map(value => last(value)).includes(temp)) {
-        ret.push(values[i]);
+    let res = new Set(union(...values.map(val => val.map(v => iteratee(v)))));
+    let ret = [];
+    for (let arr of values) {
+      for (let e of arr) {
+        if (res.has(iteratee(e))) {
+          ret.push(e);
+          res.delete(iteratee(e));
+        }
       }
     }
     return ret;
+
+    // let last = values[values.length - 1];
+    // if (Array.isArray(last) || last == null) {
+    //   return union(...values);
+    // }
+    //
+    // last = transformType(last);
+    // values.pop();
+    // let first = values.shift();
+    // const ret = [...first];
+    // values = concat([], ...values);
+    // for (let i = 0; i < values.length; i++) {
+    //   let temp = last(values[i]);
+    //   if (!ret.map(value => last(value)).includes(temp)) {
+    //     ret.push(values[i]);
+    //   }
+    // }
+    // return ret;
   }
 
 
   /**
-   * 这个方法类似 _.union， 除了它接受一个 comparator 调用比较arrays数组的每一个元素。 comparator 调用时会传入2个参数： (arrVal, othVal)。
+   * This method is like _.union except that it accepts comparator which is invoked to compare elements of arrays. Result
+   * values are chosen from the first array in which the value occurs. The comparator is invoked with two arguments:
+   * (arrVal, othVal).
    * @param values
    * @return {*[]}
    */
