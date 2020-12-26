@@ -3789,7 +3789,7 @@ var hemingqiao = (function () {
     if (typeof last === "function" || typeof last === "string") {
       iteratee = transformType(args.pop());
     }
-    let res = intersection(args.map(arr => arr.map(v => iteratee(v))));
+    let res = intersection(...args.map(arr => arr.map(v => iteratee(v))));
     let ret = [];
     let first = args[0];
     for (let e of first) {
