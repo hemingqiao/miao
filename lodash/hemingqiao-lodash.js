@@ -1586,11 +1586,11 @@ var hemingqiao = (function () {
    * @return {{}|boolean}
    */
   function filter(collection, predicate) {
-    let res = Array.isArray(collection) ? [] : {};
+    let res = [];
     predicate = transformType(predicate);
     const keys = Object.keys(collection);
     for (let key of keys) {
-      if (predicate(collection[key], key, collection)) res[key] = collection[key];
+      if (predicate(collection[key], key, collection)) res.push(collection[key]);
     }
     return res;
 
