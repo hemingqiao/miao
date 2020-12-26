@@ -470,13 +470,19 @@ var hemingqiao = (function () {
       }
     }
     return res;
+
+    /*
+    // 调用内置的API
+    return args.reduce((mappedArr, cur) => mappedArr.concat(cur), arr.slice());
+    */
   }
 
 
   // 返回给定数组array和传入的数组之间的差集(a - b)。
   // 一般地，记A和B是两个集合，则所有属于A且不属于B的元素构成的集合,叫做集合A和集合B的差集。
   /**
-   * 创建一个具有唯一array值的数组，每个值不包含在其他给定的数组中。该方法使用 SameValueZero做相等比较。结果值的顺序是由第一个数组中的顺序确定。
+   * Creates an array of array values not included in the other given arrays using SameValueZero for equality comparisons.
+   * The order and references of result values are determined by the first array.
    * @param {number[]} array
    * @param values
    */
@@ -495,54 +501,117 @@ var hemingqiao = (function () {
       }
     }
     return res;
+
+    /*
+    // or
+    const ret = [];
+    values = values.reduce((prev, cur) => prev.concat(cur));
+    for (let e of array) {
+      if (!values.includes(e)) {
+        ret.push(e);
+      }
+    }
+    return ret;
+    */
   }
 
 
+  // /**
+  //  * see official document
+  //  * @param array
+  //  * @param values
+  //  * @param iteratee
+  //  * @return {any[]}
+  //  */
+  // function differenceBy(array, values, iteratee) {
+  //   let args = Array.from(arguments);
+  //   args.shift();
+  //   let last = args[args.length - 1];
+  //   if (Array.isArray(last) || last === undefined) {
+  //     return difference(array, ...args);
+  //   }
+  //
+  //   iteratee = args.pop();
+  //   iteratee = transformType(iteratee);
+  //   let copy = array.slice();
+  //   let mapped = array.map(value => iteratee(value));
+  //   args = args.map(value => value.map(value1 => iteratee(value1)));
+  //   let res = difference(mapped, ...args);
+  //
+  //   let ret = [];
+  //   for (let e of copy) {
+  //     if (res.includes(iteratee(e))) ret.push(e);
+  //   }
+  //   return ret;
+  // }
+
   /**
-   * see official document
+   * This method is like _.difference except that it accepts iteratee which is invoked for each element of array and
+   * values to generate the criterion by which they're compared. The order and references of result values are determined
+   * by the first array. The iteratee is invoked with one argument: (value).
    * @param array
-   * @param values
-   * @param iteratee
-   * @return {any[]}
+   * @param args
+   * @return {[]}
    */
-  function differenceBy(array, values, iteratee) {
-    let args = Array.from(arguments);
-    args.shift();
+  function differenceBy(array, ...args) {
+    // update
+    let iteratee = identity;
     let last = args[args.length - 1];
-    if (Array.isArray(last) || last === undefined) {
-      return difference(array, ...args);
+    if (typeof last === "function") {
+      iteratee = args.pop();
+    } else if (typeof last === "string") {
+      iteratee = transformType(args.pop());
     }
-
-    iteratee = args.pop();
-    iteratee = transformType(iteratee);
-    let copy = array.slice();
-    let mapped = array.map(value => iteratee(value));
-    args = args.map(value => value.map(value1 => iteratee(value1)));
-    let res = difference(mapped, ...args);
-
-    let ret = [];
-    for (let e of copy) {
-      if (res.includes(iteratee(e))) ret.push(e);
+    args = args.reduce((prev, cur) => prev.concat(cur)).map(v => iteratee(v));
+    const ret = [];
+    for (let e of array) {
+      if (!args.includes(iteratee(e))) ret.push(e);
     }
     return ret;
   }
 
 
+  // /**
+  //  * 这个方法类似 _.difference ，除了它接受一个 comparator，它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
+  //  * @param arr
+  //  * @param values
+  //  * @param comparator
+  //  * @return {[]}
+  //  */
+  // function differenceWith(arr, values, comparator) {
+  //   let res = [];
+  //   for (let e of arr) {
+  //     for (let v of values) {
+  //       if (!comparator(e, v)) res.push(e);
+  //     }
+  //   }
+  //   return res;
+  // }
+
   /**
-   * 这个方法类似 _.difference ，除了它接受一个 comparator，它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
+   * This method is like _.difference except that it accepts comparator which is invoked to compare elements of array to
+   * values. The order and references of result values are determined by the first array. The comparator is invoked with
+   * two arguments: (arrVal, othVal).
    * @param arr
-   * @param values
-   * @param comparator
+   * @param args
    * @return {[]}
    */
-  function differenceWith(arr, values, comparator) {
-    let res = [];
+  function differenceWith(arr, ...args) {
+    // update
+    let comparator = args.pop();
+    args = args.reduce((prev, cur) => prev.concat(cur));
+    const ret = [];
     for (let e of arr) {
-      for (let v of values) {
-        if (!comparator(e, v)) res.push(e);
+      let flag = true;
+      for (let v of args) {
+        if (comparator(e, v)) {
+          flag = false;
+          break;
+        }
       }
+      if (flag) ret.push(e);
     }
-    return res;
+    return ret;
   }
 
 
@@ -5453,17 +5522,17 @@ var hemingqiao = (function () {
 // console.log(res);
 // console.log(res.length);
 
-let test = {
-  a: [32, 1024, {x: "heming", y: "qiao"}],
-  b: null,
-  c: {
-    d: [64, 2048],
-    e: true,
-    f: {answer: 47},
-  },
-  g: "done"
-};
-let ser = JSON.stringify(test);
-console.log(ser); // {"a":[32,1024,{"x":"heming","y":"qiao"}],"b":null,"c":{"d":[64,2048],"e":true,"f":{"answer":47}},"g":"done"}
-let rev = hemingqiao.parseJson(ser);
-console.log(rev);
+// let test = {
+//   a: [32, 1024, {x: "heming", y: "qiao"}],
+//   b: null,
+//   c: {
+//     d: [64, 2048],
+//     e: true,
+//     f: {answer: 47},
+//   },
+//   g: "done"
+// };
+// let ser = JSON.stringify(test);
+// console.log(ser); // {"a":[32,1024,{"x":"heming","y":"qiao"}],"b":null,"c":{"d":[64,2048],"e":true,"f":{"answer":47}},"g":"done"}
+// let rev = hemingqiao.parseJson(ser);
+// console.log(rev);
