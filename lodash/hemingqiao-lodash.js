@@ -1578,39 +1578,48 @@ var hemingqiao = (function () {
 
 
   /**
-   * 遍历 collection（集合）元素，返回 predicate（断言函数）返回真值 的所有元素的数组。 predicate（断言函数）调用三个参数：(value, index|key, collection)。
+   * Iterates over elements of collection, returning an array of all elements predicate returns truthy for. The predicate
+   * is invoked with three arguments: (value, index|key, collection).
+   * Note: Unlike _.remove, this method returns a new array.
    * @param collection
    * @param predicate
    * @return {{}|boolean}
    */
   function filter(collection, predicate) {
-    let res;
+    let res = Array.isArray(collection) ? [] : {};
     predicate = transformType(predicate);
-    if (Array.isArray(collection)) {
-      res = [];
-      if (!collection.length) {
-        return null;
-      } else {
-        for (let e of collection) {
-          if (predicate(e)) res.push(e);
-        }
-      }
-    } else if (typeUtils.isObject(collection)) {
-      res = {};
-      if (!Object.keys(collection).length) {
-        return null;
-      } else {
-        for (let key of Object.keys(collection)) {
-          if (predicate(collection[key])) res[key] = collection[key];
-        }
-      }
+    const keys = Object.keys(collection);
+    for (let key of keys) {
+      if (predicate(collection[key], key, collection)) res[key] = collection[key];
     }
     return res;
+
+    // if (Array.isArray(collection)) {
+    //   res = [];
+    //   if (!collection.length) {
+    //     return null;
+    //   } else {
+    //     for (let e of collection) {
+    //       if (predicate(e)) res.push(e);
+    //     }
+    //   }
+    // } else if (typeUtils.isObject(collection)) {
+    //   res = {};
+    //   if (!Object.keys(collection).length) {
+    //     return null;
+    //   } else {
+    //     for (let key of Object.keys(collection)) {
+    //       if (predicate(collection[key])) res[key] = collection[key];
+    //     }
+    //   }
+    // }
+    // return res;
   }
 
 
   /**
-   * 遍历 collection（集合）元素，返回 predicate（断言函数）第一个返回真值的第一个元素。predicate（断言函数）调用3个参数： (value, index|key, collection)。
+   * Iterates over elements of collection, returning the first element predicate returns truthy for. The predicate is
+   * invoked with three arguments: (value, index|key, collection).
    * @param collection
    * @param predicate
    * @param fromIdx
@@ -1618,28 +1627,34 @@ var hemingqiao = (function () {
    */
   function find(collection, predicate, fromIdx = 0) {
     predicate = transformType(predicate);
-    if (Array.isArray(collection)) {
-      if (!collection.length) {
-        return null;
-      } else {
-        for (let i = fromIdx; i < collection.length; i++) {
-          if (predicate(collection[i])) {
-            return collection[i];
-          }
-        }
-      }
-    } else if (typeUtils.isObject(collection)) {
-      if (!Object.keys(collection).length) {
-        return null;
-      } else {
-        for (let key of Object.keys(collection)) {
-          if (predicate(collection[key])) {
-            return collection[key];
-          }
-        }
-      }
+    const keys = Object.keys(collection);
+    for (let key of keys) {
+      if (predicate(collection[key], key, collection)) return collection[key];
     }
     return undefined;
+
+    // if (Array.isArray(collection)) {
+    //   if (!collection.length) {
+    //     return null;
+    //   } else {
+    //     for (let i = fromIdx; i < collection.length; i++) {
+    //       if (predicate(collection[i])) {
+    //         return collection[i];
+    //       }
+    //     }
+    //   }
+    // } else if (typeUtils.isObject(collection)) {
+    //   if (!Object.keys(collection).length) {
+    //     return null;
+    //   } else {
+    //     for (let key of Object.keys(collection)) {
+    //       if (predicate(collection[key])) {
+    //         return collection[key];
+    //       }
+    //     }
+    //   }
+    // }
+    // return undefined;
   }
 
 
@@ -1652,29 +1667,35 @@ var hemingqiao = (function () {
    */
   function findLast(collection, predicate, fromIndex = collection.length - 1) {
     predicate = transformType(predicate);
-    if (typeUtils.isArray(collection)) {
-      if (!collection.length) {
-        return undefined;
-      } else {
-        for (let i = fromIndex; i >= 0; i--) {
-          if (predicate(collection[i])) {
-            return collection[i];
-          }
-        }
-      }
-    } else if (typeUtils.isObject(collection)) {
-      let keys = Object.keys(collection);
-      if (!keys) {
-        return undefined;
-      } else {
-        for (let key of keys) {
-          if (predicate(collection[key])) {
-            return collection[key];
-          }
-        }
-      }
+    const keys = Object.keys(collection);
+    for (let i = fromIndex; i >= 0; i--) {
+      if (predicate(collection[keys[i]], keys[i], collection)) return collection[keys[i]];
     }
-    return undefined;
+    return undefined
+
+    // if (typeUtils.isArray(collection)) {
+    //   if (!collection.length) {
+    //     return undefined;
+    //   } else {
+    //     for (let i = fromIndex; i >= 0; i--) {
+    //       if (predicate(collection[i])) {
+    //         return collection[i];
+    //       }
+    //     }
+    //   }
+    // } else if (typeUtils.isObject(collection)) {
+    //   let keys = Object.keys(collection);
+    //   if (!keys) {
+    //     return undefined;
+    //   } else {
+    //     for (let key of keys) {
+    //       if (predicate(collection[key])) {
+    //         return collection[key];
+    //       }
+    //     }
+    //   }
+    // }
+    // return undefined;
   }
 
 
