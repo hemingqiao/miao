@@ -571,23 +571,6 @@ var hemingqiao = (function () {
   }
 
 
-  // /**
-  //  * 这个方法类似 _.difference ，除了它接受一个 comparator，它调用比较array，values中的元素。 结果值是从第一数组中选择。comparator 调用参数有两个：(arrVal, othVal)。
-  //  * @param arr
-  //  * @param values
-  //  * @param comparator
-  //  * @return {[]}
-  //  */
-  // function differenceWith(arr, values, comparator) {
-  //   let res = [];
-  //   for (let e of arr) {
-  //     for (let v of values) {
-  //       if (!comparator(e, v)) res.push(e);
-  //     }
-  //   }
-  //   return res;
-  // }
-
   /**
    * This method is like _.difference except that it accepts comparator which is invoked to compare elements of array to
    * values. The order and references of result values are determined by the first array. The comparator is invoked with
@@ -685,16 +668,17 @@ var hemingqiao = (function () {
 
 
   /**
-   * 创建一个切片数组，去除array前面的n个元素。（n默认值为1。）
+   * Creates a slice of array with n elements dropped from the beginning.
    * @param arr
    * @param n
    * @return {[]|*}
    */
   function drop(arr, n = 1) {
+    // update
     let len = arr.length;
-    let res = [];
-    if (!len) return res;
-    if (n < 0) return arr.slice();
+    if (len <= 0) return arr.slice(); // 复制一份返回
+
+    const res = [];
     for (let i = n; i < len; i++) {
       res.push(arr[i]);
     }
@@ -738,16 +722,16 @@ var hemingqiao = (function () {
 
 
   /**
-   * 创建一个切片数组，去除array尾部的n个元素。（n默认值为1。）
+   * Creates a slice of array with n elements dropped from the end.
    * @param arr
    * @param n
    * @return {[]|*}
    */
   function dropRight(arr, n = 1) {
     let len = arr.length;
-    let res = [];
-    if (!len) return res;
-    if (n < 0) return arr.slice();
+    if (len <= 0) return arr.slice();
+
+    const res = [];
     for (let i = 0; i < len - n; i++) {
       res.push(arr[i]);
     }
