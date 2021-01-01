@@ -3637,14 +3637,14 @@ var hemingqiao = (function () {
     let temp = object;
     let keys;
     while (temp !== null) {
-      // 可以通过调用functions方法，但没必要
       keys = Object.keys(temp);
       for (let key of keys) {
         if (typeUtils.isFunction(object[key])) {
           ret.push(key);
         }
       }
-      temp = Reflect.getPrototypeOf(temp);
+      // temp = Reflect.getPrototypeOf(temp);
+      temp = Object.getPrototypeOf(temp);
     }
     return ret;
   }
@@ -5510,3 +5510,11 @@ var hemingqiao = (function () {
 // console.log(ser); // {"a":[32,1024,{"x":"heming","y":"qiao"}],"b":null,"c":{"d":[64,2048],"e":true,"f":{"answer":47}},"g":"done"}
 // let rev = hemingqiao.parseJson(ser);
 // console.log(rev);
+
+// function Foo() {
+//   this.a = () => 32;
+//   this.b = () => 1024;
+// }
+//
+// Foo.prototype.c = () => 64;
+// console.log(hemingqiao.functionsIn(new Foo()));
