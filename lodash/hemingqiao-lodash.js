@@ -2315,13 +2315,13 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function keysIn(object) {
-    let ret = [];
+    let ret = new Set();
     let temp = object;
     while (temp !== null) {
-      ret = ret.concat(keys(temp));
+      keys(temp).forEach(key => ret.add(key));
       temp = Reflect.getPrototypeOf(temp);
     }
-    return ret;
+    return [...ret];
   }
 
 
@@ -2421,7 +2421,7 @@ var hemingqiao = (function () {
     // 只考虑了最简单的情形
     const ret = {};
     Object.keys(object).forEach(key => {
-      if (paths.includes(key) === (!!isPick)) {
+      if (paths.includes(key) === isPick) {
         ret[key] = object[key];
       }
     });
@@ -2434,7 +2434,7 @@ var hemingqiao = (function () {
     const ret = {};
     predicate = transformType(predicate);
     Object.keys(object).forEach(key => {
-      if (predicate(object[key], key) === (!!isPick)) {
+      if (predicate(object[key], key) === isPick) {
         ret[key] = object[key];
       }
     });
@@ -5510,11 +5510,30 @@ var hemingqiao = (function () {
 // let rev = hemingqiao.parseJson(ser);
 // console.log(rev);
 
-// function Foo() {
-//   this.a = () => 32;
-//   this.b = () => 1024;
-// }
+// var object = {
+//   'a': [{ 'b': 2 }, { 'd': 4 }]
+// };
 //
-// Foo.prototype.c = () => 64;
-// Foo.prototype.b = () => 2048;
-// console.log(hemingqiao.functionsIn(new Foo()));
+// var other = {
+//   'a': [{ 'c': 3 }, { 'e': 5 }]
+// };
+//
+// let p = {b: 2048};
+// Object.setPrototypeOf(p, {d: 64});
+// console.log(Object.getOwnPropertyDescriptors(p.__proto__));
+//
+// Object.setPrototypeOf(other, {c: 1024});
+// Object.setPrototypeOf(object, p);
+//
+// console.log(hemingqiao.merge(object, other));
+
+/*
+// 存疑
+let obj = {'b': 2};
+Object.setPrototypeOf(obj, {c: 3, d: 4});
+console.log(hemingqiao.defaults({'a': 1}, obj, {'a': 3}));
+*/
+
+var object = { 'a': 1, 'b': '2', 'c': 3 };
+
+console.log(hemingqiao.omit(object, ['a', 'c']));
