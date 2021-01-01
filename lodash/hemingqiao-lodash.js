@@ -2420,11 +2420,11 @@ var hemingqiao = (function () {
   function baseOmit(object, isPick, paths) {
     // 只考虑了最简单的情形
     const ret = {};
-    Object.keys(object).forEach(key => {
+    for (let key in object) {
       if (paths.includes(key) === isPick) {
         ret[key] = object[key];
       }
-    });
+    }
     return ret;
   }
 
@@ -2433,11 +2433,11 @@ var hemingqiao = (function () {
     // 只考虑了最简单的情形
     const ret = {};
     predicate = transformType(predicate);
-    Object.keys(object).forEach(key => {
+    for (let key in object) { // 取原型上的属性
       if (predicate(object[key], key) === isPick) {
         ret[key] = object[key];
       }
-    });
+    }
     return ret;
   }
 
@@ -5534,6 +5534,3 @@ Object.setPrototypeOf(obj, {c: 3, d: 4});
 console.log(hemingqiao.defaults({'a': 1}, obj, {'a': 3}));
 */
 
-var object = { 'a': 1, 'b': '2', 'c': 3 };
-
-console.log(hemingqiao.omit(object, ['a', 'c']));
