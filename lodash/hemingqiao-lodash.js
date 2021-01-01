@@ -3639,12 +3639,11 @@ var hemingqiao = (function () {
     while (temp !== null) {
       keys = Object.keys(temp);
       for (let key of keys) {
-        if (typeUtils.isFunction(object[key])) {
+        if (typeUtils.isFunction(object[key]) && !ret.includes(key)) {
           ret.push(key);
         }
       }
-      // temp = Reflect.getPrototypeOf(temp);
-      temp = Object.getPrototypeOf(temp);
+      temp = Reflect.getPrototypeOf(temp);
     }
     return ret;
   }
@@ -5517,4 +5516,5 @@ var hemingqiao = (function () {
 // }
 //
 // Foo.prototype.c = () => 64;
+// Foo.prototype.b = () => 2048;
 // console.log(hemingqiao.functionsIn(new Foo()));
