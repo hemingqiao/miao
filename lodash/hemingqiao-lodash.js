@@ -5297,58 +5297,88 @@ var hemingqiao = (function () {
 
 
   /**
-   * 将js对象转为JSON对象
+   * 将JS对象序列化为JSON字符串
    * @param obj
-   * @return {string}
+   * @return {string|undefined}
    */
   function stringifyJson(obj) {
-    let regexp = /undefined|function/;
-    // 如果obj为undefined或者function，直接返回undefined
-    if (regexp.test(typeof obj)) {
-      return "undefined";
+    if (obj === undefined || typeof obj === "function") return undefined;
+    if (obj === null) return "null";
+    if (typeof obj === "boolean" || typeof obj === "number") return String(obj);
+    if (typeof obj === "string") return '"' + obj + '"';
+
+    if (Array.isArray(obj)) {
+      return '[' + obj.reduce((acc, val) => {
+        // 数组内部的undefined和function会被处理为null
+        if (val === undefined || typeof val === "function") val = null;
+        acc.push(jsonStringify(val));
+        return acc;
+      }, []).join(",") + ']';
     }
-
-    if (obj === null) {
-      return "null";
-    } else if (typeof obj === "object") {
-      let isArray = Array.isArray(obj);
-      let res = [];
-      let keys = Object.keys(obj)
-      for (let key of keys) {
-        let v = obj[key];
-
-        // 特判undefined和function
-        if (regexp.test(typeof v)) {
-          if (isArray) {
-            // 数组中的undefined和function在转为JSON时会被视为null
-            res.push("null");
-          }
-          // 而在对象中，值为null或者function的属性在转JSON时会被直接忽略，所以在此不做处理
-          continue;
-        }
-
-        if (v === null) {
-          v = "null";
-        } else if (typeof v === "object") {
-          v = stringifyJson(v);
-        } else {
-          // 值为数字或者布尔类型时不拼双引号
-          if (typeof v === "number" || typeof v === "boolean") {
-            v = String(v);
-          } else {
-            v = '"' + String(v) + '"';
-          }
-        }
-        // 处理其他非object类型值，同时将上面得到的结果推入数组中
-        res.push((isArray ? "" : '"' + key + '":') + String(v));
-      }
-      // 根据原对象是否为数组拼接[]或者{}
-      return (isArray ? "[" : "{") + String(res) + (isArray ? "]" : "}");
-    } else {
-      // 处理obj为其他非object类型的值的情况
-      return String(obj);
+    if (typeof obj === "object") {
+      return '{' + Object.keys(obj).reduce((acc, key) => {
+        // 对象内部属性值如果为undefined或者为function，则会跳过这个属性
+        if (obj[key] === undefined || typeof obj[key] === "function") return acc;
+        acc.push(jsonStringify(key) + ':' + jsonStringify(obj[key]));
+        return acc;
+      }, []).join(",") + '}';
     }
+    return '{}'; // default case
   }
+
+  // /**
+  //  * 将js对象转为JSON对象
+  //  * @param obj
+  //  * @return {string}
+  //  */
+  // function stringifyJson(obj) {
+  //   let regexp = /undefined|function/;
+  //   // 如果obj为undefined或者function，直接返回undefined
+  //   if (regexp.test(typeof obj)) {
+  //     return "undefined";
+  //   }
+  //
+  //   if (obj === null) {
+  //     return "null";
+  //   } else if (typeof obj === "object") {
+  //     let isArray = Array.isArray(obj);
+  //     let res = [];
+  //     let keys = Object.keys(obj)
+  //     for (let key of keys) {
+  //       let v = obj[key];
+  //
+  //       // 特判undefined和function
+  //       if (regexp.test(typeof v)) {
+  //         if (isArray) {
+  //           // 数组中的undefined和function在转为JSON时会被视为null
+  //           res.push("null");
+  //         }
+  //         // 而在对象中，值为null或者function的属性在转JSON时会被直接忽略，所以在此不做处理
+  //         continue;
+  //       }
+  //
+  //       if (v === null) {
+  //         v = "null";
+  //       } else if (typeof v === "object") {
+  //         v = stringifyJson(v);
+  //       } else {
+  //         // 值为数字或者布尔类型时不拼双引号
+  //         if (typeof v === "number" || typeof v === "boolean") {
+  //           v = String(v);
+  //         } else {
+  //           v = '"' + String(v) + '"';
+  //         }
+  //       }
+  //       // 处理其他非object类型值，同时将上面得到的结果推入数组中
+  //       res.push((isArray ? "" : '"' + key + '":') + String(v));
+  //     }
+  //     // 根据原对象是否为数组拼接[]或者{}
+  //     return (isArray ? "[" : "{") + String(res) + (isArray ? "]" : "}");
+  //   } else {
+  //     // 处理obj为其他非object类型的值的情况
+  //     return String(obj);
+  //   }
+  // }
 
 
   /**
@@ -5533,4 +5563,3 @@ let obj = {'b': 2};
 Object.setPrototypeOf(obj, {c: 3, d: 4});
 console.log(hemingqiao.defaults({'a': 1}, obj, {'a': 3}));
 */
-
