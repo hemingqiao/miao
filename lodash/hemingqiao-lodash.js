@@ -3388,10 +3388,18 @@ var hemingqiao = (function () {
     const that = this;
     let invoked = false;
     let ret;
-    return function () {
+    // return function () {
+    //   if (!invoked) {
+    //     invoked = !invoked;
+    //     return ret = func.apply(that, arguments);
+    //   }
+    //   return ret;
+    // }
+
+    return function (...args) {
       if (!invoked) {
         invoked = !invoked;
-        return ret = func.apply(that, arguments);
+        return ret = func(...args);
       }
       return ret;
     }
@@ -3406,9 +3414,13 @@ var hemingqiao = (function () {
    * @return {function(): *}
    */
   function spread(func, start = 0) {
-    const that = this;
+    // const that = this;
+    // return function (...args) {
+    //   return func.apply(that, args.slice(start));
+    // }
+
     return function (...args) {
-      return func.apply(that, args.slice(start));
+      return func(...args.slice(start));
     }
   }
 
