@@ -3390,6 +3390,7 @@ var hemingqiao = (function () {
     let ret;
     return function () {
       if (!invoked) {
+        invoked = !invoked;
         return ret = func.apply(that, arguments);
       }
       return ret;
