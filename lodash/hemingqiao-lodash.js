@@ -5311,7 +5311,7 @@ var hemingqiao = (function () {
       return '[' + obj.reduce((acc, val) => {
         // 数组内部的undefined和function会被处理为null
         if (val === undefined || typeof val === "function") val = null;
-        acc.push(jsonStringify(val));
+        acc.push(stringifyJson(val));
         return acc;
       }, []).join(",") + ']';
     }
@@ -5319,7 +5319,7 @@ var hemingqiao = (function () {
       return '{' + Object.keys(obj).reduce((acc, key) => {
         // 对象内部属性值如果为undefined或者为function，则会跳过这个属性
         if (obj[key] === undefined || typeof obj[key] === "function") return acc;
-        acc.push(jsonStringify(key) + ':' + jsonStringify(obj[key]));
+        acc.push(stringifyJson(key) + ':' + stringifyJson(obj[key]));
         return acc;
       }, []).join(",") + '}';
     }
