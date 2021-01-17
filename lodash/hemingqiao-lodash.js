@@ -2416,6 +2416,7 @@ var hemingqiao = (function () {
   function baseMerge(des, src) {
     for (let key in src) {
       let val = src[key];
+      if (des[key] && val === undefined) continue; // Source properties that resolve to undefined are skipped if a destination value exists
       if (Array.isArray(val) || typeUtils.isObject(val)) {
         if (des[key] === undefined) {
           if (Array.isArray(val)) des[key] = [];
@@ -5573,22 +5574,17 @@ var hemingqiao = (function () {
 // let rev = hemingqiao.parseJson(ser);
 // console.log(rev);
 
-// var object = {
-//   'a': [{ 'b': 2 }, { 'd': 4 }]
-// };
-//
-// var other = {
-//   'a': [{ 'c': 3 }, { 'e': 5 }]
-// };
-//
-// let p = {b: 2048};
-// Object.setPrototypeOf(p, {d: 64});
-// console.log(Object.getOwnPropertyDescriptors(p.__proto__));
-//
-// Object.setPrototypeOf(other, {c: 1024});
-// Object.setPrototypeOf(object, p);
-//
-// console.log(hemingqiao.merge(object, other));
+var object = {
+  'a': [{ 'b': 2 }, { 'd': 4 }], 'b': 32,
+};
+
+var other = {
+  'a': [{ 'b': 42, 'c': 3 }, { 'e': 5 }], 'b': 64, 'c': {x: 32, y: 1024}
+};
+Object.setPrototypeOf(object, {g: [{'g': 6}]})
+Object.setPrototypeOf(other, {c: 1024, 'g': [{'f': 4}]});
+
+console.log(hemingqiao.merge(object, other));
 
 /*
 // 存疑
