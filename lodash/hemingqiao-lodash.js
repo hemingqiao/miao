@@ -2414,21 +2414,45 @@ var hemingqiao = (function () {
   }
 
   function baseMerge(des, src) {
-    for (let key in src) {
-      let val = src[key];
-      if (des[key] && val === undefined) continue; // Source properties that resolve to undefined are skipped if a destination value exists
-      if (Array.isArray(val) || typeUtils.isObject(val)) {
-        if (des[key] === undefined) {
-          if (Array.isArray(val)) des[key] = [];
-          else des[key] = {};
+    let temp = src;
+    let dcopy = des;
+    while (temp != null) {
+      let keys = Object.keys(temp);
+      for (let key of keys) {
+        let value = temp[key];
+        if (dcopy[key] && value === undefined) continue;
+        if (Array.isArray(value) || typeUtils.isObject(value)) {
+          if (dcopy[key] === undefined) {
+            if (Array.isArray(value)) dcopy[key] = [];
+            else dcopy[key] = {};
+          }
+          baseMerge(dcopy[key], value);
+        } else {
+          dcopy[key] = value;
         }
-        baseMerge(des[key], val);
-      } else {
-        des[key] = val;
       }
+      temp = Object.getPrototypeOf(temp);
+      dcopy = Object.getPrototypeOf(dcopy);
     }
     return des;
   }
+
+  // function baseMerge(des, src) {
+  //   for (let key in src) {
+  //     let val = src[key];
+  //     if (des[key] && val === undefined) continue; // Source properties that resolve to undefined are skipped if a destination value exists
+  //     if (Array.isArray(val) || typeUtils.isObject(val)) {
+  //       if (des[key] === undefined) {
+  //         if (Array.isArray(val)) des[key] = [];
+  //         else des[key] = {};
+  //       }
+  //       baseMerge(des[key], val);
+  //     } else {
+  //       des[key] = val;
+  //     }
+  //   }
+  //   return des;
+  // }
 
 
   /**
@@ -5574,13 +5598,40 @@ var hemingqiao = (function () {
 // let rev = hemingqiao.parseJson(ser);
 // console.log(rev);
 
+let B = {'b': 2};
+let Bproto = Object.getPrototypeOf(B);
+Bproto.b = 2;
+Bproto.c = 3;
+Bproto.d = 4;
+
+let D = {'d': 4};
+let Dproto = Object.getPrototypeOf(D);
+Dproto.b = 2;
+Dproto.c = 3;
+Dproto.d = 4;
+
 var object = {
-  'a': [{ 'b': 2 }, { 'd': 4 }], 'b': 32,
+  'a': [B, D]
 };
 
+let C = {'c': 3};
+let Cproto = Object.getPrototypeOf(C);
+Cproto.b = 2;
+Cproto.c = 3;
+Cproto.d = 4;
+
+let E = {'e': 5};
+let Eproto = Object.getPrototypeOf(E);
+Eproto.b = 2;
+Eproto.c = 3;
+Eproto.d = 4;
+
 var other = {
-  'a': [{ 'b': 42, 'c': 3 }, { 'e': 5 }], 'b': 64, 'c': {x: 32, y: 1024}
+  'a': [C, E]
 };
+
+console.log(object);
+console.log(other);
 Object.setPrototypeOf(object, {g: [{'g': 6}]})
 Object.setPrototypeOf(other, {c: 1024, 'g': [{'f': 4}]});
 
