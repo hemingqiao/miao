@@ -3067,7 +3067,7 @@ var hemingqiao = (function () {
       regStr = "^" + regStr;
     }
     let regexp = new RegExp(regStr, "g");
-    console.log(regexp); // debug
+    // console.log(regexp); // debug
     return string.replace(regexp, "");
   }
 
