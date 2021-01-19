@@ -5598,44 +5598,44 @@ var hemingqiao = (function () {
 // let rev = hemingqiao.parseJson(ser);
 // console.log(rev);
 
-let B = {'b': 2};
-let Bproto = Object.getPrototypeOf(B);
-Bproto.b = 2;
-Bproto.c = 3;
-Bproto.d = 4;
-
-let D = {'d': 4};
-let Dproto = Object.getPrototypeOf(D);
-Dproto.b = 2;
-Dproto.c = 3;
-Dproto.d = 4;
-
-var object = {
-  'a': [B, D]
-};
-
-let C = {'c': 3};
-let Cproto = Object.getPrototypeOf(C);
-Cproto.b = 2;
-Cproto.c = 3;
-Cproto.d = 4;
-
-let E = {'e': 5};
-let Eproto = Object.getPrototypeOf(E);
-Eproto.b = 2;
-Eproto.c = 3;
-Eproto.d = 4;
-
-var other = {
-  'a': [C, E]
-};
-
-console.log(object);
-console.log(other);
-Object.setPrototypeOf(object, {g: [{'g': 6}]})
-Object.setPrototypeOf(other, {c: 1024, 'g': [{'f': 4}]});
-
-console.log(hemingqiao.merge(object, other));
+// let B = {'b': 2};
+// let Bproto = Object.getPrototypeOf(B);
+// Bproto.b = 2;
+// Bproto.c = 3;
+// Bproto.d = 4;
+//
+// let D = {'d': 4};
+// let Dproto = Object.getPrototypeOf(D);
+// Dproto.b = 2;
+// Dproto.c = 3;
+// Dproto.d = 4;
+//
+// var object = {
+//   'a': [B, D]
+// };
+//
+// let C = {'c': 3};
+// let Cproto = Object.getPrototypeOf(C);
+// Cproto.b = 2;
+// Cproto.c = 3;
+// Cproto.d = 4;
+//
+// let E = {'e': 5};
+// let Eproto = Object.getPrototypeOf(E);
+// Eproto.b = 2;
+// Eproto.c = 3;
+// Eproto.d = 4;
+//
+// var other = {
+//   'a': [C, E]
+// };
+//
+// console.log(object);
+// console.log(other);
+// Object.setPrototypeOf(object, {g: [{'g': 6}]})
+// Object.setPrototypeOf(other, {c: 1024, 'g': [{'f': 4}]});
+//
+// console.log(hemingqiao.merge(object, other));
 
 /*
 // 存疑
