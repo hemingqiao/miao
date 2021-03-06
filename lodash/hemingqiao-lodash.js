@@ -661,7 +661,7 @@ var hemingqiao = (function () {
     if (fromIdx < 0) {
       fromIdx = n + fromIdx < 0 ? 0 : n + fromIdx;
     } else if (fromIdx >= n) {
-      fromIdx = n -  1;
+      fromIdx = n - 1;
     }
     for (let i = fromIdx; i >= 0; i--) {
       if (sameValueZero(val, arr[i])) return i;
@@ -674,7 +674,7 @@ var hemingqiao = (function () {
    * Creates a slice of array with n elements dropped from the beginning.
    * @param arr
    * @param n
-   * @return {[]|*}
+   * @return {[]}
    */
   function drop(arr, n = 1) {
     let len = arr.length;
@@ -699,7 +699,7 @@ var hemingqiao = (function () {
     predicate = transformType(predicate);
     const ret = array.slice();
     for (let i = array.length - 1; i >= 0; i--) {
-      if (predicate(array[i])) ret.pop();
+      if (predicate(array[i], i, array)) ret.pop();
       else break;
     }
     return ret;
@@ -717,7 +717,7 @@ var hemingqiao = (function () {
     predicate = transformType(predicate);
     let i;
     for (i = 0; i < array.length; i++) {
-      if (!predicate(array[i])) break;
+      if (!predicate(array[i], i, array)) break;
     }
     return array.slice(i);
   }
@@ -748,20 +748,15 @@ var hemingqiao = (function () {
    * @param val
    * @param start
    * @param end
-   * @return {*}
+   * @return {any[]}
    */
   function fill(arr, val, start = 0, end = arr.length) {
-    let len = arr.length;
-    if (start >= end) {
-      return arr;
-    } else {
-      start = start < 0 ? start + len : start;
-      end = end < 0 ? end + len : end;
-      for (let i = start; i < end; i++) {
-        if (i < 0) continue;
-        if (i >= len) break;
-        arr[i] = val;
-      }
+    let n = arr.length;
+    if (start >= end) return arr;
+    if (start < 0) start = start + n < 0 ? 0 : start + n;
+    if (end < 0) end = end + n < 0 ? 0 : end + n;
+    for (let i = start; i < end; i++) {
+      arr[i] = val;
     }
     return arr;
   }
