@@ -403,23 +403,18 @@ var hemingqiao = (function () {
    */
   function chunk(array, size = 1) {
     // update
-    if (!Array.isArray(array) || array.length === 0) {
-      return [];
-    }
-    const ret = [];
+    let n = array.length;
     let p = 0;
-    let temp = [];
-    for (let i = 0; i < array.length; i++) {
-      if (p < size) {
-        temp.push(array[i]);
-        p++;
-      } else {
-        ret.push(temp);
-        temp = [array[i]];
-        p = 1; // 重置p指针
+    let ret = [];
+    for (let i = 0; i < n; i++) {
+      let temp = [];
+      while (p++ < size && i < n) {
+        temp.push(array[i++]);
       }
+      p = 0;
+      --i;
+      ret.push(temp);
     }
-    ret.push(temp);
     return ret;
 
     /*
@@ -2807,7 +2802,8 @@ var hemingqiao = (function () {
    * @return {string}
    */
   function capitalize(string = "") {
-    return string.toLowerCase().replace(/(?:^)\w/g, match => match.toUpperCase()); // update: 只需要将首个字符转为大写
+    return string.toLowerCase()
+      .replace(/(?:^)\w/g, match => match.toUpperCase()); // update: 只需要将首个字符转为大写
   }
 
 
@@ -5632,7 +5628,7 @@ var hemingqiao = (function () {
 //
 // console.log(object);
 // console.log(other);
-// Object.setPrototypeOf(object, {g: [{'g': 6}]})
+// Object.setPrototypeOf(object, {g: [{'g': 6}]});
 // Object.setPrototypeOf(other, {c: 1024, 'g': [{'f': 4}]});
 //
 // console.log(hemingqiao.merge(object, other));
