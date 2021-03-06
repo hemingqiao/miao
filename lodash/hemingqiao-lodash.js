@@ -772,7 +772,9 @@ var hemingqiao = (function () {
    */
   function findIndex(arr, predicate, fromIdx = 0) {
     predicate = transformType(predicate);
-    for (let i = fromIdx; i < arr.length; i++) {
+    let n = arr.length;
+    if (fromIdx < 0) fromIdx = fromIdx + n < 0 ? 0 : fromIdx + n;
+    for (let i = fromIdx; i < n; i++) {
       if (predicate(arr[i])) {
         return i;
       }
@@ -782,7 +784,7 @@ var hemingqiao = (function () {
 
 
   /**
-   * 这个方式类似 _.findIndex， 区别是它是从右到左的迭代集合array中的元素。
+   * This method is like _.findIndex except that it iterates over elements of collection from right to left.
    * @param arr
    * @param predicate
    * @param fromIdx
@@ -790,6 +792,9 @@ var hemingqiao = (function () {
    */
   function findLastIndex(arr, predicate, fromIdx = arr.length - 1) {
     predicate = transformType(predicate);
+    let n = arr.length;
+    if (fromIdx < 0) fromIdx = fromIdx + n < 0 ? 0 : fromIdx + n;
+    if (fromIdx >= n) fromIdx = n - 1;
     for (let i = fromIdx; i >= 0; i--) {
       if (predicate(arr[i])) {
         return i;
@@ -802,7 +807,7 @@ var hemingqiao = (function () {
   /**
    * Flattens array a single level deep.
    * @param array
-   * @return {*[]}
+   * @return {any[]}
    */
   function flatten(array) {
     return [].concat(...array);
@@ -812,7 +817,7 @@ var hemingqiao = (function () {
   /**
    * Recursively flattens array.
    * @param array
-   * @return {*}
+   * @return {any[]}
    */
   function flattenDeep(array) {
     return array.reduce((prev, next) => prev.concat(Array.isArray(next) ? flattenDeep(next) : next), []);
@@ -823,7 +828,7 @@ var hemingqiao = (function () {
    * Recursively flatten array up to depth times.
    * @param array
    * @param depth
-   * @return {*[]}
+   * @return {any[]}
    */
   function flattenDepth(array, depth = 1) {
     let res = array.slice();
@@ -841,8 +846,7 @@ var hemingqiao = (function () {
    */
   function fromPairs(pairs) {
     let ret = {};
-    for (let pair of pairs) {
-      const [key, value] = pair;
+    for (let [key, value] of pairs) {
       ret[key] = value;
     }
     return ret;
@@ -877,11 +881,11 @@ var hemingqiao = (function () {
    * Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
    * Note: This method mutates array and is based on Array#reverse.
    * @param array
-   * @return {*}
+   * @return {any[]}
    */
   function reverse(array) {
     let low = 0, high = array.length - 1;
-    while (low <= high) {
+    while (low < high) {
       let temp = array[low];
       array[low] = array[high];
       array[high] = temp;
@@ -900,25 +904,22 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function sortedIndex(array, value) {
-    let low = 0, high = array.length;
-    while (low < high) {
-      let mid = (low + high) >>> 1;
-      // 小于value的位置一定不是寻找的解
-      if (array[mid] < value) {
-        // 新的搜索区间为[mid + 1, high]
-        low = mid + 1;
+    // 类似于C++中的lower_bound方法
+    let n = array.length;
+    let left = 0, right = n;
+    while (left < right) {
+      let mid = (left + right) >>> 1;
+      if (array[mid] >= value) {
+        right = mid;
       } else {
-        // array[mid]大于等于value时还需要继续向左进行查找
-        // 因为数组中可能存在重复元素，而要求是寻找可能的最小的插入位置
-        // 新的搜索区间为[low, high]
-        high = mid;
+        left = mid + 1;
       }
     }
-    return high; // 退出循环时low == high，返回high和low均可
+    return left;
   }
 
   // /**
-  //  * 采取暴力破解
+  //  * 暴力解法
   //  * 将 value 值插入到有序数组中 尽可能小的索引位置，以保证array的排序。
   //  * @param array
   //  * @param value
@@ -968,7 +969,7 @@ var hemingqiao = (function () {
       }
     }
     // 如果low处对应的值不等于目标值value，返回-1
-    if (array[low] === value) {
+    if (low < array.length && array[low] === value) {
       return low;
     }
     return -1;
@@ -978,23 +979,23 @@ var hemingqiao = (function () {
   /**
    * This method is like _.sortedIndex except that it returns the highest index at which value should be inserted into
    * array in order to maintain its sort order.
-   * @param array
+   * @param arr
    * @param value
    * @return {number}
    */
-  function sortedLastIndex(array, value) {
-    let low = 0, high = array.length;
-    while (low < high) {
-      let mid = (low + high) >>> 1;
-      // 寻找最大的插入位置，即寻找到值等于value的位置后仍需向右边移动
-      // 与sortedIndex的不同之处就在于此处判断条件多了等于
-      if (array[mid] <= value) {
-        low = mid + 1;
+  function sortedLastIndex(arr, value) {
+    // 类似于C++中的upper_bound方法
+    let n = arr.length;
+    let left = 0, right = n;
+    while (left < right) {
+      let mid = (left + right) >>> 1;
+      if (arr[mid] <= value) {
+        left = mid + 1;
       } else {
-        high = mid;
+        right = mid;
       }
     }
-    return low;
+    return left;
   }
 
 
@@ -1022,7 +1023,7 @@ var hemingqiao = (function () {
    */
   function sortedLastIndexOf(array, value) {
     let index = sortedLastIndex(array, value);
-    if (array[index - 1] === value) {
+    if (index > 0 && array[index - 1] === value) {
       return index - 1;
     }
     return -1;
