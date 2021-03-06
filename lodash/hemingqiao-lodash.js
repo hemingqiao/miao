@@ -1082,7 +1082,7 @@ var hemingqiao = (function () {
     const ret = [];
     if (len == 0) return ret;
     outer:
-    for (let i = 1; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       let val = array[i];
       for (let e of ret) {
         if (comparator(e, val)) break outer;
