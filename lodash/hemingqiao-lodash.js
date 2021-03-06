@@ -1080,20 +1080,15 @@ var hemingqiao = (function () {
   function uniqWith(array, comparator) {
     const len = array.length;
     const ret = [];
-    if (!len) {
-      return ret;
-    }
-    ret.push(array[0]);
+    if (len == 0) return ret;
     outer:
-      for (let i = 1; i < len; i++) {
-        let val = array[i];
-        for (let e of ret) {
-          if (comparator(e, val)) {
-            break outer;
-          }
-        }
-        ret.push(val);
+    for (let i = 1; i < len; i++) {
+      let val = array[i];
+      for (let e of ret) {
+        if (comparator(e, val)) break outer;
       }
+      ret.push(val);
+    }
     return ret;
   }
 
@@ -1105,14 +1100,13 @@ var hemingqiao = (function () {
    * @return {*[][]|*[]}
    */
   function unzip(arrays) {
-    let len = arrays.length;
-    if (!len) return [];
-    const ret = Array(arrays[0].length).fill(0).map(_ => []);
-    for (let j = 0; j < len; j++) {
-      let array = arrays[j];
-      for (let i = 0; i < array.length; i++) {
-        ret[i][j] = array[i];
-      }
+    let m = arrays.length;
+    let size = Math.max(...arrays.map(item => item.length));
+    let ret = [];
+    for (let i = 0; i < size; i++) {
+      let temp = [];
+      for (let j = 0; j < m; j++) temp.push(arrays[j][i]);
+      ret.push(temp);
     }
     return ret;
   }
@@ -1130,7 +1124,8 @@ var hemingqiao = (function () {
     if (!array.length) return [];
     let ret = [];
     let invoked = [];
-    for (let i = 0; i < array[0].length; i++) {
+    let size = Math.max(...array.map(item => item.length));
+    for (let i = 0; i < size; i++) {
       for (let e of array) {
         invoked.push(e[i]);
       }
