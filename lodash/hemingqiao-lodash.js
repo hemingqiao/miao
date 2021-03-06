@@ -438,12 +438,16 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function compact(arr) {
+    return arr.filter(e => e);
+  }
+
+  /*function compact(arr) {
     let res = [];
     for (let e of arr) {
       if (e) res.push(e);
     }
     return res;
-  }
+  }*/
 
 
   /**
@@ -629,7 +633,7 @@ var hemingqiao = (function () {
    * @param {number[]} arr
    * @param {number} val
    * @param {number} fromIdx
-   * @return {number|*}
+   * @return {number}
    */
   function indexOf(arr, val, fromIdx = 0) {
     let len = arr.length;
@@ -652,11 +656,14 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function lastIndexOf(arr, val, fromIdx = arr.length - 1) {
-    if (!arr.length) return -1;
+    let n = arr.length;
+    if (n == 0) return -1;
     if (fromIdx < 0) {
-      fromIdx = arr.length + fromIdx;
+      fromIdx = n + fromIdx < 0 ? 0 : n + fromIdx;
+    } else if (fromIdx >= n) {
+      fromIdx = n -  1;
     }
-    for (let i = fromIdx < 0 ? 0 : fromIdx; i >= 0; i--) {
+    for (let i = fromIdx; i >= 0; i--) {
       if (sameValueZero(val, arr[i])) return i;
     }
     return -1;
