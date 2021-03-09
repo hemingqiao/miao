@@ -42,6 +42,9 @@ var hemingqiao = (function () {
   });
 
 
+  const {hasOwnProperty} = Object.prototype;
+
+
   /**
    * 包装iteratee
    * @param iteratee
@@ -1339,7 +1342,6 @@ var hemingqiao = (function () {
 
 
   /**
-   * （只支持处理collection为数组的情况，collection为对象暂时不支持）
    * Creates an object composed of keys generated from the results of running each element of collection thru iteratee.
    * The corresponding value of each key is the number of times the key was returned by iteratee. The iteratee is
    * invoked with one argument: (value).
@@ -1352,7 +1354,7 @@ var hemingqiao = (function () {
     const ret = {};
     collection = collection.map(val => iteratee(val));
     for (let e of collection) {
-      if (ret[e] !== undefined) {
+      if (hasOwnProperty.call(ret, e)) {
         ret[e]++;
       } else {
         ret[e] = 1;
@@ -1368,16 +1370,12 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function sortedUniq(array) {
-    const ret = [];
-    const len = array.length;
-    if (!len) {
-      return ret;
-    }
+    let ret = [];
+    let n = array.length;
+    if (n === 0) return ret;
     ret.push(array[0]);
-    for (let i = 1; i < len; i++) {
-      if (array[i] !== array[i - 1]) {
-        ret.push(array[i]);
-      }
+    for (let i = 1; i < n; i++) {
+      if (array[i] !== array[i - 1]) ret.push(array[i]);
     }
     return ret;
   }
