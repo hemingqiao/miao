@@ -1499,9 +1499,10 @@ var hemingqiao = (function () {
 
 
   /**
-   Checks if predicate returns truthy for all elements of collection. Iteration is stopped once predicate returns falsey.
-   The predicate is invoked with three arguments: (value, index|key, collection).
-   Note: This method returns true for empty collections because everything is true of elements of empty collections.
+   * Checks if predicate returns truthy for all elements of collection. Iteration is stopped once predicate returns
+   * falsey. The predicate is invoked with three arguments: (value, index|key, collection).
+   *
+   * Note: This method returns true for empty collections because everything is true of elements of empty collections.
    * @param collection
    * @param predicate
    * @return {boolean}
@@ -1520,6 +1521,7 @@ var hemingqiao = (function () {
   /**
    * Iterates over elements of collection, returning an array of all elements predicate returns truthy for. The predicate
    * is invoked with three arguments: (value, index|key, collection).
+   *
    * Note: Unlike _.remove, this method returns a new array.
    * @param collection
    * @param predicate
@@ -1547,8 +1549,9 @@ var hemingqiao = (function () {
   function find(collection, predicate, fromIdx = 0) {
     predicate = transformType(predicate);
     const keys = Object.keys(collection);
-    for (let key of keys) {
-      if (predicate(collection[key], key, collection)) return collection[key];
+    let n = keys.length;
+    for (let i = Math.max(0, fromIdx); i < n; i++) {
+      if (predicate(collection[keys[i]], keys[i], collection)) return collection[keys[i]];
     }
     return undefined;
   }
@@ -1564,10 +1567,11 @@ var hemingqiao = (function () {
   function findLast(collection, predicate, fromIndex = collection.length - 1) {
     predicate = transformType(predicate);
     const keys = Object.keys(collection);
-    for (let i = fromIndex; i >= 0; i--) {
+    let n = keys.length;
+    for (let i = Math.min(n - 1, fromIndex); i >= 0; i--) {
       if (predicate(collection[keys[i]], keys[i], collection)) return collection[keys[i]];
     }
-    return undefined
+    return undefined;
   }
 
 
