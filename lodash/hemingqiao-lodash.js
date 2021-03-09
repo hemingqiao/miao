@@ -42,6 +42,7 @@ var hemingqiao = (function () {
   });
 
 
+  // 用于检查某个对象是否拥有某个属性
   const {hasOwnProperty} = Object.prototype;
 
 
@@ -1578,7 +1579,7 @@ var hemingqiao = (function () {
   function baseFlatMap(collection, iteratee, depth = 1) {
     iteratee = transformType(iteratee);
     if (typeUtils.isArray(collection)) {
-      if (!collection.length) {
+      if (collection.length == 0) {
         return [];
       }
       collection = collection.map((value, idx, array) => iteratee(value, idx, array));
@@ -1586,7 +1587,7 @@ var hemingqiao = (function () {
     } else if (typeUtils.isObject(collection)) {
       const ret = [];
       let keys = Object.keys(collection);
-      if (!keys.length) {
+      if (keys.length == 0) {
         return ret;
       }
       for (let key of keys) {
@@ -1711,7 +1712,7 @@ var hemingqiao = (function () {
     const ret = {};
     for (let val of collection) {
       const key = iteratee(val);
-      if (ret[key] === undefined) {
+      if (!hasOwnProperty.call(ret, key)) {
         ret[key] = [val];
       } else {
         ret[key].push(val);
@@ -1719,23 +1720,6 @@ var hemingqiao = (function () {
     }
     return ret;
   }
-
-
-  // /**
-  //  * Checks if value is in collection. If collection is a string, it's checked for a substring of value, otherwise
-  //  * SameValueZero is used for equality comparisons. If fromIndex is negative, it's used as the offset from the end
-  //  * of collection.
-  //  * @param collection
-  //  * @param value
-  //  * @param fromIndex
-  //  * @return {number|*}
-  //  */
-  // function includes(collection, value, fromIndex = 0) {
-  //   if (typeUtils.isObject(collection)) {
-  //     collection = Object.keys(collection).map(key => collection[key]);
-  //   }
-  //   return collection.indexOf(value, fromIndex) !== -1;
-  // }
 
 
   /**
@@ -1770,18 +1754,26 @@ var hemingqiao = (function () {
    */
   function includes(collection, value, fromIndex = 0) {
     // 不使用indexOf方法
+    if (fromIndex < 0) fromIndex = Math.max(0, fromIndex + collection.length);
     if (typeUtils.isString(value)) {
-      if (fromIndex < 0) fromIndex += collection.length;
       return strStr(collection, value, fromIndex) !== -1;
     }
     if (typeUtils.isObject(collection)) {
       collection = Object.keys(collection).map(key => collection[key]);
     }
-    if (fromIndex < 0) fromIndex += collection.length;
     for (let i = fromIndex; i < collection.length; i++) {
       if (sameValueZero(value, collection[i])) return true;
     }
     return false;
+
+
+    /*
+    // 使用indexOf方法
+    if (typeUtils.isObject(collection)) {
+      collection = Object.keys(collection).map(key => collection[key]);
+    }
+    return collection.indexOf(value, fromIndex) !== -1;
+    */
   }
 
 
