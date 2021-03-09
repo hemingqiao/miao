@@ -1724,6 +1724,7 @@ var hemingqiao = (function () {
 
   /**
    * 查找字符串needle是否存在于字符串haystack中，存在返回索引，否则返回-1。
+   *
    * 参见：https://leetcode-cn.com/problems/implement-strstr/submissions/
    * @param haystack
    * @param needle
