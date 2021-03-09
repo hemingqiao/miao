@@ -1426,12 +1426,11 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function take(array, n = 1) {
-    const len = array.length;
-    const ret = [];
-    if (!len || n <= 0) return ret;
-    for (let i = 1; i <= n; i++) {
-      if (i > len) break;
-      ret.push(array[i - 1]);
+    let ret = [];
+    let l = array.length;
+    if (l == 0 || n <= 0) return ret;
+    for (let i = 0, end = Math.min(l, n); i < end; i++) {
+      ret.push(array[i]);
     }
     return ret;
   }
@@ -1444,14 +1443,11 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function takeRight(array, n = 1) {
-    const len = array.length;
-    const ret = [];
-    if (!len || n <= 0) return ret;
-    if (n > len) n = len;
-    for (let i = len - 1; i >= 0; i--) {
-      if (n-- > 0) {
-        ret.unshift(array[i]);
-      }
+    let ret = [];
+    let l = array.length;
+    if (l == 0 || n <= 0) return ret;
+    for (let i = Math.max(0, l - n); i < l; i++) {
+      ret.push(array[i]);
     }
     return ret;
   }
