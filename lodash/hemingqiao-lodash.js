@@ -2165,7 +2165,6 @@ var hemingqiao = (function () {
    */
   function invoke(object, path, ...args) {
     const regexp = /[\w$]+/g;
-    const {hasOwnProperty} = Object.prototype;
     if (typeof path === "string") {
       path = path.match(regexp);
     }
