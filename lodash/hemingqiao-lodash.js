@@ -2247,45 +2247,6 @@ var hemingqiao = (function () {
   }
 
 
-  // /**
-  //  * This method is like _.assign except that it recursively merges own and inherited enumerable string keyed properties
-  //  * of source objects into the destination object. Source properties that resolve to undefined are skipped if a
-  //  * destination value exists. Array and plain object properties are merged recursively. Other objects and value types
-  //  * are overridden by assignment. Source objects are applied from left to right. Subsequent sources overwrite property
-  //  * assignments of previous sources.
-  //  * @param object
-  //  * @param sources
-  //  * @return {*}
-  //  */
-  // function merge(object, ...sources) {
-  //   return sources.reduce((ret, cur) => _merge(ret, cur), object);
-  //
-  //   function _merge(des, src) {
-  //     let temp = src;
-  //     while (temp !== null) {
-  //       let keys = Object.keys(temp);
-  //       for (let key of keys) {
-  //         let val = temp[key];
-  //         if (typeUtils.isArray(val) || typeUtils.isObject(val)) {
-  //           if (des[key] === undefined) {
-  //             if (Array.isArray(val)) {
-  //               des[key] = [];
-  //             } else {
-  //               des[key] = {};
-  //             }
-  //           }
-  //           _merge(des[key], val); // 对于数组和对象进行深层次合并
-  //         } else {
-  //           des[key] = val;
-  //         }
-  //       }
-  //       temp = Reflect.getPrototypeOf(temp); // 合并原型链上的可枚举属性
-  //     }
-  //     return des;
-  //   }
-  // }
-
-
   /**
    * This method is like _.assign except that it recursively merges own and inherited enumerable string keyed properties
    * of source objects into the destination object. Source properties that resolve to undefined are skipped if a
@@ -2306,7 +2267,7 @@ var hemingqiao = (function () {
       let keys = Object.keys(sCopy);
       for (let key of keys) {
         let sv = sCopy[key];
-        if (dCopy[key] !== undefined && value === undefined) continue;
+        if (dCopy[key] !== undefined && sv === undefined) continue;
         if (Array.isArray(sv) || typeUtils.isObject(sv)) {
           if (dCopy[key] === undefined) {
             dCopy[key] = Array.isArray(sv) ? [] : {};
