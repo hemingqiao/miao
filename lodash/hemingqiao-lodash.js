@@ -1824,22 +1824,17 @@ var hemingqiao = (function () {
 
 
   /**
-   * 转换 value 为一个数组。
+   * Converts value to an array.
    * @param value
    * @return {[]|*[]|*}
    */
   function toArray(value) {
-    let ret = [];
     if (Array.isArray(value)) {
       return value;
     } else if (typeUtils.isString(value)) {
-      ret = [...value];
-      return ret;
+      return [...value];
     } else if (typeUtils.isObject(value)) {
-      for (let key of Object.keys(value)) {
-        ret.push(value[key]);
-      }
-      return ret;
+      return [...Object.values(value)];
     } else {
       return [];
     }
@@ -1981,6 +1976,13 @@ var hemingqiao = (function () {
   }
 
 
+  /**
+   * baseAssign method
+   * @param object 目标对象
+   * @param cover 标识后面的属性是否覆盖前面的属性
+   * @param sources 源对象数组
+   * @return {*}
+   */
   function baseAssign(object, cover, ...sources) {
     sources.forEach(val => {
       for (let key of Object.keys(val)) {
@@ -2025,55 +2027,6 @@ var hemingqiao = (function () {
     });
     return object;
   }
-
-
-  // /**
-  //  * Creates an array of values corresponding to paths of object.
-  //  * @param object
-  //  * @param paths
-  //  * @param defaultValue
-  //  * @return {[]}
-  //  */
-  // function at(object, paths, defaultValue = "defaultValue") {
-  //   const ret = [];
-  //   const regexp = /^([a-zA-Z_$])+\[([\w\W])+\]$/;
-  //   let temp = object;
-  //   outer:
-  //   for (let path of paths) {
-  //     const props = path.split(".");
-  //     for (let prop of props) {
-  //       if (regexp.test(prop)) {
-  //         let matches = prop.match(/\w+/g);
-  //         let n = matches[0]; // 匹配到的属性名
-  //         if (temp[n] === undefined) {
-  //           ret.push(defaultValue);
-  //           break outer;
-  //         }
-  //         temp = temp[n];
-  //         let j = 1;
-  //         let idx;
-  //         while (j < matches.length) {
-  //           idx = +matches[j];
-  //           if (temp[idx] === undefined) {
-  //             ret.push(defaultValue);
-  //             break outer;
-  //           }
-  //           temp = temp[idx];
-  //           j++;
-  //         }
-  //       } else {
-  //         if (temp[prop] === undefined) {
-  //           ret.push(defaultValue);
-  //           break outer;
-  //         }
-  //         temp = temp[prop];
-  //       }
-  //     }
-  //     ret.push(temp);
-  //     temp = object;
-  //   }
-  //   return ret;
-  // }
 
 
   /**
@@ -2126,13 +2079,12 @@ var hemingqiao = (function () {
    */
   function has(object, path) {
     const regexp = /[\w$]+/g; // 不考虑存在非法标识符
-    const {hasOwnProperty} = Object.prototype;
     if (typeof path === "string") {
       path = path.match(regexp);
     }
     let temp = object;
     for (let prop of path) {
-      if (hasOwnProperty.call(temp, prop)) {
+      if (hasOwnProperty.call(temp, prop)) { // 全局定义了hasOwnProperty
         temp = temp[prop];
       } else {
         return false;
