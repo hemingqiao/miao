@@ -2301,25 +2301,23 @@ var hemingqiao = (function () {
   }
 
   function baseMerge(des, src) {
-    let temp = src;
-    let dcopy = des;
-    while (temp != null) {
-      let keys = Object.keys(temp);
+    let dCopy = des, sCopy = src;
+    while (sCopy != null) {
+      let keys = Object.keys(sCopy);
       for (let key of keys) {
-        let value = temp[key];
-        if (dcopy[key] && value === undefined) continue;
-        if (Array.isArray(value) || typeUtils.isObject(value)) {
-          if (dcopy[key] === undefined) {
-            if (Array.isArray(value)) dcopy[key] = [];
-            else dcopy[key] = {};
+        let sv = sCopy[key];
+        if (dCopy[key] !== undefined && value === undefined) continue;
+        if (Array.isArray(sv) || typeUtils.isObject(sv)) {
+          if (dCopy[key] === undefined) {
+            dCopy[key] = Array.isArray(sv) ? [] : {};
           }
-          baseMerge(dcopy[key], value);
+          baseMerge(dCopy[key], sv);
         } else {
-          dcopy[key] = value;
+          dCopy[key] = sv;
         }
       }
-      temp = Object.getPrototypeOf(temp);
-      dcopy = Object.getPrototypeOf(dcopy);
+      dCopy = Object.getPrototypeOf(dCopy);
+      sCopy = Object.getPrototypeOf(sCopy);
     }
     return des;
   }
