@@ -2507,7 +2507,6 @@ var hemingqiao = (function () {
    */
   function setWith(object, path, value, customizer) {
     customizer = transformType(customizer);
-    value = customizer(value);
     return set(object, path, value, undefined, customizer);
   }
 
