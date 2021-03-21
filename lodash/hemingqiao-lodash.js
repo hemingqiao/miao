@@ -2434,26 +2434,27 @@ var hemingqiao = (function () {
       if (i === n - 1) {
         if (updater !== undefined) {
           value = updater(temp[path[i]]);
-          if (customizer !== undefined) {
-            value = customizer(value, path[i], object);
-          }
         }
         temp[path[i]] = value;
         break;
       }
       let sv = temp[path[i]];
       if (sv === undefined) {
-        if (numReg.test(path[i + 1])) { // 下一个索引处的值是数字时创建数组
-          temp[path[i]] = [];
+        if (customizer !== undefined) {
+          temp[path[i]] = customizer(sv);
         } else {
-          temp[path[i]] = {};
+          if (numReg.test(path[i + 1])) { // 下一个索引处的值是数字时创建数组
+            temp[path[i]] = [];
+          } else {
+            temp[path[i]] = {};
+          }
         }
       }
       temp = temp[path[i]];
     }
     return object;
   }
-  
+
   // function set(object, path, value, updater, customizer) {
   //   const regexp = /[\w$]+/g;
   //   if (typeof path === "string") {
