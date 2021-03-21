@@ -2183,14 +2183,19 @@ var hemingqiao = (function () {
 
   /**
    * Creates an array of the own enumerable property names of object.
+   * Note: Non-object values are coerced to objects.
+   *
    * @param object
    * @return {string[]|*[]}
    */
   function keys(object) {
-    if (object == null || typeof object === "boolean" || typeof object === "number") {
+    if (object == null                // for `null` and `undefined`
+      || typeof object === "boolean"
+      || typeof object === "number"
+      || typeof object === "symbol"
+      || typeof object === "bigint"
+    ) {
       return [];
-    } else if (typeof object === "string") {
-      object = Object(object);
     }
     return Object.keys(object);
   }
@@ -2198,17 +2203,17 @@ var hemingqiao = (function () {
 
   /**
    * Creates an array of the own and inherited enumerable property names of object.
+   * Note: Non-object values are coerced to objects.
+   *
    * @param object
    * @return {[]}
    */
   function keysIn(object) {
-    let ret = new Set();
-    let temp = object;
-    while (temp !== null) {
-      keys(temp).forEach(key => ret.add(key));
-      temp = Reflect.getPrototypeOf(temp);
+    let ret = [];
+    for (let key in object) {
+      ret.push(key);
     }
-    return [...ret];
+    return ret;
   }
 
 
@@ -2263,7 +2268,7 @@ var hemingqiao = (function () {
 
   function baseMerge(des, src) {
     let dCopy = des, sCopy = src;
-    while (sCopy != null) {
+    while (dCopy != null && sCopy != null) {
       let keys = Object.keys(sCopy);
       for (let key of keys) {
         let sv = sCopy[key];
@@ -2283,26 +2288,13 @@ var hemingqiao = (function () {
     return des;
   }
 
-  // function baseMerge(des, src) {
-  //   for (let key in src) {
-  //     let val = src[key];
-  //     if (des[key] && val === undefined) continue; // Source properties that resolve to undefined are skipped if a destination value exists
-  //     if (Array.isArray(val) || typeUtils.isObject(val)) {
-  //       if (des[key] === undefined) {
-  //         if (Array.isArray(val)) des[key] = [];
-  //         else des[key] = {};
-  //       }
-  //       baseMerge(des[key], val);
-  //     } else {
-  //       des[key] = val;
-  //     }
-  //   }
-  //   return des;
-  // }
-
 
   /**
-   * 比较简陋的实现
+   * This method is like _.merge except that it accepts customizer which is invoked to produce the merged values of the
+   * destination and source properties. If customizer returns undefined, merging is handled by the method instead. The
+   * customizer is invoked with six arguments: (objValue, srcValue, key, object, source, stack).
+   * Note: This method mutates object.
+   *
    * @param object
    * @param sources
    * @return {*}
@@ -2434,13 +2426,12 @@ var hemingqiao = (function () {
    */
   function set(object, path, value, updater, customizer) {
     const regexp = /[\w$]+/g;
-    if (typeof path === "string") {
-      path = path.match(regexp);
-    }
+    const numReg = /^\d+$/;
+    if (typeof path === "string") path = path.match(regexp);
     let temp = object;
-    let len = path.length;
-    for (let i = 0; i < len; i++) {
-      if (i === len - 1) {
+    let n = path.length;
+    for (let i = 0; i < n; i++) {
+      if (i === n - 1) {
         if (updater !== undefined) {
           value = updater(temp[path[i]]);
           if (customizer !== undefined) {
@@ -2448,27 +2439,58 @@ var hemingqiao = (function () {
           }
         }
         temp[path[i]] = value;
-      } else {
-        let next = path[i + 1];
-        if (Object.is(+path[i], NaN) && !Object.is(+next, NaN)) { // 只有当前索引处不是数字，而下一个索引处的值next是一个数字时才创建数组
-          if (temp[path[i]] === undefined) {
-            temp[path[i]] = [];
-            temp[path[i]][+next] = {}; // 先赋值为一个对象
-            temp = temp[path[i]][+next];
-          } else {
-            temp = temp[path[i]][+next];
-          }
-          i++; // 跳过下一个数字位
+        break;
+      }
+      let sv = temp[path[i]];
+      if (sv === undefined) {
+        if (numReg.test(path[i + 1])) { // 下一个索引处的值是数字时创建数组
+          temp[path[i]] = [];
         } else {
-          if (temp[path[i]] === undefined) {
-            temp[path[i]] = {};
-          }
-          temp = temp[path[i]];
+          temp[path[i]] = {};
         }
       }
+      temp = temp[path[i]];
     }
     return object;
   }
+  
+  // function set(object, path, value, updater, customizer) {
+  //   const regexp = /[\w$]+/g;
+  //   if (typeof path === "string") {
+  //     path = path.match(regexp);
+  //   }
+  //   let temp = object;
+  //   let len = path.length;
+  //   for (let i = 0; i < len; i++) {
+  //     if (i === len - 1) {
+  //       if (updater !== undefined) {
+  //         value = updater(temp[path[i]]);
+  //         if (customizer !== undefined) {
+  //           value = customizer(value, path[i], object);
+  //         }
+  //       }
+  //       temp[path[i]] = value;
+  //     } else {
+  //       let next = path[i + 1];
+  //       if (Object.is(+path[i], NaN) && !Object.is(+next, NaN)) { // 只有当前索引处不是数字，而下一个索引处的值next是一个数字时才创建数组
+  //         if (temp[path[i]] === undefined) {
+  //           temp[path[i]] = [];
+  //           temp[path[i]][+next] = {}; // 先赋值为一个对象
+  //           temp = temp[path[i]][+next];
+  //         } else {
+  //           temp = temp[path[i]][+next];
+  //         }
+  //         i++; // 跳过下一个数字位
+  //       } else {
+  //         if (temp[path[i]] === undefined) {
+  //           temp[path[i]] = {};
+  //         }
+  //         temp = temp[path[i]];
+  //       }
+  //     }
+  //   }
+  //   return object;
+  // }
 
 
   /**
@@ -5444,45 +5466,6 @@ var hemingqiao = (function () {
 // console.log(ser); // {"a":[32,1024,{"x":"heming","y":"qiao"}],"b":null,"c":{"d":[64,2048],"e":true,"f":{"answer":47}},"g":"done"}
 // let rev = hemingqiao.parseJson(ser);
 // console.log(rev);
-
-// let B = {'b': 2};
-// let Bproto = Object.getPrototypeOf(B);
-// Bproto.b = 2;
-// Bproto.c = 3;
-// Bproto.d = 4;
-//
-// let D = {'d': 4};
-// let Dproto = Object.getPrototypeOf(D);
-// Dproto.b = 2;
-// Dproto.c = 3;
-// Dproto.d = 4;
-//
-// var object = {
-//   'a': [B, D]
-// };
-//
-// let C = {'c': 3};
-// let Cproto = Object.getPrototypeOf(C);
-// Cproto.b = 2;
-// Cproto.c = 3;
-// Cproto.d = 4;
-//
-// let E = {'e': 5};
-// let Eproto = Object.getPrototypeOf(E);
-// Eproto.b = 2;
-// Eproto.c = 3;
-// Eproto.d = 4;
-//
-// var other = {
-//   'a': [C, E]
-// };
-//
-// console.log(object);
-// console.log(other);
-// Object.setPrototypeOf(object, {g: [{'g': 6}]});
-// Object.setPrototypeOf(other, {c: 1024, 'g': [{'f': 4}]});
-//
-// console.log(hemingqiao.merge(object, other));
 
 /*
 // 存疑
