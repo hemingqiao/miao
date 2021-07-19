@@ -406,33 +406,14 @@ var hemingqiao = (function () {
    * @return {[]}
    */
   function chunk(array, size = 1) {
-    // update
-    let n = array.length;
-    let p = 0;
     let ret = [];
-    for (let i = 0; i < n; i++) {
-      let temp = [];
-      while (p++ < size && i < n) {
-        temp.push(array[i++]);
-      }
-      p = 0;
-      --i;
-      ret.push(temp);
+    for (let i = 0, p = 0; i < array.length; i++) {
+      let t = [];
+      while (i < array.length && p++ < size) t.push(array[i++]);
+      ret.push(t);
+      --i, p = 0;
     }
     return ret;
-
-    /*
-    // API版本
-    if (!Array.isArray(array) || array.length === 0) {
-      return [];
-    }
-    const ret = [];
-    const copy = array.slice(); // 不修改原输入数组
-    while (copy.length > 0) {
-      ret.push(copy.splice(0, size));
-    }
-    return ret;
-    */
   }
 
 
