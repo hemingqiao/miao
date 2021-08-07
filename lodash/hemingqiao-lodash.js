@@ -889,18 +889,14 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function sortedIndex(array, value) {
-    // 类似于C++中的lower_bound方法
-    let n = array.length;
-    let left = 0, right = n;
-    while (left < right) {
-      let mid = (left + right) >>> 1;
-      if (array[mid] >= value) {
-        right = mid;
-      } else {
-        left = mid + 1;
-      }
+    // 类似于C++中的lower_bound方法，返回大于等于value的第一个位置
+    let l = 0, r = array.length;
+    while (l < r) {
+      let mid = l + r >> 1;
+      if (array[mid] >= value) r = mid;
+      else l = mid + 1;
     }
-    return left;
+    return l;
   }
 
   // /**
@@ -969,18 +965,14 @@ var hemingqiao = (function () {
    * @return {number}
    */
   function sortedLastIndex(arr, value) {
-    // 类似于C++中的upper_bound方法
-    let n = arr.length;
-    let left = 0, right = n;
-    while (left < right) {
-      let mid = (left + right) >>> 1;
-      if (arr[mid] <= value) {
-        left = mid + 1;
-      } else {
-        right = mid;
-      }
+    // 类似于C++中的upper_bound方法，返回大于value的第一个位置
+    let l = 0, r = arr.length;
+    while (l < r) {
+      let mid = l + r >> 1;
+      if (arr[mid] > value) r = mid;
+      else l = mid + 1;
     }
-    return left;
+    return l;
   }
 
 
